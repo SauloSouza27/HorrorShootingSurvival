@@ -71,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("xVelocity", xVelocity, .1f, Time.deltaTime);
         animator.SetFloat("zVelocity", zVelocity, .1f, Time.deltaTime);
         
+        bool playRunAnimation = isRunning && movementDirection.magnitude > 0;
         animator.SetBool("isRunning", isRunning);
     }
 
