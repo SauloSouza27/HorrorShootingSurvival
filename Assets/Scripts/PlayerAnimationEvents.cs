@@ -17,4 +17,9 @@ public class PlayerAnimationEvents : MonoBehaviour
         
         //refill bullets
     }
+
+    public void WeaponEquipIsOver()
+    {
+        visualController.ReturnRigWeightToOne();
+    }
 }

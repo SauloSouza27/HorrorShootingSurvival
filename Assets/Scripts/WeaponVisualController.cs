@@ -41,7 +41,7 @@ public class WeaponVisualController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             animator.SetTrigger("Reload");
-            rig.weight = 0;
+            PauseRig();
         }
 
         if (rigShouldBeIncreased)
@@ -51,6 +51,18 @@ public class WeaponVisualController : MonoBehaviour
             if (rig.weight >= 1)
                 rigShouldBeIncreased = false;
         }
+    }
+
+    private void PauseRig()
+    {
+        rig.weight = .15f;
+    }
+
+    private void PlayWeaponEquipAnimation(EquipType equipType)
+    {
+        PauseRig();
+        animator.SetFloat("WeaponEquipType", (float)equipType);
+        animator.SetTrigger("WeaponEquip");
     }
     
     public void ReturnRigWeightToOne() => rigShouldBeIncreased = true;
@@ -98,26 +110,37 @@ public class WeaponVisualController : MonoBehaviour
         {
             SwitchOn(pistol);
             SwitchAnimationLayer(1);
+            PlayWeaponEquipAnimation(EquipType.SideEquip);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             SwitchOn(revolver);
             SwitchAnimationLayer(1);
+            PlayWeaponEquipAnimation(EquipType.SideEquip);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             SwitchOn(autoRifle);
             SwitchAnimationLayer(1);
+            PlayWeaponEquipAnimation(EquipType.BackEquip);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             SwitchOn(shotgun);
             SwitchAnimationLayer(2);
+            PlayWeaponEquipAnimation(EquipType.BackEquip);
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             SwitchOn(sniper);
             SwitchAnimationLayer(3);
+            PlayWeaponEquipAnimation(EquipType.BackEquip);
         }
     }
 }
+
+public enum EquipType
+{
+    SideEquip,
+    BackEquip
+};

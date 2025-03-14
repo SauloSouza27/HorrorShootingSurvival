@@ -733,6 +733,18 @@ MonoBehaviour:
   - m_Rig: {fileID: 1013468947}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &621224680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621224674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d68249c33035cb4ba4f533738894952, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &637213146 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 289361954176384696, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
@@ -1651,6 +1663,36 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1458331404}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1461525571 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3169910867731254980, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+  m_PrefabInstance: {fileID: 8727903982434800139}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1461525578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461525571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd2edf8ba7c07d244b8d656f31c45bd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunTransforms:
+  - {fileID: 386914152}
+  - {fileID: 1444233495}
+  - {fileID: 637213146}
+  - {fileID: 720417446}
+  - {fileID: 1404922709}
+  pistol: {fileID: 386914152}
+  revolver: {fileID: 1444233495}
+  autoRifle: {fileID: 637213146}
+  shotgun: {fileID: 720417446}
+  sniper: {fileID: 1404922709}
+  rigIncreaseStep: 2.75
+  leftHand: {fileID: 343600248}
 --- !u!1 &1496760954
 GameObject:
   m_ObjectHideFlags: 0
@@ -1953,40 +1995,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6373109127074266942, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
   m_PrefabInstance: {fileID: 8727903982434800139}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1802385761 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8605223589466509963, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
-  m_PrefabInstance: {fileID: 8727903982434800139}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1802385762 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2130129067505082266, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
   m_PrefabInstance: {fileID: 8727903982434800139}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1802385763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1802385761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd2edf8ba7c07d244b8d656f31c45bd4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gunTransforms:
-  - {fileID: 386914152}
-  - {fileID: 1444233495}
-  - {fileID: 637213146}
-  - {fileID: 720417446}
-  - {fileID: 1404922709}
-  pistol: {fileID: 386914152}
-  revolver: {fileID: 1444233495}
-  autoRifle: {fileID: 637213146}
-  shotgun: {fileID: 720417446}
-  sniper: {fileID: 1404922709}
-  leftHand: {fileID: 343600248}
 --- !u!4 &1805894578 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5824018107329331629, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
@@ -2157,11 +2170,10 @@ PrefabInstance:
       propertyPath: m_WarningMessage
       value: "\nBinding warning: Some generic clip(s) animate transforms that are
         already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'mixamorig:Head'\n\tTransform 'mixamorig:RightHand'\n\tTransform
-        'mixamorig:RightForeArm'\n\tTransform 'mixamorig:Neck'\n\tTransform 'mixamorig:Head'\n\tTransform
-        'mixamorig:RightHand'\n\tTransform 'mixamorig:RightForeArm'\n\tTransform
-        'mixamorig:Neck'\n\tTransform 'mixamorig:Head'\n\tTransform 'mixamorig:RightHand'\n\tand
-        more ..."
+        by Humanoid clips.\n\tTransform 'mixamorig:LeftArm'\n\tTransform 'mixamorig:LeftForeArm'\n\tTransform
+        'mixamorig:LeftHand'\n\tTransform 'mixamorig:LeftArm'\n\tTransform 'mixamorig:LeftForeArm'\n\tTransform
+        'mixamorig:LeftHand'\n\tTransform 'mixamorig:LeftArm'\n\tTransform 'mixamorig:LeftForeArm'\n\tTransform
+        'mixamorig:LeftHand'"
       objectReference: {fileID: 0}
     - target: {fileID: 5380718098300483309, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: m_LocalScale.x
@@ -2251,15 +2263,18 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 943140139}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3169910867731254980, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1461525578}
     - targetCorrespondingSourceObject: {fileID: 2308748920706369073, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 621224678}
     - targetCorrespondingSourceObject: {fileID: 2308748920706369073, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 621224677}
-    - targetCorrespondingSourceObject: {fileID: 8605223589466509963, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 2308748920706369073, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1802385763}
+      addedObject: {fileID: 621224680}
   m_SourcePrefab: {fileID: 100100000, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
