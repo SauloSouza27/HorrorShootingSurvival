@@ -18,62 +18,71 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 movementDirection;
     private bool isRunning;
 
-    [Header("Aim Info")] 
+    [Header("Aim Info")]
     [SerializeField] private Transform aim;
     [SerializeField] private LayerMask aimLayerMask;
     private Vector3 aimDirection;
     private Vector2 moveInput;
-    private Vector2 aimInput;
-    
-    private void Awake()
-    {
-        
-    }
+    private Vector2 controllerAimInput;
+    private Vector2 mouseAimInput;
+
     private void Start()
     {
         player = GetComponent<Player>();
-        
+
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
-        
+
         speed = walkSpeed;
-        
+
         AssignInputEvents();
     }
 
     private void Update()
     {
         ApplyMovement();
-        AimTowardsMouse();
+        AimTowardsTarget();
         AnimatorControllers();
     }
 
-    
     private void AnimatorControllers()
     {
         float xVelocity = Vector3.Dot(movementDirection.normalized, transform.right);
         float zVelocity = Vector3.Dot(movementDirection.normalized, transform.forward);
-        
+
         animator.SetFloat("xVelocity", xVelocity, .1f, Time.deltaTime);
         animator.SetFloat("zVelocity", zVelocity, .1f, Time.deltaTime);
-        
+
         bool playRunAnimation = isRunning && movementDirection.magnitude > 0;
         animator.SetBool("isRunning", playRunAnimation);
     }
 
-    private void AimTowardsMouse()
+    private void AimTowardsTarget()
     {
-        Ray ray = Camera.main.ScreenPointToRay(aimInput);
-
-        if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask))
+        if (controllerAimInput != Vector2.zero)
         {
-            aimDirection = hitInfo.point - transform.position;
-            aimDirection.y = 0f;
-            aimDirection.Normalize();
-            
-            transform.forward = aimDirection;
-            
-            aim.position = new Vector3(hitInfo.point.x, transform.position.y + 1, hitInfo.point.z);
+            Vector3 controllerAimDirection = new Vector3(controllerAimInput.x, 0, controllerAimInput.y);
+            if (controllerAimDirection.sqrMagnitude > 0.01f)
+            {
+                aimDirection = controllerAimDirection.normalized;
+                aim.position = transform.position + aimDirection * 10f;
+                transform.forward = aimDirection;
+            }
+        }
+        else if (mouseAimInput != Vector2.zero)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(mouseAimInput);
+
+            if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask))
+            {
+                aimDirection = hitInfo.point - transform.position;
+                aimDirection.y = 0f;
+                aimDirection.Normalize();
+
+                transform.forward = aimDirection;
+
+                aim.position = new Vector3(hitInfo.point.x, transform.position.y + 1, hitInfo.point.z);
+            }
         }
     }
 
@@ -98,27 +107,43 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             verticalVelocity = -.5f;
-
         }
     }
 
     private void AssignInputEvents()
     {
-        controls = player.controls;
-        
-        controls.Character.Movement.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
-        controls.Character.Movement.canceled += ctx => moveInput = Vector2.zero;
+        var playerInput = GetComponent<PlayerInput>();
+        var controls = playerInput.actions;
 
-        controls.Character.Aim.performed += ctx => aimInput = ctx.ReadValue<Vector2>();
-        controls.Character.Aim.canceled += ctx => aimInput = Vector2.zero;
+        controls["Movement"].performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        controls["Movement"].canceled += ctx => moveInput = Vector2.zero;
 
-        controls.Character.Run.performed += ctx =>
+        controls["Aim"].performed += ctx =>
+        {
+            if (ctx.control.device is Gamepad)
+            {
+                controllerAimInput = ctx.ReadValue<Vector2>();
+                mouseAimInput = Vector2.zero;
+            }
+            else
+            {
+                mouseAimInput = ctx.ReadValue<Vector2>();
+                controllerAimInput = Vector2.zero;
+            }
+        };
+        controls["Aim"].canceled += ctx =>
+        {
+            controllerAimInput = Vector2.zero;
+            mouseAimInput = Vector2.zero;
+        };
+
+        // Run input action
+        controls["Run"].performed += ctx =>
         {
             speed = runSpeed;
             isRunning = true;
         };
-
-        controls.Character.Run.canceled += ctx =>
+        controls["Run"].canceled += ctx =>
         {
             speed = walkSpeed;
             isRunning = false;
