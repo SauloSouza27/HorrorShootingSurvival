@@ -16,15 +16,8 @@ public class PlayerMovement : MonoBehaviour
     private float verticalVelocity;
     private float speed;
     private Vector3 movementDirection;
-    private bool isRunning;
-
-    [Header("Aim Info")]
-    [SerializeField] private Transform aim;
-    [SerializeField] private LayerMask aimLayerMask;
-    private Vector3 aimDirection;
     private Vector2 moveInput;
-    private Vector2 controllerAimInput;
-    private Vector2 mouseAimInput;
+    private bool isRunning;
 
     private void Start()
     {
@@ -59,30 +52,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void AimTowardsTarget()
     {
-        if (controllerAimInput != Vector2.zero)
+        Vector3 aimPosition = player.aim.GetAimPosition();
+        if (aimPosition != Vector3.zero)
         {
-            Vector3 controllerAimDirection = new Vector3(controllerAimInput.x, 0, controllerAimInput.y);
-            if (controllerAimDirection.sqrMagnitude > 0.01f)
-            {
-                aimDirection = controllerAimDirection.normalized;
-                aim.position = transform.position + aimDirection * 10f;
-                transform.forward = aimDirection;
-            }
-        }
-        else if (mouseAimInput != Vector2.zero)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(mouseAimInput);
-
-            if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask))
-            {
-                aimDirection = hitInfo.point - transform.position;
-                aimDirection.y = 0f;
-                aimDirection.Normalize();
-
-                transform.forward = aimDirection;
-
-                aim.position = new Vector3(hitInfo.point.x, transform.position.y + 1, hitInfo.point.z);
-            }
+            aimPosition.y = transform.position.y; // Keep aiming at player's height
+            transform.forward = (aimPosition - transform.position).normalized;
         }
     }
 
@@ -118,26 +92,6 @@ public class PlayerMovement : MonoBehaviour
         controls["Movement"].performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         controls["Movement"].canceled += ctx => moveInput = Vector2.zero;
 
-        controls["Aim"].performed += ctx =>
-        {
-            if (ctx.control.device is Gamepad)
-            {
-                controllerAimInput = ctx.ReadValue<Vector2>();
-                mouseAimInput = Vector2.zero;
-            }
-            else
-            {
-                mouseAimInput = ctx.ReadValue<Vector2>();
-                controllerAimInput = Vector2.zero;
-            }
-        };
-        controls["Aim"].canceled += ctx =>
-        {
-            controllerAimInput = Vector2.zero;
-            mouseAimInput = Vector2.zero;
-        };
-
-        // Run input action
         controls["Run"].performed += ctx =>
         {
             speed = runSpeed;

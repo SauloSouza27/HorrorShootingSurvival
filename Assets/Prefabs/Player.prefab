@@ -1435,6 +1435,7 @@ GameObject:
   - component: {fileID: 3183377978126733539}
   - component: {fileID: 1348256489296514955}
   - component: {fileID: 7024174581276340437}
+  - component: {fileID: 1520643581089172548}
   - component: {fileID: 2642015952922628988}
   - component: {fileID: 7646653769179972056}
   - component: {fileID: 1594177591469952030}
@@ -1505,6 +1506,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7d1de71fd8cfc34e866c3e86238d2b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1520643581089172548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3169910867731254980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d20fa9b8a7736ee48b17e925756299d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aim: {fileID: 7777322245410812970}
+  aimLayerMask:
+    serializedVersion: 2
+    m_Bits: 192
 --- !u!114 &2642015952922628988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1520,10 +1537,6 @@ MonoBehaviour:
   walkSpeed: 2.5
   runSpeed: 4
   gravityScale: 9.81
-  aim: {fileID: 7777322245410812970}
-  aimLayerMask:
-    serializedVersion: 2
-    m_Bits: 192
 --- !u!114 &7646653769179972056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1584,8 +1597,10 @@ MonoBehaviour:
   autoRifle: {fileID: 289361954176384696}
   shotgun: {fileID: 5380718098300483309}
   sniper: {fileID: 9069157077386154085}
-  rigIncreaseStep: 2.75
-  leftHand: {fileID: 9206878721844636587}
+  rigWeightIncreaseRate: 2.75
+  leftHandIkWeightIncreaseRate: 2.5
+  leftHandIK: {fileID: 3597256771897377648}
+  leftHandIK_Target: {fileID: 9206878721844636587}
 --- !u!1 &3253589061446076055
 GameObject:
   m_ObjectHideFlags: 0

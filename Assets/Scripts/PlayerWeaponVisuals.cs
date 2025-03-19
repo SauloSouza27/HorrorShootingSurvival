@@ -1,10 +1,12 @@
 using System;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.Serialization;
 
-public class WeaponVisualController : MonoBehaviour
+public class PlayerWeaponVisuals : MonoBehaviour
 {
     private Animator animator;
+    private bool isEquippingWeapon;
     
     [SerializeField] private Transform[] gunTransforms;
     
@@ -15,58 +17,87 @@ public class WeaponVisualController : MonoBehaviour
     [SerializeField] private Transform sniper;
 
     private Transform currentGun;
-
+    
     [Header("Rig")] 
-    [SerializeField] private float rigIncreaseStep;
-    private bool rigShouldBeIncreased;
+    [SerializeField] private float rigWeightIncreaseRate;
+    private bool shouldIncrease_RigWeight;
+    private Rig rig;
     
     [Header("Left hand IK")]
-    [SerializeField] private Transform leftHand;
-    
-
-    private Rig rig;
+    [SerializeField] private float leftHandIkWeightIncreaseRate;
+    [SerializeField] private TwoBoneIKConstraint leftHandIK;
+    [SerializeField] private Transform leftHandIK_Target;
+    private bool shouldIncrease_LeftHandIKWeight;
 
     private void Start()
     {
-        SwitchOn(pistol);
-
         animator = GetComponentInChildren<Animator>();
         rig = GetComponentInChildren<Rig>();
+        
+        SwitchOn(pistol);
     }
 
     private void Update()
     {
         CheckWeaponSwitch();
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && isEquippingWeapon == false)
         {
             animator.SetTrigger("Reload");
-            PauseRig();
+            ReduceRigWeight();
         }
 
-        if (rigShouldBeIncreased)
+        UpdateRigWeight();
+
+        UpdateLeftHandIKWeight();
+    }
+
+    private void UpdateLeftHandIKWeight()
+    {
+        if (shouldIncrease_LeftHandIKWeight)
         {
-            rig.weight += rigIncreaseStep * Time.deltaTime;
+            leftHandIK.weight += leftHandIkWeightIncreaseRate * Time.deltaTime;
             
-            if (rig.weight >= 1)
-                rigShouldBeIncreased = false;
+            if (leftHandIK.weight >= 1)
+                shouldIncrease_LeftHandIKWeight = false;
         }
     }
 
-    private void PauseRig()
+    private void UpdateRigWeight()
+    {
+        if (shouldIncrease_RigWeight)
+        {
+            rig.weight += rigWeightIncreaseRate * Time.deltaTime;
+            
+            if (rig.weight >= 1)
+                shouldIncrease_RigWeight = false;
+        }
+    }
+
+    private void ReduceRigWeight()
     {
         rig.weight = .15f;
     }
 
     private void PlayWeaponEquipAnimation(EquipType equipType)
     {
-        PauseRig();
+        leftHandIK.weight = 0;
+        ReduceRigWeight();
         animator.SetFloat("WeaponEquipType", (float)equipType);
         animator.SetTrigger("WeaponEquip");
-    }
-    
-    public void ReturnRigWeightToOne() => rigShouldBeIncreased = true;
 
+        SetBusyEquippingWeaponTo(true);
+    }
+
+    public void SetBusyEquippingWeaponTo(bool busyEquipping)
+    {
+        isEquippingWeapon = busyEquipping;
+        animator.SetBool("isEquippingWeapon", isEquippingWeapon);
+    }
+
+
+    public void MaximizeRigWeight() => shouldIncrease_RigWeight = true;
+    public void MaximizeWeightToLeftHandIK() => shouldIncrease_LeftHandIKWeight = true;
     
 
     private void SwitchOn(Transform gunTransform)
@@ -90,8 +121,8 @@ public class WeaponVisualController : MonoBehaviour
     {
         Transform targetTransform = currentGun.GetComponentInChildren<LeftHandTargetTransform>().transform;
         
-        leftHand.localPosition = targetTransform.localPosition;
-        leftHand.localRotation = targetTransform.localRotation;
+        leftHandIK_Target.localPosition = targetTransform.localPosition;
+        leftHandIK_Target.localRotation = targetTransform.localRotation;
     }
 
     private void SwitchAnimationLayer(int layerIndex)
