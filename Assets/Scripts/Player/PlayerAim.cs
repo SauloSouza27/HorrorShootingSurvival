@@ -23,12 +23,7 @@ public class PlayerAim : MonoBehaviour
 
     private void Update()
     {
-        Vector3 aimPosition = GetAimPosition();
-        if (aimPosition != Vector3.zero)
-        {
-            lastValidAimPosition = aimPosition; // Store last valid aim position
-        }
-
+        
         // Update aim visual position
         aim.position = lastValidAimPosition;
     }
@@ -37,7 +32,9 @@ public class PlayerAim : MonoBehaviour
     {
         if (controllerAimInput.sqrMagnitude > 0.01f)
         {
-            return transform.position + new Vector3(controllerAimInput.x, 0, controllerAimInput.y).normalized * 10f;
+            Vector3 aimPosition = transform.position + new Vector3(controllerAimInput.x, 0, controllerAimInput.y).normalized * 10f;
+            lastValidAimPosition = aimPosition;
+            return aimPosition;
         }
 
         if (mouseAimInput != Vector2.zero)
@@ -45,17 +42,23 @@ public class PlayerAim : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(mouseAimInput);
             if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask))
             {
+                lastValidAimPosition = hitInfo.point;
                 return hitInfo.point;
             }
         }
 
-        return Vector3.zero;
+        return lastValidAimPosition;
     }
 
     private void AssignInputEvents()
     {
         var playerInput = GetComponent<PlayerInput>();
         var controls = playerInput.actions;
+
+        controls["ActivateAim"].performed += ctx =>
+        {
+            
+        };
         
         controls["Aim"].performed += ctx =>
         {
@@ -70,10 +73,19 @@ public class PlayerAim : MonoBehaviour
                 controllerAimInput = Vector2.zero;
             }
         };
+        
         controls["Aim"].canceled += ctx =>
         {
             controllerAimInput = Vector2.zero;
             mouseAimInput = Vector2.zero;
         };
+
+        controls["ActivateAim"].canceled += ctx =>
+        {
+            
+        };
+
+
+
     }
 }

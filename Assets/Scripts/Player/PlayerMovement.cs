@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
     [SerializeField] private float gravityScale = 9.81f;
+    [SerializeField] private float turnSpeed;
     private float verticalVelocity;
     private float speed;
     private Vector3 movementDirection;
@@ -40,6 +41,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void AnimatorControllers()
     {
+        //float idleToWalk = moveInput.normalized;
+        if (movementDirection.magnitude == 0)
+        {
+            animator.SetFloat("idleToWalk", 0, .1f, Time.deltaTime );
+        }
+        animator.SetFloat("idleToWalk", 1, .1f, Time.deltaTime );
+        
         float xVelocity = Vector3.Dot(movementDirection.normalized, transform.right);
         float zVelocity = Vector3.Dot(movementDirection.normalized, transform.forward);
 
@@ -56,7 +64,11 @@ public class PlayerMovement : MonoBehaviour
         if (aimPosition != Vector3.zero)
         {
             aimPosition.y = transform.position.y; // Keep aiming at player's height
-            transform.forward = (aimPosition - transform.position).normalized;
+            
+            Quaternion desiredRotation = Quaternion.LookRotation((aimPosition - transform.position).normalized);
+            transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime * turnSpeed);
+            
+            //transform.forward = (aimPosition - transform.position).normalized;
         }
     }
 

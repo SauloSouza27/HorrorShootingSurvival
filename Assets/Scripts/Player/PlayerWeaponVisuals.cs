@@ -135,6 +135,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
         animator.SetLayerWeight(layerIndex, 1);
     }
     
+    //
     private void CheckWeaponSwitch()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
