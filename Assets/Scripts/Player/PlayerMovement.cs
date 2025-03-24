@@ -60,15 +60,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void AimTowardsTarget()
     {
-        Vector3 aimPosition = player.aim.GetAimPosition();
-        if (aimPosition != Vector3.zero)
+        Vector3 lookingDirection = player.aim.GetAimPosition() - transform.position;
+        lookingDirection.y = 0f;
+        lookingDirection.Normalize();
+        
+        if (lookingDirection != Vector3.zero)
         {
-            aimPosition.y = transform.position.y; // Keep aiming at player's height
-            
-            Quaternion desiredRotation = Quaternion.LookRotation((aimPosition - transform.position).normalized);
+            Quaternion desiredRotation = Quaternion.LookRotation(lookingDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime * turnSpeed);
-            
-            //transform.forward = (aimPosition - transform.position).normalized;
         }
     }
 

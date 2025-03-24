@@ -19,6 +19,7 @@ public class PlayerAim : MonoBehaviour
         player = GetComponent<Player>();
 
         AssignInputEvents();
+        
     }
 
     private void Update()
@@ -32,7 +33,11 @@ public class PlayerAim : MonoBehaviour
     {
         if (controllerAimInput.sqrMagnitude > 0.01f)
         {
-            Vector3 aimPosition = transform.position + new Vector3(controllerAimInput.x, 0, controllerAimInput.y).normalized * 10f;
+            Vector3 aimPosition = 
+                transform.position + 
+                new Vector3(controllerAimInput.x, 0, controllerAimInput.y).normalized * 10f;
+            
+            aimPosition.y = transform.position.y + 1;
             lastValidAimPosition = aimPosition;
             return aimPosition;
         }
@@ -42,8 +47,11 @@ public class PlayerAim : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(mouseAimInput);
             if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask))
             {
-                lastValidAimPosition = hitInfo.point;
-                return hitInfo.point;
+                Vector3 aimPosition = 
+                    new Vector3(hitInfo.point.x, transform.position.y + 1, hitInfo.point.z);
+                
+                lastValidAimPosition = aimPosition;
+                return aimPosition;
             }
         }
 
