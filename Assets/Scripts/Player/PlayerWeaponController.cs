@@ -35,21 +35,35 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void Shoot()
     {
-        weaponHolder.LookAt(aim);
-        gunPoint.LookAt(aim);
+        
         
         GameObject newBullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
         
-        newBullet.GetComponent<Rigidbody>().linearVelocity = gunPoint.forward * bulletSpeed;
+        newBullet.GetComponent<Rigidbody>().linearVelocity = BulletDirection() * bulletSpeed;
         
         Destroy(newBullet, 10);
         animator.SetTrigger("Fire"); // Trigger the fire animation
     }
 
+    public Vector3 BulletDirection()
+    {
+        Vector3 direction = (aim.position - gunPoint.position).normalized;
+        
+        direction.y = 0;
+        
+        weaponHolder.LookAt(aim);
+        gunPoint.LookAt(aim);
+        
+        return direction;
+    }
+
+    public Transform GunPoint() => gunPoint;
+
     private void OnDrawGizmos()
     {
         Gizmos.DrawLine(weaponHolder.position, weaponHolder.position + weaponHolder.forward * 25);
+        
         Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(gunPoint.position, gunPoint.position + gunPoint.forward * 25);
+        Gizmos.DrawLine(gunPoint.position, gunPoint.position + BulletDirection() * 25);
     }
 }

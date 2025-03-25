@@ -7,6 +7,10 @@ public class PlayerAim : MonoBehaviour
     private Player player;
     private PlayerControls controls;
 
+    [Header("Aim Visual - Laser")] 
+    [SerializeField] private LineRenderer aimLaser;
+    [SerializeField] private float tipLength = .5f;
+    
     [Header("Aim Info")]
     [SerializeField] private Transform aim;
     [SerializeField] private LayerMask aimLayerMask;
@@ -24,9 +28,23 @@ public class PlayerAim : MonoBehaviour
 
     private void Update()
     {
+        UpdateAimLaser();
         
         // Update aim visual position
         aim.position = lastValidAimPosition;
+    }
+
+    private void UpdateAimLaser()
+    {
+        Transform gunPoint = player.weapon.GunPoint();
+        Vector3 laserDirection = player.weapon.BulletDirection();
+        float gunDistance = 15f;
+        
+        aimLaser.SetPosition(0, gunPoint.position);
+        
+        Vector3 endPoint = gunPoint.position + laserDirection * gunDistance;
+        
+        aimLaser.SetPosition(1, endPoint);
     }
 
     public Vector3 GetAimPosition()
