@@ -346,6 +346,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""ActivateAim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ac9250ee-69ed-4f12-81ac-c5a01e4facc5"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Controller"",
+                    ""action"": ""ActivateAim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }

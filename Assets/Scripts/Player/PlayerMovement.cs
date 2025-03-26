@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         ApplyMovement();
-        AimTowardsTarget();
+        UpdateRotation();
         AnimatorControllers();
     }
 
@@ -46,7 +46,14 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetFloat("idleToWalk", 0, .1f, Time.deltaTime );
         }
-        animator.SetFloat("idleToWalk", 1, .1f, Time.deltaTime );
+        else
+        {
+            animator.SetFloat("idleToWalk", 1, .1f, Time.deltaTime );
+        }
+        
+        
+        animator.SetBool("isAiming", player.IsAiming);
+        
         
         float xVelocity = Vector3.Dot(movementDirection.normalized, transform.right);
         float zVelocity = Vector3.Dot(movementDirection.normalized, transform.forward);
@@ -58,15 +65,21 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isRunning", playRunAnimation);
     }
 
-    private void AimTowardsTarget()
+    private void UpdateRotation()
     {
-        Vector3 lookingDirection = player.aim.GetAimPosition() - transform.position;
-        lookingDirection.y = 0f;
-        lookingDirection.Normalize();
-        
-        if (lookingDirection != Vector3.zero)
+        if (player.IsAiming)
         {
-            Quaternion desiredRotation = Quaternion.LookRotation(lookingDirection);
+            Vector3 lookingDirection = player.aim.GetAimPosition() - transform.position;
+            lookingDirection.y = 0f;
+            if (lookingDirection != Vector3.zero)
+            {
+                Quaternion desiredRotation = Quaternion.LookRotation(lookingDirection);
+                transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime * turnSpeed);
+            }
+        }
+        else if (movementDirection.sqrMagnitude > 0.01f)
+        {
+            Quaternion desiredRotation = Quaternion.LookRotation(movementDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime * turnSpeed);
         }
     }

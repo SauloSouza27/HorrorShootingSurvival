@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerWeaponController : MonoBehaviour
 {
+    private Player player;
+    
     private PlayerInput playerInput; // Reference to PlayerInput
     private InputAction fireAction; // Fire action input
     private Animator animator;
@@ -17,6 +19,8 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void Start()
     {
+        player = GetComponent<Player>();
+        
         playerInput = GetComponent<PlayerInput>(); // Get the PlayerInput component
         animator = GetComponentInChildren<Animator>(); // Get the Animator from children
         
@@ -35,18 +39,19 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void Shoot()
     {
-        
-        
+        if (!player.IsAiming) return; // Only allow shooting when aiming
+
         GameObject newBullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
-        
         newBullet.GetComponent<Rigidbody>().linearVelocity = BulletDirection() * bulletSpeed;
-        
+    
         Destroy(newBullet, 10);
-        animator.SetTrigger("Fire"); // Trigger the fire animation
+        animator.SetTrigger("Fire");
     }
 
     public Vector3 BulletDirection()
     {
+        //Transform aim = player.aim.GetAim();
+        
         Vector3 direction = (aim.position - gunPoint.position).normalized;
         
         direction.y = 0;
