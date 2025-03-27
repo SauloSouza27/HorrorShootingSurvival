@@ -5,6 +5,8 @@ using UnityEngine.Serialization;
 
 public class PlayerWeaponVisuals : MonoBehaviour
 {
+    private Player player;
+    
     private Animator animator;
     private bool isEquippingWeapon;
     
@@ -31,6 +33,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
     private void Start()
     {
+        player = GetComponent<Player>();
         animator = GetComponentInChildren<Animator>();
         rig = GetComponentInChildren<Rig>();
         
@@ -127,17 +130,20 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
     private void SwitchAnimationLayer(int layerIndex)
     {
+        
         for (int i = 1; i < animator.layerCount; i++)
         {
             animator.SetLayerWeight(i, 0);
         }
-        
         animator.SetLayerWeight(layerIndex, 1);
     }
     
-    //
     private void CheckWeaponSwitch()
     {
+        if (!player.IsAiming)
+        {
+            SwitchAnimationLayer(0);
+        }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             SwitchOn(pistol);

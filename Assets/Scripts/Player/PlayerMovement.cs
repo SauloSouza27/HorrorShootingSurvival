@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 movementDirection;
     private Vector2 moveInput;
     private bool isRunning;
+    
+    private readonly int idleToWalkBlendTreeHash = Animator.StringToHash("idleToWalk");
 
     private void Start()
     {
@@ -41,19 +43,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void AnimatorControllers()
     {
-        //float idleToWalk = moveInput.normalized;
         if (movementDirection.magnitude == 0)
         {
-            animator.SetFloat("idleToWalk", 0, .1f, Time.deltaTime );
+            animator.SetFloat(idleToWalkBlendTreeHash, 0, .1f, Time.deltaTime );
         }
         else
         {
-            animator.SetFloat("idleToWalk", 1, .1f, Time.deltaTime );
+            animator.SetFloat(idleToWalkBlendTreeHash, 1, .1f, Time.deltaTime );
         }
         
-        
         animator.SetBool("isAiming", player.IsAiming);
-        
         
         float xVelocity = Vector3.Dot(movementDirection.normalized, transform.right);
         float zVelocity = Vector3.Dot(movementDirection.normalized, transform.forward);
@@ -79,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (movementDirection.sqrMagnitude > 0.01f)
         {
+            movementDirection.y = 0f;
             Quaternion desiredRotation = Quaternion.LookRotation(movementDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime * turnSpeed);
         }
