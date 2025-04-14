@@ -7,8 +7,11 @@ public class Bullet : MonoBehaviour
     
     private Rigidbody rb => GetComponent<Rigidbody>();
     
-    private void OnCollisionEnter(Collision other)
+    private void OnCollisionEnter(Collision collision)
     {
-        rb.constraints = RigidbodyConstraints.FreezeAll;
+        //rb.constraints = RigidbodyConstraints.FreezeAll;
+        Debug.Log("Bullet Hit");
+        Destroy(gameObject);
+        
     }
 }

@@ -89,6 +89,8 @@ public class PlayerAim : MonoBehaviour
     }
 
     public Transform GetAim() => aim;
+    
+    
 
     private void AssignInputEvents()
     {

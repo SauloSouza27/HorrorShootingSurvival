@@ -13,6 +13,8 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private Transform gunPoint;
+    
+    private const float REFERENCE_BULLET_SPEED = 50;
 
     [SerializeField] private Transform weaponHolder;
     [SerializeField] private Transform aim;
@@ -21,20 +23,28 @@ public class PlayerWeaponController : MonoBehaviour
     {
         player = GetComponent<Player>();
         
-        playerInput = GetComponent<PlayerInput>(); // Get the PlayerInput component
-        animator = GetComponentInChildren<Animator>(); // Get the Animator from children
+        playerInput = GetComponent<PlayerInput>(); 
+        animator = GetComponentInChildren<Animator>(); 
         
-        AssignInputEvents(); // Assign the input actions
-        
+        AssignInputEvents(); 
     }
 
     private void AssignInputEvents()
     {
-        var controls = playerInput.actions; // Get the controls from PlayerInput
+        var controls = playerInput.actions; 
 
         // Fire action
-        fireAction = controls["Fire"]; // Bind to Fire action in Input system
-        fireAction.performed += ctx => Shoot(); // When performed, call Shoot()
+        fireAction = controls["Fire"]; 
+        
+        fireAction.performed += ctx =>
+        {
+            player.SetAiming(true);
+            Shoot();
+        };
+        // fireAction.canceled += ctx =>
+        // {
+        //     player.SetAiming(false);
+        // };
     }
 
     private void Shoot()
@@ -42,7 +52,11 @@ public class PlayerWeaponController : MonoBehaviour
         if (!player.IsAiming) return; // Only allow shooting when aiming
 
         GameObject newBullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
-        newBullet.GetComponent<Rigidbody>().linearVelocity = BulletDirection() * bulletSpeed;
+        
+        Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
+
+        rbNewBullet.mass = REFERENCE_BULLET_SPEED / bulletSpeed;
+        rbNewBullet.linearVelocity = BulletDirection() * bulletSpeed;
     
         Destroy(newBullet, 10);
         animator.SetTrigger("Fire");

@@ -118,8 +118,11 @@ public class PlayerMovement : MonoBehaviour
 
         controls["Run"].performed += ctx =>
         {
-            speed = runSpeed;
-            isRunning = true;
+            if (!player.IsAiming)
+            {
+                speed = runSpeed;
+                isRunning = true;
+            }
         };
         controls["Run"].canceled += ctx =>
         {

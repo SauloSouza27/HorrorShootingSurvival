@@ -10,8 +10,6 @@ public class Player : MonoBehaviour
     
     public bool IsAiming { get; private set; } = false;
 
-
-
     private void Awake()
     {
         controls = new PlayerControls();
