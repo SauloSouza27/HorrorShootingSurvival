@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerWeaponController : MonoBehaviour
 {
     private Player player;
+
+    [SerializeField] private Weapon currentWeapon;
     
     private PlayerInput playerInput; // Reference to PlayerInput
     private InputAction fireAction; // Fire action input
@@ -19,6 +22,9 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField] private Transform weaponHolder;
     [SerializeField] private Transform aim;
 
+    [Header("Inventory")] 
+    [SerializeField] private List<Weapon> weaponSlots;
+
     private void Start()
     {
         player = GetComponent<Player>();
@@ -27,30 +33,51 @@ public class PlayerWeaponController : MonoBehaviour
         animator = GetComponentInChildren<Animator>(); 
         
         AssignInputEvents(); 
+        
+        currentWeapon.ammo = currentWeapon.maxAmmo;
+    }
+
+    private void EquipWeapon(int i)
+    {
+        currentWeapon = weaponSlots[i];
     }
 
     private void AssignInputEvents()
     {
+        var playerInput = GetComponent<PlayerInput>();
         var controls = playerInput.actions; 
-
+        
+        
         // Fire action
         fireAction = controls["Fire"]; 
         
-        fireAction.performed += ctx =>
+        controls["Fire"].performed += ctx =>
         {
             player.SetAiming(true);
             Shoot();
         };
-        // fireAction.canceled += ctx =>
+        
+        // controls["Fire"].canceled += ctx =>
         // {
         //     player.SetAiming(false);
         // };
+
+        controls["EquipSlot - 1"].performed += ctx => EquipWeapon(0);
+        controls["EquipSlot - 2"].performed += ctx => EquipWeapon(1);
     }
 
     private void Shoot()
     {
         if (!player.IsAiming) return; // Only allow shooting when aiming
 
+        if (currentWeapon.ammo <= 0)
+        {
+            Debug.Log("no more bullets");
+            return;
+        }
+        
+        currentWeapon.ammo--;
+        
         GameObject newBullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
         
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
