@@ -10,15 +10,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
     private Animator animator;
     private bool isEquippingWeapon;
     
-    [SerializeField] private Transform[] gunTransforms;
-    
-    [SerializeField] private Transform pistol;
-    [SerializeField] private Transform revolver;
-    [SerializeField] private Transform autoRifle;
-    [SerializeField] private Transform shotgun;
-    [SerializeField] private Transform sniper;
-
-    private Transform currentGun;
+    [SerializeField] private WeaponModel[] weaponModels;
     
     [Header("Rig")] 
     [SerializeField] private float rigWeightIncreaseRate;
@@ -36,23 +28,40 @@ public class PlayerWeaponVisuals : MonoBehaviour
         player = GetComponent<Player>();
         animator = GetComponentInChildren<Animator>();
         rig = GetComponentInChildren<Rig>();
-        
-        SwitchOn(pistol);
+
+        weaponModels = GetComponentsInChildren<WeaponModel>(true);
     }
 
     private void Update()
     {
         CheckWeaponSwitch();
+        
+        UpdateRigWeight();
+        UpdateLeftHandIKWeight();
+    }
 
-        if (Input.GetKeyDown(KeyCode.R) && isEquippingWeapon == false)
+    public WeaponModel CurrentWeaponModel()
+    {
+        WeaponModel weaponModel = null;
+
+        WeaponType weaponType = player.weapon.CurrentWeapon().WeaponType;
+
+        for (int i = 0; i < weaponModels.Length; i++)
         {
-            animator.SetTrigger("Reload");
-            ReduceRigWeight();
+            if (weaponModels[i].weaponType == weaponType)
+                weaponModel = weaponModels[i];
         }
 
-        UpdateRigWeight();
+        return weaponModel;
+    }
 
-        UpdateLeftHandIKWeight();
+    public void PlayReloadAnimation()
+    {
+        if (isEquippingWeapon)
+            return;
+        
+        animator.SetTrigger("Reload");
+        ReduceRigWeight();
     }
 
     private void UpdateLeftHandIKWeight()
@@ -103,26 +112,25 @@ public class PlayerWeaponVisuals : MonoBehaviour
     public void MaximizeWeightToLeftHandIK() => shouldIncrease_LeftHandIKWeight = true;
     
 
-    private void SwitchOn(Transform gunTransform)
+    private void SwitchOn()
     {
-        SwitchOffGuns();
-        gunTransform.gameObject.SetActive(true);
-        currentGun = gunTransform;
+        SwitchOffWeaponModels();
+        CurrentWeaponModel().gameObject.SetActive(true);
         
         AttachLeftHand();
     }
 
-    private void SwitchOffGuns()
+    private void SwitchOffWeaponModels()
     {
-        for (int i = 0; i < gunTransforms.Length; i++)
+        for (int i = 0; i < weaponModels.Length; i++)
         {
-            gunTransforms[i].gameObject.SetActive(false);
+            weaponModels[i].gameObject.SetActive(false);
         }
     }
 
     private void AttachLeftHand()
     {
-        Transform targetTransform = currentGun.GetComponentInChildren<LeftHandTargetTransform>().transform;
+        Transform targetTransform = CurrentWeaponModel().holdPoint;
         
         leftHandIK_Target.localPosition = targetTransform.localPosition;
         leftHandIK_Target.localRotation = targetTransform.localRotation;
@@ -146,39 +154,35 @@ public class PlayerWeaponVisuals : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            SwitchOn(pistol);
+            SwitchOn();
             SwitchAnimationLayer(1);
             PlayWeaponEquipAnimation(EquipType.SideEquip);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            SwitchOn(revolver);
+            SwitchOn();
             SwitchAnimationLayer(1);
             PlayWeaponEquipAnimation(EquipType.SideEquip);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            SwitchOn(autoRifle);
+            SwitchOn();
             SwitchAnimationLayer(1);
             PlayWeaponEquipAnimation(EquipType.BackEquip);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            SwitchOn(shotgun);
+            SwitchOn();
             SwitchAnimationLayer(2);
             PlayWeaponEquipAnimation(EquipType.BackEquip);
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            SwitchOn(sniper);
+            SwitchOn();
             SwitchAnimationLayer(3);
             PlayWeaponEquipAnimation(EquipType.BackEquip);
         }
     }
 }
 
-public enum EquipType
-{
-    SideEquip,
-    BackEquip
-};
+

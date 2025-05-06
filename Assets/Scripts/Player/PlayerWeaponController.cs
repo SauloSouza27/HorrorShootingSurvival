@@ -13,6 +13,7 @@ public class PlayerWeaponController : MonoBehaviour
     private InputAction fireAction; // Fire action input
     private Animator animator;
     
+    [Header("Bullet details")]
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private Transform gunPoint;
@@ -24,6 +25,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     [Header("Inventory")] 
     [SerializeField] private List<Weapon> weaponSlots;
+    private int maxSlots = 2;
 
     private void Start()
     {
@@ -34,49 +36,43 @@ public class PlayerWeaponController : MonoBehaviour
         
         AssignInputEvents(); 
         
-        currentWeapon.ammo = currentWeapon.maxAmmo;
+        currentWeapon.bulletsInMagazine = currentWeapon.totalReserveAmmo;
     }
-
+    
+    #region Slots managment - Pickup/Equip/DropWeapon
     private void EquipWeapon(int i)
     {
         currentWeapon = weaponSlots[i];
     }
 
-    private void AssignInputEvents()
+    public void PickupWeapon(Weapon newWeapon)
     {
-        var playerInput = GetComponent<PlayerInput>();
-        var controls = playerInput.actions; 
-        
-        
-        // Fire action
-        fireAction = controls["Fire"]; 
-        
-        controls["Fire"].performed += ctx =>
+        if (weaponSlots.Count >= maxSlots)
         {
-            player.SetAiming(true);
-            Shoot();
-        };
-        
-        // controls["Fire"].canceled += ctx =>
-        // {
-        //     player.SetAiming(false);
-        // };
-
-        controls["EquipSlot - 1"].performed += ctx => EquipWeapon(0);
-        controls["EquipSlot - 2"].performed += ctx => EquipWeapon(1);
+            Debug.Log("No slots avaiable");
+            return;
+        }
+        weaponSlots.Add(newWeapon);
     }
+
+    private void DropWeapon()
+    {
+        if (weaponSlots.Count <= 1)
+            return;
+
+        weaponSlots.Remove(currentWeapon);
+
+        currentWeapon = weaponSlots[0];
+    }
+    
+    #endregion
 
     private void Shoot()
     {
-        if (!player.IsAiming) return; // Only allow shooting when aiming
-
-        if (currentWeapon.ammo <= 0)
-        {
-            Debug.Log("no more bullets");
+        if (currentWeapon.CanShoot() == false)
             return;
-        }
         
-        currentWeapon.ammo--;
+        if (!player.IsAiming) return; // Only allow shooting when aiming
         
         GameObject newBullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
         
@@ -103,6 +99,8 @@ public class PlayerWeaponController : MonoBehaviour
         return direction;
     }
 
+    public Weapon CurrentWeapon() => currentWeapon;
+
     public Transform GunPoint() => gunPoint;
 
     private void OnDrawGizmos()
@@ -112,4 +110,36 @@ public class PlayerWeaponController : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(gunPoint.position, gunPoint.position + BulletDirection() * 25);
     }
+    
+    #region Input Events
+    
+    private void AssignInputEvents()
+    {
+        var playerInput = GetComponent<PlayerInput>();
+        var controls = playerInput.actions; 
+        
+        
+        // Fire action
+        fireAction = controls["Fire"]; 
+        
+        controls["Fire"].performed += ctx =>
+        {
+            player.SetAiming(true);
+            Shoot();
+        };
+
+        controls["EquipSlot - 1"].performed += ctx => EquipWeapon(0);
+        controls["EquipSlot - 2"].performed += ctx => EquipWeapon(1);
+        controls["Drop Current Weapon"].performed += ctx => DropWeapon();
+
+        controls["Reload"].performed += ctx =>
+        {
+            if (currentWeapon.canReload())
+            {
+                player.weaponVisuals.PlayReloadAnimation();
+            }
+        };
+    }
+    
+    #endregion
 }

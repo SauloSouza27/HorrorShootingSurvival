@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     public PlayerMovement movement { get; private set; }
     public PlayerWeaponController weapon { get; private set; }
     
+    public PlayerWeaponVisuals weaponVisuals { get; private set; }
+    
     public bool IsAiming { get; private set; } = false;
 
     private void Awake()
@@ -16,6 +18,7 @@ public class Player : MonoBehaviour
         aim = GetComponent<PlayerAim>();
         movement = GetComponent<PlayerMovement>();
         weapon = GetComponent<PlayerWeaponController>();
+        weaponVisuals = GetComponent<PlayerWeaponVisuals>();
     }
     
     public void SetAiming(bool aiming)
