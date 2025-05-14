@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     public void SetAiming(bool aiming)
     {
         IsAiming = aiming;
+        aim?.SetAimLaserEnabled(IsAiming);
     }
     
     private void OnEnable()

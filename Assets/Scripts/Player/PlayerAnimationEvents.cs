@@ -28,4 +28,6 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         visualController.SetBusyEquippingWeaponTo(false);
     }
+
+    public void SwitchOnWeaponModel() => visualController.SwitchOnCurrentWeaponModel();
 }

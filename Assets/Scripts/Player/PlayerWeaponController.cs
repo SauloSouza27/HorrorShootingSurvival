@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -43,6 +44,9 @@ public class PlayerWeaponController : MonoBehaviour
     private void EquipWeapon(int i)
     {
         currentWeapon = weaponSlots[i];
+
+        player.weaponVisuals.SwitchOffWeaponModels();
+        player.weaponVisuals.PlayWeaponEquipAnimation();
     }
 
     public void PickupWeapon(Weapon newWeapon)
@@ -127,6 +131,12 @@ public class PlayerWeaponController : MonoBehaviour
             player.SetAiming(true);
             Shoot();
         };
+        
+        
+        controls["Fire"].canceled += ctx =>
+        {
+            //player.SetAiming(false);
+        };
 
         controls["EquipSlot - 1"].performed += ctx => EquipWeapon(0);
         controls["EquipSlot - 2"].performed += ctx => EquipWeapon(1);
@@ -139,6 +149,20 @@ public class PlayerWeaponController : MonoBehaviour
                 player.weaponVisuals.PlayReloadAnimation();
             }
         };
+    }
+    
+    private IEnumerator AimBrieflyAndShoot()
+    {
+        player.SetAiming(true);
+        Shoot();
+
+        yield return new WaitForSeconds(0.5f);
+
+        // Only disable if not toggle aiming and aim wasn't activated manually
+        if (!player.aim.IsToggleAimEnabled())
+        {
+            player.SetAiming(false);
+        }
     }
     
     #endregion

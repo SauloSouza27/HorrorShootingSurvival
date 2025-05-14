@@ -34,8 +34,6 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
     private void Update()
     {
-        CheckWeaponSwitch();
-        
         UpdateRigWeight();
         UpdateLeftHandIKWeight();
     }
@@ -63,6 +61,54 @@ public class PlayerWeaponVisuals : MonoBehaviour
         animator.SetTrigger("Reload");
         ReduceRigWeight();
     }
+    
+    public void PlayWeaponEquipAnimation()
+    {
+        EquipType equipType = CurrentWeaponModel().equipType;
+        
+        leftHandIK.weight = 0;
+        ReduceRigWeight();
+        animator.SetFloat("WeaponEquipType", (float)equipType);
+        animator.SetTrigger("WeaponEquip");
+
+        SetBusyEquippingWeaponTo(true);
+    }
+
+    public void SetBusyEquippingWeaponTo(bool busyEquipping)
+    {
+        isEquippingWeapon = busyEquipping;
+        animator.SetBool("isEquippingWeapon", isEquippingWeapon);
+    }
+    
+    public void SwitchOnCurrentWeaponModel()
+    {
+        int animationIndex = ((int)CurrentWeaponModel().holdType);
+        
+        
+        SwitchAnimationLayer(animationIndex);
+        CurrentWeaponModel().gameObject.SetActive(true);
+        AttachLeftHand();
+    }
+
+    public void SwitchOffWeaponModels()
+    {
+        for (int i = 0; i < weaponModels.Length; i++)
+        {
+            weaponModels[i].gameObject.SetActive(false);
+        }
+    }
+
+    private void SwitchAnimationLayer(int layerIndex)
+    {
+        
+        for (int i = 1; i < animator.layerCount; i++)
+        {
+            animator.SetLayerWeight(i, 0);
+        }
+        animator.SetLayerWeight(layerIndex, 1);
+    }
+    
+    #region Animation Rigging Methods
 
     private void UpdateLeftHandIKWeight()
     {
@@ -90,44 +136,10 @@ public class PlayerWeaponVisuals : MonoBehaviour
     {
         rig.weight = .15f;
     }
-
-    private void PlayWeaponEquipAnimation(EquipType equipType)
-    {
-        leftHandIK.weight = 0;
-        ReduceRigWeight();
-        animator.SetFloat("WeaponEquipType", (float)equipType);
-        animator.SetTrigger("WeaponEquip");
-
-        SetBusyEquippingWeaponTo(true);
-    }
-
-    public void SetBusyEquippingWeaponTo(bool busyEquipping)
-    {
-        isEquippingWeapon = busyEquipping;
-        animator.SetBool("isEquippingWeapon", isEquippingWeapon);
-    }
-
-
+    
     public void MaximizeRigWeight() => shouldIncrease_RigWeight = true;
     public void MaximizeWeightToLeftHandIK() => shouldIncrease_LeftHandIKWeight = true;
     
-
-    private void SwitchOn()
-    {
-        SwitchOffWeaponModels();
-        CurrentWeaponModel().gameObject.SetActive(true);
-        
-        AttachLeftHand();
-    }
-
-    private void SwitchOffWeaponModels()
-    {
-        for (int i = 0; i < weaponModels.Length; i++)
-        {
-            weaponModels[i].gameObject.SetActive(false);
-        }
-    }
-
     private void AttachLeftHand()
     {
         Transform targetTransform = CurrentWeaponModel().holdPoint;
@@ -135,54 +147,9 @@ public class PlayerWeaponVisuals : MonoBehaviour
         leftHandIK_Target.localPosition = targetTransform.localPosition;
         leftHandIK_Target.localRotation = targetTransform.localRotation;
     }
-
-    private void SwitchAnimationLayer(int layerIndex)
-    {
-        
-        for (int i = 1; i < animator.layerCount; i++)
-        {
-            animator.SetLayerWeight(i, 0);
-        }
-        animator.SetLayerWeight(layerIndex, 1);
-    }
     
-    private void CheckWeaponSwitch()
-    {
-        if (!player.IsAiming)
-        {
-            SwitchAnimationLayer(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            SwitchOn();
-            SwitchAnimationLayer(1);
-            PlayWeaponEquipAnimation(EquipType.SideEquip);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SwitchOn();
-            SwitchAnimationLayer(1);
-            PlayWeaponEquipAnimation(EquipType.SideEquip);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            SwitchOn();
-            SwitchAnimationLayer(1);
-            PlayWeaponEquipAnimation(EquipType.BackEquip);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            SwitchOn();
-            SwitchAnimationLayer(2);
-            PlayWeaponEquipAnimation(EquipType.BackEquip);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            SwitchOn();
-            SwitchAnimationLayer(3);
-            PlayWeaponEquipAnimation(EquipType.BackEquip);
-        }
-    }
+    #endregion
+    
 }
 
 

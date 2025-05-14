@@ -91,9 +91,13 @@ public class PlayerAim : MonoBehaviour
         return lastValidAimPosition;
     }
 
+    public void SetAimLaserEnabled(bool state)
+    {
+        aimLaser.enabled = state;
+    }
     public Transform GetAim() => aim;
 
-
+    public bool IsToggleAimEnabled() => isToggleAim;
 
     private void AssignInputEvents()
     {

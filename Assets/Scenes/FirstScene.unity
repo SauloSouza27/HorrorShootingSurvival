@@ -3660,6 +3660,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 867695728501419476, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: m_Weight
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3169910867731254980, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: m_Name
       value: Player
@@ -3703,6 +3707,19 @@ PrefabInstance:
     - target: {fileID: 3183377978126733539, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436127835076343758, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'mixamorig:LeftArm'\n\tTransform 'mixamorig:LeftForeArm'\n\tTransform
+        'mixamorig:LeftHand'\n\tTransform 'mixamorig:LeftArm'\n\tTransform 'mixamorig:LeftForeArm'\n\tTransform
+        'mixamorig:LeftHand'\n\tTransform 'mixamorig:LeftArm'\n\tTransform 'mixamorig:LeftForeArm'\n\tTransform
+        'mixamorig:LeftHand'"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[1].WeaponType
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
