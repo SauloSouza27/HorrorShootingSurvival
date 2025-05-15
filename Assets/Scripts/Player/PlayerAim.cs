@@ -94,6 +94,7 @@ public class PlayerAim : MonoBehaviour
     public void SetAimLaserEnabled(bool state)
     {
         aimLaser.enabled = state;
+        Debug.Log(aimLaser.enabled);
     }
     public Transform GetAim() => aim;
 
@@ -109,28 +110,21 @@ public class PlayerAim : MonoBehaviour
         {
             if (isToggleAim)
             {
-                // Toggle logic
-                isAimingToggled = !isAimingToggled;
-                player.SetAiming(isAimingToggled);
-                aimLaser.enabled = isAimingToggled;
+                player.ToggleManualAiming();
             }
             else
             {
-                // Hold logic
-                player.SetAiming(true);
-                aimLaser.enabled = true;
+                player.SetManualAiming(true);
             }
         };
 
-        controls["ActivateAim"].canceled += ctx =>
+        if (!isToggleAim)
         {
-            if (!isToggleAim)
+            controls["ActivateAim"].canceled += ctx =>
             {
-                player.SetAiming(false);
-                aimLaser.enabled = false;
-            }
-            // If toggle, we do nothing on cancel
-        };
+                player.SetManualAiming(false);
+            };
+        }
 
         // Aim position input (mouse/gamepad direction)
         controls["Aim"].performed += ctx =>

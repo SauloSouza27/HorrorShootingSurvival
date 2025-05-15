@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement Info")]
     [SerializeField] private float walkSpeed;
+    [SerializeField] private float aimingWalkSpeed;
     [SerializeField] private float runSpeed;
     [SerializeField] private float gravityScale = 9.81f;
     [SerializeField] private float turnSpeed;
@@ -91,7 +92,14 @@ public class PlayerMovement : MonoBehaviour
 
         if (movementDirection.magnitude > 0)
         {
-            characterController.Move(movementDirection * (Time.deltaTime * speed));
+            if (!player.IsAiming)
+            {
+                characterController.Move(movementDirection * (Time.deltaTime * speed));
+            }
+            else
+            {
+                characterController.Move(movementDirection * (Time.deltaTime * aimingWalkSpeed));
+            }
         }
     }
 

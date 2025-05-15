@@ -3664,6 +3664,10 @@ PrefabInstance:
       propertyPath: m_Weight
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1520643581089172548, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: isToggleAim
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3169910867731254980, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: m_Name
       value: Player

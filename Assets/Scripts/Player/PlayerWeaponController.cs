@@ -128,15 +128,10 @@ public class PlayerWeaponController : MonoBehaviour
         
         controls["Fire"].performed += ctx =>
         {
-            player.SetAiming(true);
-            Shoot();
+            StartCoroutine(HandleShootWithAutoAim());
         };
         
         
-        controls["Fire"].canceled += ctx =>
-        {
-            //player.SetAiming(false);
-        };
 
         controls["EquipSlot - 1"].performed += ctx => EquipWeapon(0);
         controls["EquipSlot - 2"].performed += ctx => EquipWeapon(1);
@@ -151,18 +146,19 @@ public class PlayerWeaponController : MonoBehaviour
         };
     }
     
-    private IEnumerator AimBrieflyAndShoot()
+    private IEnumerator HandleShootWithAutoAim()
     {
-        player.SetAiming(true);
+        bool wasAlreadyAiming = player.IsAiming;
+
+        if (!wasAlreadyAiming)
+            player.SetAutoAiming(true);
+
         Shoot();
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f); // allow aiming state to apply for this frame
 
-        // Only disable if not toggle aiming and aim wasn't activated manually
-        if (!player.aim.IsToggleAimEnabled())
-        {
-            player.SetAiming(false);
-        }
+        if (!wasAlreadyAiming)
+            player.SetAutoAiming(false);
     }
     
     #endregion

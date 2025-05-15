@@ -1,6 +1,11 @@
 using System;
 using UnityEngine;
-
+public enum AimSource
+{
+    None,
+    Manual,     // From toggle/hold input
+    Shoot       // Temporarily from shooting
+}
 public class Player : MonoBehaviour
 {
     public PlayerControls controls { get; private set; }
@@ -10,7 +15,9 @@ public class Player : MonoBehaviour
     
     public PlayerWeaponVisuals weaponVisuals { get; private set; }
     
-    public bool IsAiming { get; private set; } = false;
+    private bool isManuallyAiming = false;
+    private bool isAutoAiming = false;
+    public bool IsAiming => isManuallyAiming || isAutoAiming;
 
     private void Awake()
     {
@@ -21,11 +28,25 @@ public class Player : MonoBehaviour
         weaponVisuals = GetComponent<PlayerWeaponVisuals>();
     }
     
-    public void SetAiming(bool aiming)
+    public void SetManualAiming(bool aiming)
     {
-        IsAiming = aiming;
+        isManuallyAiming = aiming;
         aim?.SetAimLaserEnabled(IsAiming);
     }
+
+    public void ToggleManualAiming()
+    {
+        isManuallyAiming = !isManuallyAiming;
+        aim?.SetAimLaserEnabled(IsAiming);
+    }
+
+    public void SetAutoAiming(bool aiming)
+    {
+        isAutoAiming = aiming;
+        aim?.SetAimLaserEnabled(IsAiming);
+    }
+
+    public bool IsManuallyAiming() => isManuallyAiming;
     
     private void OnEnable()
     {
