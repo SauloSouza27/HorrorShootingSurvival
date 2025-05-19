@@ -44,8 +44,7 @@ public class PlayerWeaponController : MonoBehaviour
     private void EquipWeapon(int i)
     {
         currentWeapon = weaponSlots[i];
-
-        player.weaponVisuals.SwitchOffWeaponModels();
+        
         player.weaponVisuals.PlayWeaponEquipAnimation();
     }
 
@@ -56,21 +55,22 @@ public class PlayerWeaponController : MonoBehaviour
             Debug.Log("No slots avaiable");
             return;
         }
+        
         weaponSlots.Add(newWeapon);
+        player.weaponVisuals.SwitchOnBackupWeaponModel();
     }
 
     private void DropWeapon()
     {
-        if (weaponSlots.Count <= 1)
+        if (HasOnlyOneWeapon())
             return;
 
         weaponSlots.Remove(currentWeapon);
-
-        currentWeapon = weaponSlots[0];
+        EquipWeapon(0);
     }
     
     #endregion
-
+    
     private void Shoot()
     {
         if (currentWeapon.CanShoot() == false)
@@ -103,8 +103,21 @@ public class PlayerWeaponController : MonoBehaviour
         return direction;
     }
 
+    public bool HasOnlyOneWeapon() => weaponSlots.Count <= 1;
+
     public Weapon CurrentWeapon() => currentWeapon;
 
+    public Weapon BackupWeapon()
+    {
+        foreach (Weapon weapon in weaponSlots)
+        {
+            if (weapon != currentWeapon)
+                return weapon;
+        }
+        
+        return null;
+    }
+    
     public Transform GunPoint() => gunPoint;
 
     private void OnDrawGizmos()
@@ -130,8 +143,6 @@ public class PlayerWeaponController : MonoBehaviour
         {
             StartCoroutine(HandleShootWithAutoAim());
         };
-        
-        
 
         controls["EquipSlot - 1"].performed += ctx => EquipWeapon(0);
         controls["EquipSlot - 2"].performed += ctx => EquipWeapon(1);
