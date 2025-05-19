@@ -2257,7 +2257,7 @@ MonoBehaviour:
   aim: {fileID: 7777322245410812970}
   weaponSlots:
   - WeaponType: 0
-    bulletsInMagazine: 7
+    bulletsInMagazine: 100
     magazineCapacity: 15
     totalReserveAmmo: 30
     reloadSpeed: 1

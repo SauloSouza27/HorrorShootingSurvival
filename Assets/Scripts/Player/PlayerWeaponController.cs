@@ -79,15 +79,19 @@ public class PlayerWeaponController : MonoBehaviour
             return;
         
         if (!player.IsAiming) return; // Only allow shooting when aiming
-        
-        GameObject newBullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
+
+        GameObject newBullet = ObjectPool.instance.GetBullet();
+            //Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
+            
+        newBullet.transform.position = gunPoint.position; 
+        newBullet.transform.rotation = Quaternion.LookRotation(gunPoint.forward);
         
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
 
         rbNewBullet.mass = REFERENCE_BULLET_SPEED / bulletSpeed;
         rbNewBullet.linearVelocity = BulletDirection() * bulletSpeed;
     
-        Destroy(newBullet, 10);
+        //Destroy(newBullet, 10);
         animator.SetTrigger("Fire");
     }
 

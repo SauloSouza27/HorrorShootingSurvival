@@ -9,9 +9,6 @@ public class Bullet : MonoBehaviour
     
     private void OnCollisionEnter(Collision collision)
     {
-        //rb.constraints = RigidbodyConstraints.FreezeAll;
-        Debug.Log("Bullet Hit");
-        Destroy(gameObject);
-        
+        ObjectPool.instance.ReturnBullet(gameObject);
     }
 }
