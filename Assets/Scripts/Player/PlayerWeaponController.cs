@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,15 +10,14 @@ public class PlayerWeaponController : MonoBehaviour
     private Player player;
 
     [SerializeField] private Weapon currentWeapon;
+    private bool weaponReady;
     
     private PlayerInput playerInput; // Reference to PlayerInput
     private InputAction fireAction; // Fire action input
-    private Animator animator;
     
     [Header("Bullet details")]
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletSpeed;
-    [SerializeField] private Transform gunPoint;
     
     private const float REFERENCE_BULLET_SPEED = 50;
 
@@ -33,7 +33,6 @@ public class PlayerWeaponController : MonoBehaviour
         player = GetComponent<Player>();
         
         playerInput = GetComponent<PlayerInput>(); 
-        animator = GetComponentInChildren<Animator>(); 
         AssignInputEvents(); 
         
         Invoke("EquipStartingWeapon", .1f);
@@ -42,11 +41,12 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void EquipStartingWeapon() => EquipWeapon(0);
     
-    #region Slots managment - Pickup/Equip/DropWeapon
+    #region Slots managment - Pickup/Equip/DropWeapon/ReadyWeapon
     private void EquipWeapon(int i)
     {
-        currentWeapon = weaponSlots[i];
+        SetWeaponReady(false);
         
+        currentWeapon = weaponSlots[i];
         player.weaponVisuals.PlayWeaponEquipAnimation();
     }
 
@@ -71,20 +71,20 @@ public class PlayerWeaponController : MonoBehaviour
         EquipWeapon(0);
     }
     
+    public void SetWeaponReady(bool ready) => weaponReady = ready;
+    public bool WeaponReady() => weaponReady;
+    
     #endregion
     
     private void Shoot()
     {
-        if (currentWeapon.CanShoot() == false)
-            return;
-        
-        if (!player.IsAiming) return; // Only allow shooting when aiming
+        if(!WeaponReady() || !currentWeapon.CanShoot() || !player.IsAiming) return;
 
         GameObject newBullet = ObjectPool.instance.GetBullet();
             //Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
             
-        newBullet.transform.position = gunPoint.position; 
-        newBullet.transform.rotation = Quaternion.LookRotation(gunPoint.forward);
+        newBullet.transform.position = GunPoint().position; 
+        newBullet.transform.rotation = Quaternion.LookRotation(GunPoint().forward);
         
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
 
@@ -92,19 +92,23 @@ public class PlayerWeaponController : MonoBehaviour
         rbNewBullet.linearVelocity = BulletDirection() * bulletSpeed;
     
         //Destroy(newBullet, 10);
-        animator.SetTrigger("Fire");
+        
+        player.weaponVisuals.PlayFireAnimation();
     }
-
+    
+    private void Reload()
+    {
+        SetWeaponReady(false);
+        player.weaponVisuals.PlayReloadAnimation();
+    }
+    
     public Vector3 BulletDirection()
     {
         //Transform aim = player.aim.GetAim();
         
-        Vector3 direction = (aim.position - gunPoint.position).normalized;
+        Vector3 direction = (aim.position - GunPoint().position).normalized;
         
         direction.y = 0;
-        
-        weaponHolder.LookAt(aim);
-        gunPoint.LookAt(aim);
         
         return direction;
     }
@@ -124,15 +128,15 @@ public class PlayerWeaponController : MonoBehaviour
         return null;
     }
     
-    public Transform GunPoint() => gunPoint;
+    public Transform GunPoint() => player.weaponVisuals.CurrentWeaponModel().gunPoint;
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(weaponHolder.position, weaponHolder.position + weaponHolder.forward * 25);
-        
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(gunPoint.position, gunPoint.position + BulletDirection() * 25);
-    }
+    // private void OnDrawGizmos()
+    // {
+    //     Gizmos.DrawLine(weaponHolder.position, weaponHolder.position + weaponHolder.forward * 25);
+    //     
+    //     Gizmos.color = Color.yellow;
+    //     Gizmos.DrawLine(GunPoint().position, GunPoint().position + BulletDirection() * 25);
+    // }
     
     #region Input Events
     
@@ -141,28 +145,20 @@ public class PlayerWeaponController : MonoBehaviour
         var playerInput = GetComponent<PlayerInput>();
         var controls = playerInput.actions; 
         
-        
-        // Fire action
-        fireAction = controls["Fire"]; 
-        
-        controls["Fire"].performed += ctx =>
-        {
-            StartCoroutine(HandleShootWithAutoAim());
-        };
-
+        controls["Fire"].performed += ctx => StartCoroutine(HandleShootWithAutoAim());
         controls["EquipSlot - 1"].performed += ctx => EquipWeapon(0);
         controls["EquipSlot - 2"].performed += ctx => EquipWeapon(1);
         controls["Drop Current Weapon"].performed += ctx => DropWeapon();
-
+        
         controls["Reload"].performed += ctx =>
         {
-            if (currentWeapon.canReload())
+            if (currentWeapon.CanReload() && WeaponReady())
             {
-                player.weaponVisuals.PlayReloadAnimation();
+                Reload();
             }
         };
     }
-    
+
     private IEnumerator HandleShootWithAutoAim()
     {
         bool wasAlreadyAiming = player.IsAiming;

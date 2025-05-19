@@ -17,6 +17,8 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         visualController.MaximizeRigWeight();
         weaponController.CurrentWeapon().ReloadBullets();
+        
+        weaponController.SetWeaponReady(true);
     }
 
     public void ReturnRig()
@@ -26,7 +28,7 @@ public class PlayerAnimationEvents : MonoBehaviour
     }
     public void WeaponEquipIsOver()
     {
-        visualController.SetBusyEquippingWeaponTo(false);
+        weaponController.SetWeaponReady(true);
     }
 
     public void SwitchOnWeaponModel() => visualController.SwitchOnCurrentWeaponModel();

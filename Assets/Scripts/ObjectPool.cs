@@ -27,10 +27,10 @@ public class ObjectPool : MonoBehaviour
 
     public GameObject GetBullet()
     {
-        if (bulletPool.Count == 0)
-        {
-            CreateNewBullet();
-        }
+        // if (bulletPool.Count == 0)
+        // {
+        //     CreateNewBullet();
+        // }
         
         GameObject bulletToGet = bulletPool.Dequeue();
         bulletToGet.SetActive(true);
