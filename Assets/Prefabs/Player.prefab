@@ -2227,7 +2227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 3
-  aimingWalkSpeed: 1.5
+  aimingWalkSpeed: 1.7
   runSpeed: 4
   gravityScale: 9.81
   turnSpeed: 6
@@ -2248,6 +2248,8 @@ MonoBehaviour:
     bulletsInMagazine: 0
     magazineCapacity: 0
     totalReserveAmmo: 50
+    reloadSpeed: 1
+    equipSpeed: 1
   bulletPrefab: {fileID: 8631206729925312349, guid: 991573d126fac2b4a85595d7fe13b65b, type: 3}
   bulletSpeed: 75
   gunPoint: {fileID: 5350857370664697682}
@@ -2255,13 +2257,17 @@ MonoBehaviour:
   aim: {fileID: 7777322245410812970}
   weaponSlots:
   - WeaponType: 0
-    bulletsInMagazine: 0
+    bulletsInMagazine: 7
     magazineCapacity: 15
     totalReserveAmmo: 30
+    reloadSpeed: 1
+    equipSpeed: 1
   - WeaponType: 3
     bulletsInMagazine: 6
-    magazineCapacity: 0
-    totalReserveAmmo: 0
+    magazineCapacity: 6
+    totalReserveAmmo: 12
+    reloadSpeed: 1
+    equipSpeed: 1
 --- !u!143 &1594177591469952030
 CharacterController:
   m_ObjectHideFlags: 0

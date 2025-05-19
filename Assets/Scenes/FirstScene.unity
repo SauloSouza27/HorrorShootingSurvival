@@ -1719,6 +1719,8 @@ MonoBehaviour:
     bulletsInMagazine: 40
     magazineCapacity: 0
     totalReserveAmmo: 0
+    reloadSpeed: 1
+    equipSpeed: 1
 --- !u!4 &1146259614
 Transform:
   m_ObjectHideFlags: 0

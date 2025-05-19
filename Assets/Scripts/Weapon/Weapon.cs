@@ -1,4 +1,5 @@
-using UnityEngine.Serialization;
+using UnityEngine;
+
 
 public enum WeaponType
 {
@@ -18,6 +19,11 @@ public class Weapon
     public int bulletsInMagazine;
     public int magazineCapacity;
     public int totalReserveAmmo;
+
+    [Range(1, 5)]
+    public float reloadSpeed = 1;
+    [Range(1, 5)]
+    public float equipSpeed = 1;
 
     public bool CanShoot()
     {

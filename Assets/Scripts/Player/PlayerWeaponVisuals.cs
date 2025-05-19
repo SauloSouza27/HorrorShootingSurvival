@@ -38,12 +38,17 @@ public class PlayerWeaponVisuals : MonoBehaviour
         UpdateRigWeight();
         UpdateLeftHandIKWeight();
     }
+
+    
     
     public void PlayReloadAnimation()
     {
         if (isEquippingWeapon)
             return;
         
+        float reloadSpeed = player.weapon.CurrentWeapon().reloadSpeed;
+        
+        animator.SetFloat("ReloadSpeed", reloadSpeed);
         animator.SetTrigger("Reload");
         ReduceRigWeight();
     }
@@ -52,10 +57,13 @@ public class PlayerWeaponVisuals : MonoBehaviour
     {
         EquipType equipType = CurrentWeaponModel().equipType;
         
+        float equipSpeed = player.weapon.CurrentWeapon().equipSpeed;
+        
         leftHandIK.weight = 0;
         ReduceRigWeight();
-        animator.SetFloat("WeaponEquipType", (float)equipType);
         animator.SetTrigger("WeaponEquip");
+        animator.SetFloat("WeaponEquipType", (float)equipType);
+        animator.SetFloat("EquipSpeed", equipSpeed);
 
         SetBusyEquippingWeaponTo(true);
     }
