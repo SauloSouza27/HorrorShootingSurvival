@@ -35,9 +35,14 @@ public class PlayerAim : MonoBehaviour
 
     private void Update()
     {
-        if (!player.IsAiming) return; // Only update aim when aiming
-        UpdateAimLaser();
+        GetAimPosition();
+
         aim.position = lastValidAimPosition;
+
+        if (player.IsAiming)
+        {
+            UpdateAimLaser();
+        }
     }
 
     private void UpdateAimLaser()
