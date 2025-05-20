@@ -2205,6 +2205,9 @@ MonoBehaviour:
     totalReserveAmmo: 0
     reloadSpeed: 1
     equipSpeed: 1
+    baseSpread: 0
+    currentSpread: 2
+    spreadIncreaseRate: 0.15
 --- !u!4 &1146259614
 Transform:
   m_ObjectHideFlags: 0
@@ -3593,12 +3596,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[1].shootType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[0].WeaponType
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[1].WeaponType
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[1].baseSpread
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[1].currentSpread
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[0].magazineCapacity

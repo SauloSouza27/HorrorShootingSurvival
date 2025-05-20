@@ -103,8 +103,10 @@ public class PlayerWeaponController : MonoBehaviour
         
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
 
+        Vector3 bulletsDirection = currentWeapon.ApplySpread(BulletDirection());
+        
         rbNewBullet.mass = REFERENCE_BULLET_SPEED / bulletSpeed;
-        rbNewBullet.linearVelocity = BulletDirection() * bulletSpeed;
+        rbNewBullet.linearVelocity = bulletsDirection * bulletSpeed;
     
         //Destroy(newBullet, 10);
         
