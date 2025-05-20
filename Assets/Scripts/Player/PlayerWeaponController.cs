@@ -28,7 +28,8 @@ public class PlayerWeaponController : MonoBehaviour
 
     [Header("Inventory")] 
     [SerializeField] private List<Weapon> weaponSlots;
-    private int maxSlots = 2;
+
+    private const int MaxSlots = 2;
 
     private void Start()
     {
@@ -37,7 +38,7 @@ public class PlayerWeaponController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>(); 
         AssignInputEvents(); 
         
-        Invoke("EquipStartingWeapon", .1f);
+        Invoke(nameof(EquipStartingWeapon), .1f);
         
     }
 
@@ -47,6 +48,8 @@ public class PlayerWeaponController : MonoBehaviour
         {
             StartCoroutine(HandleShootWithAutoAim());
         }
+        
+        
     }
 
     private void EquipStartingWeapon() => EquipWeapon(0);
@@ -62,7 +65,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     public void PickupWeapon(Weapon newWeapon)
     {
-        if (weaponSlots.Count >= maxSlots)
+        if (weaponSlots.Count >= MaxSlots)
         {
             Debug.Log("No slots avaiable");
             return;
@@ -85,18 +88,48 @@ public class PlayerWeaponController : MonoBehaviour
     public bool WeaponReady() => weaponReady;
     
     #endregion
+
+    private IEnumerator BurstFire()
+    {
+        SetWeaponReady(false);
+        
+        for (int i = 1; i <= currentWeapon.bulletsPerShot; i++)
+        {
+            FireSingleBullet();
+            
+            yield return new WaitForSeconds(currentWeapon.burstFireDelay);
+            
+            if (i >= currentWeapon.bulletsPerShot)
+                SetWeaponReady(true);
+        }
+    }
     
     private void Shoot()
     {
         if(!WeaponReady() || !currentWeapon.CanShoot() || !player.IsAiming) return;
 
+        player.weaponVisuals.PlayFireAnimation();
+        
         if (currentWeapon.shootType == ShootType.Single)
         {
             isShooting = false;
         }
 
+        if (currentWeapon.BurstActivated())
+        {
+            StartCoroutine(BurstFire());
+            return;
+        }
+        
+        FireSingleBullet();
+    }
+
+    private void FireSingleBullet()
+    {
+        if(currentWeapon.weaponType != WeaponType.Shotgun)
+            currentWeapon.bulletsInMagazine--;
+        
         GameObject newBullet = ObjectPool.instance.GetBullet();
-            //Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
             
         newBullet.transform.position = GunPoint().position; 
         newBullet.transform.rotation = Quaternion.LookRotation(GunPoint().forward);
@@ -107,12 +140,8 @@ public class PlayerWeaponController : MonoBehaviour
         
         rbNewBullet.mass = REFERENCE_BULLET_SPEED / bulletSpeed;
         rbNewBullet.linearVelocity = bulletsDirection * bulletSpeed;
-    
-        //Destroy(newBullet, 10);
-        
-        player.weaponVisuals.PlayFireAnimation();
     }
-    
+
     private void Reload()
     {
         SetWeaponReady(false);

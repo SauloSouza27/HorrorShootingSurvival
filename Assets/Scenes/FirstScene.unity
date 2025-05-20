@@ -833,7 +833,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 8631206729925312349, guid: 991573d126fac2b4a85595d7fe13b65b, type: 3}
-  poolSize: 5
+  poolSize: 20
 --- !u!4 &96073115
 Transform:
   m_ObjectHideFlags: 0
@@ -2197,9 +2197,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon:
-    WeaponType: 2
+    weaponType: 0
     shootType: 0
+    bulletsPerShot: 0
     fireRate: 1
+    burstAvailable: 0
+    burstActive: 0
+    burstBulletPerShot: 0
+    burstFireRate: 0
+    burstFireDelay: 0.1
     bulletsInMagazine: 40
     magazineCapacity: 0
     totalReserveAmmo: 0
@@ -3584,8 +3590,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: currentWeapon.burstAvailable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[0].fireRate
-      value: 5
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[1].fireRate
@@ -3593,15 +3603,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[0].shootType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
-      propertyPath: weaponSlots.Array.data[1].shootType
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
-      propertyPath: weaponSlots.Array.data[0].WeaponType
+      propertyPath: weaponSlots.Array.data[1].shootType
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[0].WeaponType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[0].baseSpread
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[0].weaponType
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[1].WeaponType
@@ -3609,15 +3627,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[1].baseSpread
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[1].weaponType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[0].burstActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[0].currentSpread
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[1].currentSpread
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[0].bulletsPerShot
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[0].burstAvailable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[0].burstFireDelay
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[1].bulletsPerShot
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[0].magazineCapacity
-      value: 12
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[0].totalReserveAmmo
@@ -3625,7 +3671,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[1].magazineCapacity
-      value: 30
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[1].totalReserveAmmo
@@ -3633,11 +3679,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[0].bulletsInMagazine
-      value: 12
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[1].bulletsInMagazine
-      value: 30
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

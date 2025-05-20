@@ -20,13 +20,21 @@ public enum ShootType
 [System.Serializable] 
 public class Weapon
 {
-    public WeaponType WeaponType;
+    public WeaponType weaponType;
 
     [Header("Shooting specific")] 
     public ShootType shootType;
+    public int bulletsPerShot;
     public float fireRate = 1; //bullets per second
     private float lastShootTime;
+
+    [Header("Burst fire")] 
+    public bool burstAvailable;
+    public bool burstActive;
     
+    public int burstBulletPerShot;
+    public float burstFireRate;
+    public float burstFireDelay = .1f;
     
     [Header("Magazine details")]
     public int bulletsInMagazine;
@@ -78,25 +86,51 @@ public class Weapon
     
     #endregion
     
+    #region Burst methods
+
+    public bool BurstActivated()
+    {
+        if (weaponType == WeaponType.Shotgun)
+        {
+            burstFireDelay = 0;
+            return true;
+        }
+        
+        return burstActive;
+    }
+
+    public void ToggleBurst()
+    {
+        if (burstAvailable == false)
+            return;
+        
+        burstActive = !burstActive;
+        
+        bulletsPerShot = burstActive ? burstBulletPerShot : 1;
+    }
+    
+    
+    #endregion
+
     public bool CanShoot()
     {
         if (HasEnoughBullets() && ReadyToFire())
         {
-            bulletsInMagazine--;
+            if(weaponType == WeaponType.Shotgun)
+                bulletsInMagazine--;
             return true;
         }
-
         return false;
     }
+    
 
     private bool ReadyToFire()
     {
-        if (Time.time > lastShootTime + 1 / fireRate)
-        {
-            lastShootTime = Time.time;
-            return true;
-        }
-        return false;
+        if (!(Time.time > lastShootTime + 1 / fireRate)) 
+            return false;
+        
+        lastShootTime = Time.time;
+        return true;
     }
 
     #region Reload methods

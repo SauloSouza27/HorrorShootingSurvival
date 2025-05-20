@@ -87,7 +87,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
     public void SwitchOnBackupWeaponModel()
     {
-        WeaponType weaponType = player.weapon.BackupWeapon().WeaponType;
+        WeaponType weaponType = player.weapon.BackupWeapon().weaponType;
 
         foreach (BackupWeaponModel backupModel in backupWeaponModels)
         {
@@ -118,7 +118,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
     {
         WeaponModel weaponModel = null;
 
-        WeaponType weaponType = player.weapon.CurrentWeapon().WeaponType;
+        WeaponType weaponType = player.weapon.CurrentWeapon().weaponType;
 
         for (int i = 0; i < weaponModels.Length; i++)
         {
@@ -133,24 +133,20 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
     private void UpdateLeftHandIKWeight()
     {
-        if (shouldIncrease_LeftHandIKWeight)
-        {
-            leftHandIK.weight += leftHandIkWeightIncreaseRate * Time.deltaTime;
+        if (!shouldIncrease_LeftHandIKWeight) return;
+        leftHandIK.weight += leftHandIkWeightIncreaseRate * Time.deltaTime;
             
-            if (leftHandIK.weight >= 1)
-                shouldIncrease_LeftHandIKWeight = false;
-        }
+        if (leftHandIK.weight >= 1)
+            shouldIncrease_LeftHandIKWeight = false;
     }
 
     private void UpdateRigWeight()
     {
-        if (shouldIncrease_RigWeight)
-        {
-            rig.weight += rigWeightIncreaseRate * Time.deltaTime;
+        if (!shouldIncrease_RigWeight) return;
+        rig.weight += rigWeightIncreaseRate * Time.deltaTime;
             
-            if (rig.weight >= 1)
-                shouldIncrease_RigWeight = false;
-        }
+        if (rig.weight >= 1)
+            shouldIncrease_RigWeight = false;
     }
 
     private void ReduceRigWeight()
