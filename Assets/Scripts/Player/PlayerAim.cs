@@ -104,7 +104,7 @@ public class PlayerAim : MonoBehaviour
     public void SetAimLaserEnabled(bool state)
     {
         aimLaser.enabled = state;
-        Debug.Log(aimLaser.enabled);
+        
     }
     public Transform GetAim() => aim;
 

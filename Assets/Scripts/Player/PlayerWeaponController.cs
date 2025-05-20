@@ -9,8 +9,10 @@ public class PlayerWeaponController : MonoBehaviour
 {
     private Player player;
 
-    [SerializeField] private Weapon currentWeapon;
+    [SerializeField] 
+    private Weapon currentWeapon;
     private bool weaponReady;
+    private bool isShooting;
     
     private PlayerInput playerInput; // Reference to PlayerInput
     private InputAction fireAction; // Fire action input
@@ -37,6 +39,14 @@ public class PlayerWeaponController : MonoBehaviour
         
         Invoke("EquipStartingWeapon", .1f);
         
+    }
+
+    private void Update()
+    {
+        if (isShooting)
+        {
+            StartCoroutine(HandleShootWithAutoAim());
+        }
     }
 
     private void EquipStartingWeapon() => EquipWeapon(0);
@@ -79,6 +89,11 @@ public class PlayerWeaponController : MonoBehaviour
     private void Shoot()
     {
         if(!WeaponReady() || !currentWeapon.CanShoot() || !player.IsAiming) return;
+
+        if (currentWeapon.shootType == ShootType.Single)
+        {
+            isShooting = false;
+        }
 
         GameObject newBullet = ObjectPool.instance.GetBullet();
             //Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
@@ -145,7 +160,12 @@ public class PlayerWeaponController : MonoBehaviour
         var playerInput = GetComponent<PlayerInput>();
         var controls = playerInput.actions; 
         
-        controls["Fire"].performed += ctx => StartCoroutine(HandleShootWithAutoAim());
+        //controls["Fire"].performed += ctx => StartCoroutine(HandleShootWithAutoAim());
+
+        controls["Fire"].performed += ctx => isShooting = true;
+
+        controls["Fire"].canceled += ctx => isShooting = false;
+        
         controls["EquipSlot - 1"].performed += ctx => EquipWeapon(0);
         controls["EquipSlot - 2"].performed += ctx => EquipWeapon(1);
         controls["Drop Current Weapon"].performed += ctx => DropWeapon();

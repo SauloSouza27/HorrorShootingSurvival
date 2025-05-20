@@ -2198,6 +2198,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon:
     WeaponType: 2
+    shootType: 0
+    fireRate: 1
     bulletsInMagazine: 40
     magazineCapacity: 0
     totalReserveAmmo: 0
@@ -3518,6 +3520,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1270108530260499049, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300944725233361480, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300944725233361480, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.a
+      value: 0.61960787
+      objectReference: {fileID: 0}
     - target: {fileID: 3169910867731254980, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: m_Name
       value: Player
@@ -3561,6 +3575,54 @@ PrefabInstance:
     - target: {fileID: 3183377978126733539, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: currentWeapon.WeaponType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[0].fireRate
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[1].fireRate
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[0].shootType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[0].WeaponType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[1].WeaponType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[0].magazineCapacity
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[0].totalReserveAmmo
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[1].magazineCapacity
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[1].totalReserveAmmo
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[0].bulletsInMagazine
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[1].bulletsInMagazine
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
