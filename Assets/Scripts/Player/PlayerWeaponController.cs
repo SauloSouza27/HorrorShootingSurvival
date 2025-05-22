@@ -27,6 +27,8 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField] private List<Weapon> weaponSlots;
     private int maxSlots = 2;
 
+    [SerializeField] public AmmoCount ammoCount; // Referência à HUD
+
     private void Start()
     {
         player = GetComponent<Player>();
@@ -37,12 +39,14 @@ public class PlayerWeaponController : MonoBehaviour
         AssignInputEvents(); 
         
         currentWeapon.bulletsInMagazine = currentWeapon.totalReserveAmmo;
+        UpdateHUD();
     }
     
     #region Slots managment - Pickup/Equip/DropWeapon
     private void EquipWeapon(int i)
     {
         currentWeapon = weaponSlots[i];
+        UpdateHUD();
     }
 
     public void PickupWeapon(Weapon newWeapon)
@@ -83,6 +87,7 @@ public class PlayerWeaponController : MonoBehaviour
     
         Destroy(newBullet, 10);
         animator.SetTrigger("Fire");
+        UpdateHUD();
     }
 
     public Vector3 BulletDirection()
@@ -140,6 +145,15 @@ public class PlayerWeaponController : MonoBehaviour
             }
         };
     }
+    //Atualiza a HUD com a quantidade de munição
+    private void UpdateHUD()
+    {
+        if (ammoCount != null)
+        {
+            ammoCount.UpdateAmmo(currentWeapon.bulletsInMagazine, currentWeapon.magazineCapacity, currentWeapon.totalReserveAmmo);
+        }
+    }
+
     
     #endregion
 }
