@@ -150,6 +150,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 691b771fb9fa3374e80818ce4cc4b1a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cd: {fileID: 5141818505350542188}
+  rb: {fileID: 5602899121022093336}
+  meshRenderer: {fileID: 3556507189914484976}
+  trailRenderer: {fileID: 7836127342499303356}
 --- !u!96 &7836127342499303356
 TrailRenderer:
   serializedVersion: 3

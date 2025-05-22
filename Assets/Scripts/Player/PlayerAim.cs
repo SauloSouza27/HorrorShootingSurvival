@@ -61,7 +61,7 @@ public class PlayerAim : MonoBehaviour
         Vector3 laserDirection = player.weapon.BulletDirection();
 
         float laserTipLength = .5f;
-        float gunDistance = 14f;
+        float gunDistance = player.weapon.CurrentWeapon().bulletDistance;
 
         Vector3 endPoint = gunPoint.position + laserDirection * gunDistance;
 

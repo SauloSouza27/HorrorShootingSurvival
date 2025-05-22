@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public enum WeaponType
@@ -46,10 +47,14 @@ public class Weapon
     [Range(1, 5)]
     public float equipSpeed = 1;
 
+    
+    [Range(2, 12)] 
+    public float bulletDistance = 4f;
+
     [Header("Spread")] 
     public float baseSpread;
-    public float currentSpread = 2;
-    private float maxSpread = 3;
+    public float currentSpread = 0;
+    public float maxSpread = 3;
 
     public float spreadIncreaseRate = .15f;
 

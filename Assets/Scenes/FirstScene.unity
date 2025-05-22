@@ -2211,8 +2211,10 @@ MonoBehaviour:
     totalReserveAmmo: 0
     reloadSpeed: 1
     equipSpeed: 1
+    gunDistance: 4
     baseSpread: 0
     currentSpread: 2
+    maxSpread: 3
     spreadIncreaseRate: 0.15
 --- !u!4 &1146259614
 Transform:
@@ -3590,6 +3592,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: currentWeapon.baseSpread
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: currentWeapon.currentSpread
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: currentWeapon.burstAvailable
       value: 0
       objectReference: {fileID: 0}
@@ -3615,7 +3625,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[0].baseSpread
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[0].weaponType
@@ -3638,8 +3648,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[0].gunDistance
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: weaponSlots.Array.data[1].gunDistance
+      value: 6.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[0].currentSpread
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[1].currentSpread
