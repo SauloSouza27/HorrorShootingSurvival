@@ -3876,6 +3876,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: ammoCount
+      value: 
+      objectReference: {fileID: 1562849050}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: currentWeapon.WeaponType
       value: 0
       objectReference: {fileID: 0}
@@ -4001,10 +4005,6 @@ PrefabInstance:
     - {fileID: 1220091261158770568, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
     - {fileID: 1967075265982600477, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
     - {fileID: 5926126319551108210, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
-      propertyPath: ammoCount
-      value: 
-      objectReference: {fileID: 1562849050}
-    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
