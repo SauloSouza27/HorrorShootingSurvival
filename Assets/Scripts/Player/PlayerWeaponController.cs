@@ -31,6 +31,8 @@ public class PlayerWeaponController : MonoBehaviour
 
     private const int MaxSlots = 2;
 
+    [SerializeField] public AmmoCount ammoCount; // Referência à HUD
+
     private void Start()
     {
         player = GetComponent<Player>();
@@ -40,6 +42,8 @@ public class PlayerWeaponController : MonoBehaviour
         
         Invoke(nameof(EquipStartingWeapon), .1f);
         
+        currentWeapon.bulletsInMagazine = currentWeapon.totalReserveAmmo;
+        UpdateHUD();
     }
 
     private void Update()
@@ -61,6 +65,7 @@ public class PlayerWeaponController : MonoBehaviour
         
         currentWeapon = weaponSlots[i];
         player.weaponVisuals.PlayWeaponEquipAnimation();
+        UpdateHUD();
     }
 
     public void PickupWeapon(Weapon newWeapon)
@@ -103,13 +108,13 @@ public class PlayerWeaponController : MonoBehaviour
                 SetWeaponReady(true);
         }
     }
-    
+
     private void Shoot()
     {
-        if(!WeaponReady() || !currentWeapon.CanShoot() || !player.IsAiming) return;
+        if (!WeaponReady() || !currentWeapon.CanShoot() || !player.IsAiming) return;
 
         player.weaponVisuals.PlayFireAnimation();
-        
+
         if (currentWeapon.shootType == ShootType.Single)
         {
             isShooting = false;
@@ -120,8 +125,9 @@ public class PlayerWeaponController : MonoBehaviour
             StartCoroutine(BurstFire());
             return;
         }
-        
+
         FireSingleBullet();
+        UpdateHUD();
     }
 
     private void FireSingleBullet()
@@ -227,6 +233,15 @@ public class PlayerWeaponController : MonoBehaviour
         if (!wasAlreadyAiming)
             player.SetAutoAiming(false);
     }
+    //Atualiza a HUD com a quantidade de munição
+    private void UpdateHUD()
+    {
+        if (ammoCount != null)
+        {
+            ammoCount.UpdateAmmo(currentWeapon.bulletsInMagazine, currentWeapon.magazineCapacity, currentWeapon.totalReserveAmmo);
+        }
+    }
+
     
     #endregion
 }
