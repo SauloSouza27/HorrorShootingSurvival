@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 420b917f67269bc4db01740154950af1, type: 3}
-  m_Name: Weapon_Pistol_D
+  m_Name: Weapon_Shotgun_D
   m_EditorClassIdentifier: 
-  weaponName: Deagle
-  weaponType: 0
+  weaponName: Shotgun
+  weaponType: 3
   shootType: 0
-  bulletsPerShot: 0
-  fireRate: 4
+  bulletsPerShot: 10
+  fireRate: 1
   burstAvailable: 0
   burstActive: 0
   burstBulletPerShot: 0
-  burstFireDelay: 0.1
-  bulletsInMagazine: 8
-  magazineCapacity: 8
+  burstFireDelay: 0
+  bulletsInMagazine: 6
+  magazineCapacity: 6
   totalReserveAmmo: 500
-  baseSpread: 0
-  maxSpread: 3
+  baseSpread: 15
+  maxSpread: 15
   spreadIncreaseRate: 0.15
   reloadSpeed: 1
   equipSpeed: 1

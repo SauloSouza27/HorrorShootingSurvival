@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 420b917f67269bc4db01740154950af1, type: 3}
-  m_Name: Weapon_Pistol_D
+  m_Name: Weapon_AutoRifle_D
   m_EditorClassIdentifier: 
-  weaponName: Deagle
-  weaponType: 0
-  shootType: 0
-  bulletsPerShot: 0
-  fireRate: 4
+  weaponName: M4
+  weaponType: 2
+  shootType: 1
+  bulletsPerShot: 1
+  fireRate: 10
   burstAvailable: 0
   burstActive: 0
   burstBulletPerShot: 0
   burstFireDelay: 0.1
-  bulletsInMagazine: 8
-  magazineCapacity: 8
+  bulletsInMagazine: 30
+  magazineCapacity: 30
   totalReserveAmmo: 500
-  baseSpread: 0
+  baseSpread: 0.15
   maxSpread: 3
   spreadIncreaseRate: 0.15
   reloadSpeed: 1
   equipSpeed: 1
-  bulletDistance: 4
+  bulletDistance: 10

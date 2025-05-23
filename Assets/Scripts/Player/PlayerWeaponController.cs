@@ -73,13 +73,15 @@ public class PlayerWeaponController : MonoBehaviour
         UpdateHUD();
     }
 
-    public void PickupWeapon(Weapon newWeapon)
+    public void PickupWeapon(Weapon_Data newWeaponData)
     {
         if (weaponSlots.Count >= MaxSlots)
         {
             Debug.Log("No slots avaiable");
             return;
         }
+
+        Weapon newWeapon = new Weapon(newWeaponData);
         
         weaponSlots.Add(newWeapon);
         player.weaponVisuals.SwitchOnBackupWeaponModel();

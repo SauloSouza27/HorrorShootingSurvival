@@ -2433,13 +2433,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15fc8808efb159548af629b63859cf37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon:
-    weaponType: 0
-    shootType: 0
-    burstActive: 0
-    bulletsInMagazine: 40
-    magazineCapacity: 0
-    totalReserveAmmo: 0
+  weaponData: {fileID: 0}
 --- !u!4 &1146259614
 Transform:
   m_ObjectHideFlags: 0
@@ -3814,8 +3808,52 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2300944725233361480, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: m_Parameters.colorGradient.atime0
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300944725233361480, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: m_Parameters.colorGradient.atime1
+      value: 60138
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300944725233361480, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: m_Parameters.colorGradient.atime2
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300944725233361480, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: m_Parameters.colorGradient.atime3
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300944725233361480, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: m_Parameters.colorGradient.atime4
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300944725233361480, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: m_Parameters.colorGradient.atime5
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300944725233361480, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: m_Parameters.colorGradient.key0.a
-      value: 0.30980393
+      value: 0.46666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300944725233361480, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300944725233361480, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: m_Parameters.colorGradient.key2.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300944725233361480, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: m_Parameters.colorGradient.key3.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300944725233361480, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: m_Parameters.colorGradient.key4.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300944725233361480, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: m_Parameters.colorGradient.m_NumAlphaKeys
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3169910867731254980, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: m_Name
@@ -3891,7 +3929,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[0].fireRate
-      value: 8
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: weaponSlots.Array.data[1].fireRate

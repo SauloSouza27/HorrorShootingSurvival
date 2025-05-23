@@ -26,7 +26,7 @@ public class Weapon
     [Header("Shooting specific")] 
     public ShootType shootType;
     public int BulletsPerShot { get; private set; }
-    private float fireRate = 1; //bullets per second
+    public float fireRate = 1; //bullets per second
     private float lastShootTime;
 
     [Header("Burst fire")] 
@@ -58,6 +58,10 @@ public class Weapon
 
     public Weapon(Weapon_Data weaponData)
     {
+        bulletsInMagazine = weaponData.bulletsInMagazine;
+        magazineCapacity = weaponData.magazineCapacity;
+        totalReserveAmmo = weaponData.totalReserveAmmo;
+        
         fireRate = weaponData.fireRate;
         weaponType = weaponData.weaponType;
         

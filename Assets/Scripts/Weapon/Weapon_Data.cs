@@ -5,19 +5,25 @@ public class Weapon_Data : ScriptableObject
 {
     public string weaponName;
     
-    [Header("Normal")]
+    
+    [Header("Normal Fire")]
     public WeaponType weaponType;
     public ShootType shootType;
     public int bulletsPerShot = 1;
     public float fireRate;
 
-    [Header("Burst")] 
+    [Header("Burst Fire")] 
     public bool burstAvailable;
     public bool burstActive;
     
     public int burstBulletPerShot;
     //public float burstFireRate;
     public float burstFireDelay = .1f;
+    
+    [Header("Magazine details")]
+    public int bulletsInMagazine;
+    public int magazineCapacity;
+    public int totalReserveAmmo;
     
     [Header("Spread")] 
     public float baseSpread;
