@@ -46,8 +46,6 @@ public class Weapon
     public float reloadSpeed = 1;
     [Range(1, 5)]
     public float equipSpeed = 1;
-
-    
     [Range(2, 12)] 
     public float bulletDistance = 4f;
 
@@ -60,6 +58,13 @@ public class Weapon
 
     private float lastSpreadUpdateTime;
     private float spreadCooldown = 1;
+
+    public Weapon(WeaponType weaponType)
+    {
+        this.fireRate = fireRate;
+        this.weaponType = weaponType;
+        
+    }
 
     #region Spread methods
     

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    
     private BoxCollider cd;
     private Rigidbody rb;
     private MeshRenderer meshRenderer;
@@ -30,7 +29,7 @@ public class Bullet : MonoBehaviour
         cd.enabled = true;
         meshRenderer.enabled = true;
         
-        trailRenderer.time = .1f;
+        trailRenderer.time = .04f;
         startPosition = transform.position;
         this.flyDistance = flyDistance + .5f; // remember this
     }
@@ -39,17 +38,19 @@ public class Bullet : MonoBehaviour
     {
         FadeTrail();
         DisableBullet();
-        ReturnToPool();
+        ReturnToPoolIfNeeded();
     }
 
-    private void ReturnToPool()
+    private void ReturnToPoolIfNeeded()
     {
         if (trailRenderer.time < 0)
         {
             tr.Clear();
-            ObjectPool.instance.ReturnBullet(gameObject);
+            ReturnBulletToPool();
         }
     }
+
+    private void ReturnBulletToPool() => ObjectPool.instance.ReturnObject(0, gameObject);
 
     private void DisableBullet()
     {
@@ -70,7 +71,7 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         tr.Clear();
-        ObjectPool.instance.ReturnBullet(gameObject);
+        ObjectPool.instance.ReturnObject(0, gameObject);
     }
     
 }

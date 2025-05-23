@@ -56,7 +56,12 @@ public class PlayerWeaponController : MonoBehaviour
         
     }
 
-    private void EquipStartingWeapon() => EquipWeapon(0);
+    private void EquipStartingWeapon()
+    {
+        weaponSlots[0] = new Weapon(WeaponType.Pistol);
+        
+        EquipWeapon(0);
+    }
     
     #region Slots managment - Pickup/Equip/DropWeapon/ReadyWeapon
     private void EquipWeapon(int i)
@@ -135,7 +140,7 @@ public class PlayerWeaponController : MonoBehaviour
         if(currentWeapon.weaponType != WeaponType.Shotgun)
             currentWeapon.bulletsInMagazine--;
         
-        GameObject newBullet = ObjectPool.instance.GetBullet();
+        GameObject newBullet = ObjectPool.instance.GetObject(bulletPrefab);
             
         newBullet.transform.position = GunPoint().position; 
         newBullet.transform.rotation = Quaternion.LookRotation(GunPoint().forward);
