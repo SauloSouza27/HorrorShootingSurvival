@@ -42,7 +42,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
     
     public void PlayReloadAnimation()
     {
-        float reloadSpeed = player.weapon.CurrentWeapon().reloadSpeed;
+        float reloadSpeed = player.weapon.CurrentWeapon().ReloadSpeed;
         
         animator.SetFloat("ReloadSpeed", reloadSpeed);
         animator.SetTrigger("Reload");
@@ -53,7 +53,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
     {
         EquipType equipType = CurrentWeaponModel().equipType;
         
-        float equipSpeed = player.weapon.CurrentWeapon().equipSpeed;
+        float equipSpeed = player.weapon.CurrentWeapon().EquipSpeed;
         
         leftHandIK.weight = 0;
         ReduceRigWeight();

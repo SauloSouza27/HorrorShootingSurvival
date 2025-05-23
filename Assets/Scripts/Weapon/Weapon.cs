@@ -25,45 +25,57 @@ public class Weapon
 
     [Header("Shooting specific")] 
     public ShootType shootType;
-    public int bulletsPerShot;
-    public float fireRate = 1; //bullets per second
+    public int BulletsPerShot { get; private set; }
+    private float fireRate = 1; //bullets per second
     private float lastShootTime;
 
     [Header("Burst fire")] 
-    public bool burstAvailable;
+    private bool burstAvailable;
     public bool burstActive;
     
-    public int burstBulletPerShot;
-    public float burstFireRate;
-    public float burstFireDelay = .1f;
+    private int burstBulletPerShot;
+    //public float burstFireRate;
+    public float BurstFireDelay { get; private set; }
     
     [Header("Magazine details")]
     public int bulletsInMagazine;
     public int magazineCapacity;
     public int totalReserveAmmo;
-
-    [Range(1, 5)]
-    public float reloadSpeed = 1;
-    [Range(1, 5)]
-    public float equipSpeed = 1;
-    [Range(2, 12)] 
-    public float bulletDistance = 4f;
+    
+    public float ReloadSpeed { get; private set; }
+    public float EquipSpeed { get; private set; }
+    public float BulletDistance { get; private set; }
 
     [Header("Spread")] 
-    public float baseSpread;
-    public float currentSpread = 0;
-    public float maxSpread = 3;
-
-    public float spreadIncreaseRate = .15f;
+    private float baseSpread;
+    private float maxSpread = 3;
+    private float currentSpread = 0;
+    
+    private float spreadIncreaseRate = .15f;
 
     private float lastSpreadUpdateTime;
     private float spreadCooldown = 1;
 
-    public Weapon(WeaponType weaponType)
+    public Weapon(Weapon_Data weaponData)
     {
-        this.fireRate = fireRate;
-        this.weaponType = weaponType;
+        fireRate = weaponData.fireRate;
+        weaponType = weaponData.weaponType;
         
+        BulletsPerShot = weaponData.bulletsPerShot;
+        shootType = weaponData.shootType;
+        
+        baseSpread = weaponData.baseSpread;
+        maxSpread = weaponData.maxSpread;
+        spreadIncreaseRate = weaponData.spreadIncreaseRate;
+        
+        ReloadSpeed = weaponData.reloadSpeed;
+        EquipSpeed = weaponData.equipSpeed;
+        BulletDistance = weaponData.bulletDistance;
+        
+        burstAvailable = weaponData.burstAvailable;
+        burstActive = weaponData.burstActive;
+        burstBulletPerShot = weaponData.burstBulletPerShot;
+        BurstFireDelay = weaponData.burstFireDelay;
     }
 
     #region Spread methods
@@ -102,7 +114,7 @@ public class Weapon
     {
         if (weaponType == WeaponType.Shotgun)
         {
-            burstFireDelay = 0;
+            BurstFireDelay = 0;
             return true;
         }
         
@@ -116,7 +128,7 @@ public class Weapon
         
         burstActive = !burstActive;
         
-        bulletsPerShot = burstActive ? burstBulletPerShot : 1;
+        BulletsPerShot = burstActive ? burstBulletPerShot : 1;
     }
     
     

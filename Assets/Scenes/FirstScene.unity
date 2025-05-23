@@ -2436,23 +2436,10 @@ MonoBehaviour:
   weapon:
     weaponType: 0
     shootType: 0
-    bulletsPerShot: 0
-    fireRate: 1
-    burstAvailable: 0
     burstActive: 0
-    burstBulletPerShot: 0
-    burstFireRate: 0
-    burstFireDelay: 0.1
     bulletsInMagazine: 40
     magazineCapacity: 0
     totalReserveAmmo: 0
-    reloadSpeed: 1
-    equipSpeed: 1
-    bulletDistance: 4
-    baseSpread: 0
-    currentSpread: 2
-    maxSpread: 3
-    spreadIncreaseRate: 0.15
 --- !u!4 &1146259614
 Transform:
   m_ObjectHideFlags: 0
@@ -3878,6 +3865,10 @@ PrefabInstance:
       propertyPath: ammoCount
       value: 
       objectReference: {fileID: 1562849050}
+    - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
+      propertyPath: defaultWeaponData
+      value: 
+      objectReference: {fileID: 11400000, guid: deab02123b269614a8a7892d1325557c, type: 2}
     - target: {fileID: 7646653769179972056, guid: 049314c0a67a869419b38e4ea4026fb1, type: 3}
       propertyPath: currentWeapon.WeaponType
       value: 0

@@ -9,8 +9,8 @@ public class PlayerWeaponController : MonoBehaviour
 {
     private Player player;
 
-    [SerializeField] 
-    private Weapon currentWeapon;
+    [SerializeField] private Weapon_Data defaultWeaponData;
+    [SerializeField] private Weapon currentWeapon;
     private bool weaponReady;
     private bool isShooting;
     
@@ -58,7 +58,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void EquipStartingWeapon()
     {
-        weaponSlots[0] = new Weapon(WeaponType.Pistol);
+        weaponSlots[0] = new Weapon(defaultWeaponData);
         
         EquipWeapon(0);
     }
@@ -103,13 +103,13 @@ public class PlayerWeaponController : MonoBehaviour
     {
         SetWeaponReady(false);
         
-        for (int i = 1; i <= currentWeapon.bulletsPerShot; i++)
+        for (int i = 1; i <= currentWeapon.BulletsPerShot; i++)
         {
             FireSingleBullet();
             
-            yield return new WaitForSeconds(currentWeapon.burstFireDelay);
+            yield return new WaitForSeconds(currentWeapon.BurstFireDelay);
             
-            if (i >= currentWeapon.bulletsPerShot)
+            if (i >= currentWeapon.BulletsPerShot)
                 SetWeaponReady(true);
         }
     }
@@ -148,7 +148,7 @@ public class PlayerWeaponController : MonoBehaviour
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
         
         Bullet bulletScript = newBullet.GetComponent<Bullet>();
-        bulletScript.BulletSetup(currentWeapon.bulletDistance);
+        bulletScript.BulletSetup(currentWeapon.BulletDistance);
 
         Vector3 bulletsDirection = currentWeapon.ApplySpread(BulletDirection());
         
