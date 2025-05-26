@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     
     public PlayerWeaponVisuals weaponVisuals { get; private set; }
     
+    public PlayerInteraction interaction { get; private set; }
+    
     private bool isManuallyAiming = false;
     private bool isAutoAiming = false;
     public bool IsAiming => isManuallyAiming || isAutoAiming;
@@ -29,6 +31,7 @@ public class Player : MonoBehaviour
         movement = GetComponent<PlayerMovement>();
         weapon = GetComponent<PlayerWeaponController>();
         weaponVisuals = GetComponent<PlayerWeaponVisuals>();
+        interaction = GetComponent<PlayerInteraction>();
     }
     
     public void SetManualAiming(bool aiming)
