@@ -49,6 +49,24 @@ public class EnemyBase : LivingEntity
         }
 
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+            if (bullet != null)
+            {
+                Debug.Log($"{gameObject.name} hit by bullet. Damage: {bullet.bulletDamage}. Health before hit: {currentHealth}");
+
+                TakeDamage(bullet.bulletDamage);
+            }
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        Set_Health(currentHealth - damage);
+    }
 
     public void Adjust_Attack(float ammount)
     {

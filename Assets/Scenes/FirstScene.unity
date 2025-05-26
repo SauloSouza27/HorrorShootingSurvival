@@ -3333,7 +3333,7 @@ MonoBehaviour:
   current_summons_dead: 0
   start_max_summons_once: 30
   start_strength: 1
-  time_between_waves: 10
+  time_between_waves: 6
   time_end_last_wave: 30
   waveIsRunning: 0
   spawnpoints:

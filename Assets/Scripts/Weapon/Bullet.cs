@@ -14,6 +14,7 @@ public class Bullet : MonoBehaviour
     private Vector3 startPosition;
     private float flyDistance;
     private bool bulletDisabled;
+    public float bulletDamage = 80;
 
     private void Awake()
     {
