@@ -8,6 +8,8 @@ public enum AimSource
 }
 public class Player : MonoBehaviour
 {
+    public static Player instance;
+
     public PlayerControls controls { get; private set; }
     public PlayerAim aim { get; private set; }
     public PlayerMovement movement { get; private set; }
@@ -21,6 +23,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
         controls = new PlayerControls();
         aim = GetComponent<PlayerAim>();
         movement = GetComponent<PlayerMovement>();
