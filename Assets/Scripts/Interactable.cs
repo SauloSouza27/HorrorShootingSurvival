@@ -3,19 +3,26 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    private MeshRenderer mesh;
+    protected MeshRenderer mesh;
+
     [SerializeField] private Material highlightMaterial;
-    private Material defaultMaterial;
+    protected Material defaultMaterial;
 
     private void Start()
     {
         if (mesh == null)
             mesh = GetComponentInChildren<MeshRenderer>();
-        
-        defaultMaterial = mesh.material;
+
+        defaultMaterial = mesh.sharedMaterial;
     }
 
-    public virtual void Interaction()
+    protected void UpdateMeshAndMaterial(MeshRenderer newMesh)
+    {
+        mesh = newMesh;
+        defaultMaterial = newMesh.sharedMaterial;
+    }
+
+public virtual void Interaction()
     {
         Debug.Log("Interacted with " + gameObject.name);
     }

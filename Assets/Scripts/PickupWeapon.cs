@@ -10,7 +10,7 @@ public class PickupWeapon : Interactable
 
     private void Start()
     {
-        UpdateItemModel();
+        UpdateGameObject();
     }
 
     [ContextMenu("UpdateItemModel")]
@@ -25,9 +25,12 @@ public class PickupWeapon : Interactable
         foreach (BackupWeaponModel model in models)
         {
             model.gameObject.SetActive(false);
-            
+
             if (model.WeaponType == weaponData.weaponType)
+            {
                 model.gameObject.SetActive(true);
+                UpdateMeshAndMaterial(model.GetComponent<MeshRenderer>());
+            }
         }
     }
 

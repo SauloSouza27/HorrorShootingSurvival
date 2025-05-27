@@ -75,13 +75,23 @@ public class PlayerWeaponController : MonoBehaviour
 
     public void PickupWeapon(Weapon_Data newWeaponData)
     {
-        if (weaponSlots.Count >= MaxSlots)
+        Weapon newWeapon = new Weapon(newWeaponData);
+
+        if (WeaponInSlots(newWeapon.weaponType) != null)
         {
-            Debug.Log("No slots avaiable");
+            WeaponInSlots(newWeapon.weaponType).totalReserveAmmo += newWeapon.bulletsInMagazine;
             return;
         }
+        
+        if (weaponSlots.Count >= MaxSlots)
+        {
+            int weaponIndex = weaponSlots.IndexOf(currentWeapon);
 
-        Weapon newWeapon = new Weapon(newWeaponData);
+            player.weaponVisuals.SwitchOffWeaponModels();
+            weaponSlots[weaponIndex] = newWeapon;
+            EquipWeapon(weaponIndex);
+            return;
+        }
         
         weaponSlots.Add(newWeapon);
         player.weaponVisuals.SwitchOnBackupWeaponModel();
@@ -177,6 +187,17 @@ public class PlayerWeaponController : MonoBehaviour
 
     public bool HasOnlyOneWeapon() => weaponSlots.Count <= 1;
 
+    public Weapon WeaponInSlots(WeaponType weaponType)
+    {
+        foreach (Weapon weapon in weaponSlots)
+        {
+            if (weapon.weaponType == weaponType)
+                return weapon;
+        }
+
+        return null;
+    }
+    
     public Weapon CurrentWeapon() => currentWeapon;
 
     public Weapon BackupWeapon()
@@ -191,14 +212,7 @@ public class PlayerWeaponController : MonoBehaviour
     }
     
     public Transform GunPoint() => player.weaponVisuals.CurrentWeaponModel().gunPoint;
-
-    // private void OnDrawGizmos()
-    // {
-    //     Gizmos.DrawLine(weaponHolder.position, weaponHolder.position + weaponHolder.forward * 25);
-    //     
-    //     Gizmos.color = Color.yellow;
-    //     Gizmos.DrawLine(GunPoint().position, GunPoint().position + BulletDirection() * 25);
-    // }
+    
     
     #region Input Events
     
