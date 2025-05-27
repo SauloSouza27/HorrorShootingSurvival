@@ -44,7 +44,7 @@ public virtual void Interaction()
         if (playerInteraction == null)
             return;
         
-        playerInteraction.interactables.Add(this);
+        playerInteraction.GetInteractables().Add(this);
         playerInteraction.UpdateClosestInteractable();
     }
 
@@ -55,7 +55,7 @@ public virtual void Interaction()
         if (playerInteraction == null)
             return;
         
-        playerInteraction.interactables.Remove(this);
+        playerInteraction.GetInteractables().Remove(this);
         playerInteraction.UpdateClosestInteractable();
     }
 }

@@ -55,6 +55,8 @@ public class Weapon
 
     private float lastSpreadUpdateTime;
     private float spreadCooldown = 1;
+    
+    public Weapon_Data WeaponData {get; private set;} // serves as default weapon data
 
     public Weapon(Weapon_Data weaponData)
     {
@@ -80,6 +82,8 @@ public class Weapon
         burstActive = weaponData.burstActive;
         burstBulletPerShot = weaponData.burstBulletPerShot;
         BurstFireDelay = weaponData.burstFireDelay;
+
+        this.WeaponData = weaponData;
     }
 
     #region Spread methods

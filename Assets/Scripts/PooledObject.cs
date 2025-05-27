@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PooledObject : MonoBehaviour
-{
-    public GameObject OriginalPrefab { get; set; }
+{ 
+    public GameObject originalPrefab;
 }

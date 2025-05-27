@@ -29,6 +29,8 @@ public class PlayerWeaponController : MonoBehaviour
     [Header("Inventory")] 
     [SerializeField] private List<Weapon> weaponSlots;
 
+    [SerializeField] private GameObject weaponPickupPrefab;
+
     private const int MaxSlots = 2;
 
     [SerializeField] public AmmoCount ammoCount; // Referência à HUD
@@ -73,10 +75,8 @@ public class PlayerWeaponController : MonoBehaviour
         UpdateHUD();
     }
 
-    public void PickupWeapon(Weapon_Data newWeaponData)
+    public void PickupWeapon(Weapon newWeapon)
     {
-        Weapon newWeapon = new Weapon(newWeaponData);
-
         if (WeaponInSlots(newWeapon.weaponType) != null)
         {
             WeaponInSlots(newWeapon.weaponType).totalReserveAmmo += newWeapon.bulletsInMagazine;
@@ -89,6 +89,8 @@ public class PlayerWeaponController : MonoBehaviour
 
             player.weaponVisuals.SwitchOffWeaponModels();
             weaponSlots[weaponIndex] = newWeapon;
+            
+            CreateWeaponOnTheGround();
             EquipWeapon(weaponIndex);
             return;
         }
@@ -102,10 +104,18 @@ public class PlayerWeaponController : MonoBehaviour
         if (HasOnlyOneWeapon())
             return;
 
+        CreateWeaponOnTheGround();
+
         weaponSlots.Remove(currentWeapon);
         EquipWeapon(0);
     }
-    
+
+    private void CreateWeaponOnTheGround()
+    {
+        GameObject droppedWeapon = ObjectPool.instance.GetObject(weaponPickupPrefab);
+        droppedWeapon.GetComponent<PickupWeapon>()?.SetupPickupWeapon(currentWeapon, transform);
+    }
+
     public void SetWeaponReady(bool ready) => weaponReady = ready;
     public bool WeaponReady() => weaponReady;
     
