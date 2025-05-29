@@ -1,32 +1,37 @@
 using System;
 using UnityEngine;
+
 public enum AimSource
 {
     None,
-    Manual,     // From toggle/hold input
-    Shoot       // Temporarily from shooting
+    Manual,     // Aiming controlled by player input (toggle or hold)
+    Shoot       // Temporary aiming triggered by shooting action
 }
+
 public class Player : MonoBehaviour
 {
-    public static Player instance;
-
+    public static Player instance; // Singleton instance for easy global access
+    
+    // Core player component references
     public PlayerControls controls { get; private set; }
     public PlayerAim aim { get; private set; }
     public PlayerMovement movement { get; private set; }
     public PlayerWeaponController weapon { get; private set; }
-    
     public PlayerWeaponVisuals weaponVisuals { get; private set; }
-    
     public PlayerInteraction interaction { get; private set; }
     
+    // Track if player is aiming manually (toggle/hold) or auto (temporarily from shooting)
     private bool isManuallyAiming = false;
     private bool isAutoAiming = false;
+    
+    // Returns true if player is currently aiming by any means
     public bool IsAiming => isManuallyAiming || isAutoAiming;
 
     private void Awake()
     {
         instance = this;
         controls = new PlayerControls();
+        // Cache references to required components on this GameObject
         aim = GetComponent<PlayerAim>();
         movement = GetComponent<PlayerMovement>();
         weapon = GetComponent<PlayerWeaponController>();
@@ -34,18 +39,21 @@ public class Player : MonoBehaviour
         interaction = GetComponent<PlayerInteraction>();
     }
     
+    // Sets manual aiming state and enables/disables aim laser accordingly
     public void SetManualAiming(bool aiming)
     {
         isManuallyAiming = aiming;
         aim?.SetAimLaserEnabled(IsAiming);
     }
 
+    // Toggles manual aiming on/off and updates aim laser state
     public void ToggleManualAiming()
     {
         isManuallyAiming = !isManuallyAiming;
         aim?.SetAimLaserEnabled(IsAiming);
     }
 
+    // Sets automatic aiming state (e.g. when shooting) and updates aim laser
     public void SetAutoAiming(bool aiming)
     {
         isAutoAiming = aiming;
@@ -53,7 +61,7 @@ public class Player : MonoBehaviour
     }
 
     public bool IsManuallyAiming() => isManuallyAiming;
-    
+
     private void OnEnable()
     {
         controls.Enable();
