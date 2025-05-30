@@ -89,7 +89,7 @@ public class PlayerAim : MonoBehaviour
                 transform.position +
                 new Vector3(controllerAimInput.x, 0, controllerAimInput.y).normalized * 10f; // Project 10 units away.
 
-            aimPosition.y = transform.position.y + 1; // Set aim height relative to player.
+            aimPosition.y = transform.position.y + 1.6f; // Set aim height relative to player.
             lastValidAimPosition = aimPosition;
             return aimPosition;
         }
@@ -102,7 +102,7 @@ public class PlayerAim : MonoBehaviour
             {
                 // Aim point is on the raycast hit, with Y fixed relative to player.
                 Vector3 aimPosition =
-                    new Vector3(hitInfo.point.x, transform.position.y + 1, hitInfo.point.z);
+                    new Vector3(hitInfo.point.x, transform.position.y + 1.6f, hitInfo.point.z);
 
                 lastValidAimPosition = aimPosition;
                 return aimPosition;

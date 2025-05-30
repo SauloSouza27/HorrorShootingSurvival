@@ -674,7 +674,7 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 1, g: 1, b: 1, a: 0.46666667}
       key1: {r: 1, g: 1, b: 1, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
@@ -693,9 +693,9 @@ LineRenderer:
       atime0: 0
       atime1: 60138
       atime2: 65535
-      atime3: 0
-      atime4: 0
-      atime5: 0
+      atime3: 65535
+      atime4: 65535
+      atime5: 65535
       atime6: 0
       atime7: 0
       m_Mode: 0
@@ -1107,7 +1107,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6627155680972026927}
-  - component: {fileID: 8855228223910755967}
   m_Layer: 8
   m_Name: LeftHand_TargetTransform
   m_TagString: Untagged
@@ -1130,18 +1129,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9069157077386154085}
   m_LocalEulerAnglesHint: {x: -18.4, y: -56.7, z: 36.1}
---- !u!114 &8855228223910755967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1784889565301425545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc230dbcb340a434d9a7038cf5ea6c6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1789479659663483670
 GameObject:
   m_ObjectHideFlags: 0
@@ -2129,13 +2116,14 @@ GameObject:
   - component: {fileID: 7646653769179972056}
   - component: {fileID: 1594177591469952030}
   - component: {fileID: 3439380592302623771}
+  - component: {fileID: 2551867383925094655}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3183377978126733539
 Transform:
   m_ObjectHideFlags: 0
@@ -2147,7 +2135,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7777322245410812970}
   - {fileID: 6156815223350084831}
@@ -2243,66 +2231,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67722754edc61774bb49d3a32aadb6ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultWeaponData: {fileID: 11400000, guid: d3c4b5a45a80716498815b5da71c3741, type: 2}
   currentWeapon:
     weaponType: 0
     shootType: 0
-    bulletsPerShot: 0
     fireRate: 1
-    burstAvailable: 0
     burstActive: 0
-    burstBulletPerShot: 0
-    burstFireRate: 0
-    burstFireDelay: 0.1
     bulletsInMagazine: 0
     magazineCapacity: 0
     totalReserveAmmo: 50
-    reloadSpeed: 1
-    equipSpeed: 1
-    gunDistance: 4
-    baseSpread: 0
-    currentSpread: 2
-    spreadIncreaseRate: 0.15
   bulletPrefab: {fileID: 8631206729925312349, guid: 991573d126fac2b4a85595d7fe13b65b, type: 3}
   bulletSpeed: 50
   weaponHolder: {fileID: 2130129067505082266}
   aim: {fileID: 7777322245410812970}
   weaponSlots:
-  - weaponType: 0
-    shootType: 0
-    bulletsPerShot: 0
-    fireRate: 1
-    burstAvailable: 0
+  - weaponType: 2
+    shootType: 1
+    fireRate: 12
     burstActive: 0
-    burstBulletPerShot: 0
-    burstFireRate: 0
-    burstFireDelay: 0.1
-    bulletsInMagazine: 100
-    magazineCapacity: 15
-    totalReserveAmmo: 30
-    reloadSpeed: 1
-    equipSpeed: 1
-    gunDistance: 4
-    baseSpread: 0
-    currentSpread: 2
-    spreadIncreaseRate: 0.15
-  - weaponType: 0
-    shootType: 0
-    bulletsPerShot: 0
-    fireRate: 1
-    burstAvailable: 0
-    burstActive: 0
-    burstBulletPerShot: 0
-    burstFireRate: 0
-    burstFireDelay: 0.1
-    bulletsInMagazine: 6
-    magazineCapacity: 6
-    totalReserveAmmo: 12
-    reloadSpeed: 1
-    equipSpeed: 1
-    gunDistance: 4
-    baseSpread: 0
-    currentSpread: 2
-    spreadIncreaseRate: 0.15
+    bulletsInMagazine: 30
+    magazineCapacity: 30
+    totalReserveAmmo: 500
+  weaponPickupPrefab: {fileID: 5282804390393103520, guid: e90f25430279ed841adb9689bb93e4ab, type: 3}
+  ammoCount: {fileID: 0}
 --- !u!143 &1594177591469952030
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2346,6 +2297,18 @@ MonoBehaviour:
   leftHandIkWeightIncreaseRate: 2.5
   leftHandIK: {fileID: 3597256771897377648}
   leftHandIK_Target: {fileID: 9206878721844636587}
+--- !u!114 &2551867383925094655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3169910867731254980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42b9dbf03a05c864aaec0dac6d373414, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3253589061446076055
 GameObject:
   m_ObjectHideFlags: 0
@@ -2621,7 +2584,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6319653732963679488}
-  - component: {fileID: 1220091261158770568}
   m_Layer: 8
   m_Name: LeftHand_TargetTransform
   m_TagString: Untagged
@@ -2644,18 +2606,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 289361954176384696}
   m_LocalEulerAnglesHint: {x: -18.4, y: -56.7, z: 36.1}
---- !u!114 &1220091261158770568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3665444864958608094}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc230dbcb340a434d9a7038cf5ea6c6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3675072104741043622
 GameObject:
   m_ObjectHideFlags: 0
@@ -3004,7 +2954,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3604959269352107135}
-  - component: {fileID: 5926126319551108210}
   m_Layer: 8
   m_Name: LeftHand_TargetTransform
   m_TagString: Untagged
@@ -3027,18 +2976,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4105549046767058065}
   m_LocalEulerAnglesHint: {x: 23.545, y: -108.072, z: 37.846}
---- !u!114 &5926126319551108210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4453246147923677336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc230dbcb340a434d9a7038cf5ea6c6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4534105714335673689
 GameObject:
   m_ObjectHideFlags: 0
@@ -3828,7 +3765,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4006458733003657784}
-  - component: {fileID: 1967075265982600477}
   m_Layer: 8
   m_Name: LeftHand_TargetTransform
   m_TagString: Untagged
@@ -3851,18 +3787,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3435513194356192589}
   m_LocalEulerAnglesHint: {x: -18.4, y: -56.7, z: 36.1}
---- !u!114 &1967075265982600477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6015535657445453771}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc230dbcb340a434d9a7038cf5ea6c6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6449218251856499474
 GameObject:
   m_ObjectHideFlags: 0
@@ -4588,7 +4512,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8071480691899920483}
-  - component: {fileID: 419176023950405891}
   m_Layer: 8
   m_Name: LeftHand_TargetTransform
   m_TagString: Untagged
@@ -4611,18 +4534,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5380718098300483309}
   m_LocalEulerAnglesHint: {x: -18.4, y: -56.7, z: 36.1}
---- !u!114 &419176023950405891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7947419134971390508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc230dbcb340a434d9a7038cf5ea6c6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8009400725387756657
 GameObject:
   m_ObjectHideFlags: 0

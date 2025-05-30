@@ -54,8 +54,6 @@ public class PlayerWeaponController : MonoBehaviour
         {
             StartCoroutine(HandleShootWithAutoAim());
         }
-        
-        
     }
 
     private void EquipStartingWeapon()
