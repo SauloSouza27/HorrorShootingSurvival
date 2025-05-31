@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class EnemyBase : LivingEntity
 {
@@ -14,14 +15,25 @@ public class EnemyBase : LivingEntity
     [SerializeField] private float maxattack = 3;
     [SerializeField] private float startAttack = 1;
     public float multiplier = 1;
+
     [Header("Wave Data")]
     public int avaible_from_wave = 0;
     public int avaible_to_wave = 100;
 
+    private NavMeshAgent agent;
 
     public override void SetLivingEntity()
     {
 
+    }
+
+    private void Awake()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        if (agent != null)
+        {
+            agent.speed = speed;
+        }
     }
 
     public void AdjustEnemyToWave()
@@ -33,22 +45,33 @@ public class EnemyBase : LivingEntity
         Set_Health(startHealth * multiplier);
         Set_Attack(startAttack * multiplier);
         Set_Speed(startSpeed * multiplier);
+
+        if (agent != null)
+        {
+            agent.speed = speed;
+        }
     }
 
     public void Update()
     {
-        if (Vector3.Distance(this.transform.position, Player.instance.transform.position) > .9f)
+        if (Player.instance != null)
         {
-            this.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-            this.transform.LookAt(Player.instance.transform.position);
-            this.transform.position += transform.forward * speed * Time.deltaTime;
-        }
-        else
-        {
-            Die();
-        }
+            float distance = Vector3.Distance(this.transform.position, Player.instance.transform.position);
 
+            if (distance > 0.9f)
+            {
+                if (agent != null && agent.enabled)
+                {
+                    agent.SetDestination(Player.instance.transform.position);
+                }
+            }
+            else
+            {
+                Die();
+            }
+        }
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Bullet"))
@@ -118,6 +141,11 @@ public class EnemyBase : LivingEntity
                 speed = 0;
             }
         }
+
+        if (agent != null)
+        {
+            agent.speed = speed;
+        }
     }
 
     public void Set_Health(float count)
@@ -175,6 +203,11 @@ public class EnemyBase : LivingEntity
         else
         {
             speed = maxspeed;
+        }
+
+        if (agent != null)
+        {
+            agent.speed = speed;
         }
     }
 
