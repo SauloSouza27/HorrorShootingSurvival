@@ -17,8 +17,9 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         visualController.MaximizeRigWeight();
         weaponController.CurrentWeapon().ReloadBullets();
-        
+
         weaponController.SetWeaponReady(true);
+        weaponController.UpdateHUD();
     }
 
     public void ReturnRig()

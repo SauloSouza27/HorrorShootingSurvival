@@ -264,7 +264,7 @@ public class PlayerWeaponController : MonoBehaviour
             player.SetAutoAiming(false);
     }
     //Atualiza a HUD com a quantidade de munição
-    private void UpdateHUD()
+    public void UpdateHUD()
     {
         if (ammoCount != null)
         {
