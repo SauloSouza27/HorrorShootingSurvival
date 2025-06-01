@@ -148,6 +148,7 @@ public class PlayerWeaponController : MonoBehaviour
         if (currentWeapon.BurstActivated())
         {
             StartCoroutine(BurstFire());
+            UpdateHUD();
             return;
         }
 
