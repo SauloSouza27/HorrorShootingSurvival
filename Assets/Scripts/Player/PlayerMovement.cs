@@ -55,6 +55,9 @@ public class PlayerMovement : MonoBehaviour
         
         animator.SetBool("isAiming", player.IsAiming);
         
+        float result = player.IsAiming ? 1f : 0f;
+        animator.SetFloat("isAimingFloat", result, .1f, Time.deltaTime );
+        
         float xVelocity = Vector3.Dot(movementDirection.normalized, transform.right);
         float zVelocity = Vector3.Dot(movementDirection.normalized, transform.forward);
 

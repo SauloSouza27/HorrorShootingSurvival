@@ -1997,6 +1997,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4687158811436264045, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: isToggleAim
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4906365836593033238, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
       propertyPath: ammoCount
       value: 
@@ -4327,7 +4331,7 @@ MonoBehaviour:
   currentWave: 1
   spawn_multiplier: 1.2
   strength_multiplier: 1.1
-  start_summons: 10
+  start_summons: 0
   current_summons: 10
   summons_spawned: 0
   current_summons_alive: 0

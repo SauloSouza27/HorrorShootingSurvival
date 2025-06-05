@@ -6,9 +6,11 @@ public class PlayerAnimationEvents : MonoBehaviour
 {
     private PlayerWeaponVisuals visualController;
     private PlayerWeaponController weaponController;
+    private Player player;
 
     private void Start()
     {
+        player = GetComponentInParent<Player>();
         visualController = GetComponentInParent<PlayerWeaponVisuals>();
         weaponController = GetComponentInParent<PlayerWeaponController>();
     }
