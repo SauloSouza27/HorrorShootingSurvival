@@ -73,6 +73,10 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            ScoreManager.Instance.AddBulletHitPoints();
+        }
         tr.Clear();
         CreateImpactFx(collision);
         ObjectPool.instance.ReturnObject(0, gameObject);
