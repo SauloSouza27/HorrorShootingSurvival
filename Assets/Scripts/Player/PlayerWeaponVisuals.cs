@@ -15,11 +15,11 @@ public class PlayerWeaponVisuals : MonoBehaviour
     [Header("Rig")] 
     [SerializeField] private float rigWeightIncreaseRate;
     private bool shouldIncrease_RigWeight;
-    public Rig rig;
+    private Rig rig;
     
     [Header("Left hand IK")]
     [SerializeField] private float leftHandIkWeightIncreaseRate;
-    [SerializeField] public TwoBoneIKConstraint leftHandIK;
+    [SerializeField] private TwoBoneIKConstraint leftHandIK;
     [SerializeField] private Transform leftHandIK_Target;
     private bool shouldIncrease_LeftHandIKWeight;
 
@@ -34,25 +34,12 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
     private void Update()
     {
-        if (player.IsAiming)
-        {
-            MaximizeRigWeight();
-            MaximizeWeightToLeftHandIK();
-        }
-        else
-        {
-            rig.weight = 0f;
-            leftHandIK.weight = 0f;
-        }
         UpdateRigWeight();
         UpdateLeftHandIKWeight();
     }
 
-    public void PlayFireAnimation()
-    {
-        animator.SetTrigger("Fire");
-    }
-
+    public void PlayFireAnimation() => animator.SetTrigger("Fire");
+    
     public void PlayReloadAnimation()
     {
         float reloadSpeed = player.weapon.CurrentWeapon().ReloadSpeed;
@@ -179,20 +166,6 @@ public class PlayerWeaponVisuals : MonoBehaviour
     }
     
     #endregion
-    
-    public void UpdateAimingState()
-    {
-        if (!player.IsAiming)
-        {
-            leftHandIK.weight = 0;
-            rig.weight = 0f;
-        }
-        else
-        {
-            MaximizeRigWeight();
-            MaximizeWeightToLeftHandIK();
-        }
-    }
     
 }
 

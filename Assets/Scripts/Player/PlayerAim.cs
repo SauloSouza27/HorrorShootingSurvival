@@ -21,9 +21,6 @@ public class PlayerAim : MonoBehaviour
     private bool isAimingToggled = false; // Note: This field is declared but not currently used.
 
     //[SerializeField] private float sensitivity;
-    
-    private bool wasAiming; // Tracks previous frame's aiming state.
-    
 
     private void Start()
     {
@@ -32,7 +29,6 @@ public class PlayerAim : MonoBehaviour
         player = GetComponent<Player>();
 
         AssignInputEvents(); 
-        wasAiming = player.IsAiming;
     }
 
 
@@ -45,20 +41,6 @@ public class PlayerAim : MonoBehaviour
         {
             UpdateAimLaser(); // Refresh the aim laser visuals if the player is aiming.
         }
-        
-        // ✳️ Detect transition from aiming → not aiming (entered default)
-        if (wasAiming && !player.IsAiming)
-        {
-            OnEnterDefaultState();
-        }
-
-        // ✳️ Detect transition from not aiming → aiming (entered aiming state)
-        if (!wasAiming && player.IsAiming)
-        {
-            OnEnterAimingState();
-        }
-
-        wasAiming = player.IsAiming;
     }
 
     // Updates the position, direction, and appearance of the aim laser.
@@ -167,12 +149,6 @@ public class PlayerAim : MonoBehaviour
                 player.SetManualAiming(false);
             };
         }
-        else
-        {
-            controls["ActivateAim"].canceled += ctx =>
-            {
-            };
-        }
 
         
         controls["Aim"].performed += ctx =>
@@ -195,15 +171,5 @@ public class PlayerAim : MonoBehaviour
             controllerAimInput = Vector2.zero;
             mouseAimInput = Vector2.zero;
         };
-    }
-    
-    private void OnEnterAimingState()
-    {
-        //player.OnEnterAimingState();
-    }
-
-    private void OnEnterDefaultState()
-    {
-        //player.OnEnterDefaultState();
     }
 }

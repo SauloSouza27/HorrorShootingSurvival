@@ -61,20 +61,6 @@ public class Player : MonoBehaviour
     }
 
     public bool IsManuallyAiming() => isManuallyAiming;
-    
-    // public void OnEnterAimingState()
-    // {
-    //     Debug.Log("Player: Entered aiming state");
-    //     weaponVisuals.MaximizeRigWeight();
-    //     weaponVisuals.MaximizeWeightToLeftHandIK();
-    // }
-    //
-    // public void OnEnterDefaultState()
-    // {
-    //     Debug.Log("Player: Returned to default state");
-    //     weaponVisuals.leftHandIK.weight = 0;
-    //     weaponVisuals.rig.weight = 0f;
-    // }
 
     private void OnEnable()
     {
