@@ -94,6 +94,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Swap Weapon",
+                    "type": "Button",
+                    "id": "96e84ea6-c757-4ba0-a6a8-36cf4b62b185",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -287,7 +296,7 @@
                 {
                     "name": "",
                     "id": "d0906a6d-060d-40a1-b59b-76d902c04662",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Controller",
@@ -352,11 +361,33 @@
                 },
                 {
                     "name": "",
+                    "id": "e00fce64-7bbb-4b15-af5c-e62b1480ab0e",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Controller",
+                    "action": "Drop Current Weapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "b7f86ec4-8d4d-4968-b537-efdc45d7fe06",
                     "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard1",
+                    "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "684ede40-9923-4550-b1c6-a961855dc409",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Controller",
                     "action": "Reload",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -369,6 +400,28 @@
                     "processors": "",
                     "groups": ";Keyboard1",
                     "action": "Interaction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dc23d80d-604e-42da-8a57-b6f6ead5106a",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interaction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "394dccd0-b2d9-4e2b-8a38-f3863f71930a",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard1;Controller",
+                    "action": "Swap Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

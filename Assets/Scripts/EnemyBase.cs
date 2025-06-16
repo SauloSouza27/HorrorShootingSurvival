@@ -174,6 +174,7 @@ public class EnemyBase : LivingEntity
             else
             {
                 currentHealth = 0; 
+                Die(); 
             }
         }
         else

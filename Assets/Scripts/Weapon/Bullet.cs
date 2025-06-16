@@ -18,7 +18,7 @@ public class Bullet : MonoBehaviour
     private Vector3 startPosition;
     private float flyDistance;
     private bool bulletDisabled;
-    public int bulletDamage; // This damage value will be passed to the enemy
+    public int bulletDamage { get; private set; } // This damage value will be passed to the enemy
 
     private void Awake()
     {
@@ -28,16 +28,16 @@ public class Bullet : MonoBehaviour
         trailRenderer = GetComponent<TrailRenderer>();
     }
 
-    public void BulletSetup(int bulletDamage,float flyDistance)
+    public void BulletSetup(int bulletDamage1,float flyDistance1)
     {
         bulletDisabled = false;
         cd.enabled = true;
         meshRenderer.enabled = true;
-        this.bulletDamage = bulletDamage;
+        this.bulletDamage = bulletDamage1;
 
         trailRenderer.time = .04f;
         startPosition = transform.position;
-        this.flyDistance = flyDistance + .5f; // remember this
+        this.flyDistance = flyDistance1 + .5f; // remember this
     }
 
     private void FixedUpdate()
