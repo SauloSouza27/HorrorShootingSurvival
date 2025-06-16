@@ -2571,6 +2571,7 @@ MonoBehaviour:
   weaponData: {fileID: 11400000, guid: 14516013c8e758b4d93aa62addd486cf, type: 2}
   weapon:
     weaponType: 0
+    bulletDamage: 0
     shootType: 0
     fireRate: 0
     burstActive: 0
@@ -4083,6 +4084,7 @@ MonoBehaviour:
   weaponData: {fileID: 11400000, guid: e9594823525f08a4fa83417f232961b3, type: 2}
   weapon:
     weaponType: 0
+    bulletDamage: 0
     shootType: 0
     fireRate: 0
     burstActive: 0
@@ -4278,6 +4280,7 @@ GameObject:
   - component: {fileID: 1359236373}
   - component: {fileID: 1359236374}
   - component: {fileID: 1359236375}
+  - component: {fileID: 1359236376}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -4348,6 +4351,19 @@ MonoBehaviour:
   time_between_summons: 0.8
   use_time_between_summons: 1
   newWaveData: []
+--- !u!114 &1359236376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359236372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 444603e53cb1df44f85198d5eeba3bf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentScore: 0
 --- !u!1 &1458331404
 GameObject:
   m_ObjectHideFlags: 0
@@ -10354,6 +10370,7 @@ MonoBehaviour:
   weaponData: {fileID: 11400000, guid: d3c4b5a45a80716498815b5da71c3741, type: 2}
   weapon:
     weaponType: 0
+    bulletDamage: 0
     shootType: 0
     fireRate: 0
     burstActive: 0

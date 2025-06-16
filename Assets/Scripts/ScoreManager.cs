@@ -6,7 +6,7 @@ public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance { get; private set; }
     
-    private int currentScore = 0;
+    [SerializeField] private int currentScore = 0;
     
     private const int BULLET_HIT_POINTS = 10;
     

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Weapon_Shotgun_D
   m_EditorClassIdentifier: 
   weaponName: Shotgun
+  bulletDamage: 10
   weaponType: 3
   shootType: 0
   bulletsPerShot: 10

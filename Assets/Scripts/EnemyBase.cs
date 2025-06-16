@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
-using UnityEngine.AI;
+using TMPro; 
+using UnityEngine.UI; 
+using UnityEngine.AI; 
 
 public class EnemyBase : LivingEntity
 {
@@ -24,7 +24,7 @@ public class EnemyBase : LivingEntity
 
     public override void SetLivingEntity()
     {
-
+     
     }
 
     private void Awake()
@@ -71,7 +71,7 @@ public class EnemyBase : LivingEntity
             }
         }
     }
-
+    
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Bullet"))
@@ -80,15 +80,29 @@ public class EnemyBase : LivingEntity
             if (bullet != null)
             {
                 Debug.Log($"{gameObject.name} hit by bullet. Damage: {bullet.bulletDamage}. Health before hit: {currentHealth}");
-
+                
                 TakeDamage(bullet.bulletDamage);
             }
         }
     }
-
+    
     public void TakeDamage(float damage)
     {
-        Set_Health(currentHealth - damage);
+        float newHealth = currentHealth - damage;
+        
+        if (ScoreManager.Instance != null)
+        {
+            // Award bullet hit points ONLY if the enemy will NOT die from this damage
+            // If newHealth is greater than 0, the enemy is still alive after this hit.
+            if (newHealth > 0)
+            {
+                ScoreManager.Instance.AddBulletHitPoints();
+            }
+            // If newHealth is 0 or less, it means this hit kills the enemy.
+            // Kill points will be handled in the Die() method, which Set_Health will call.
+        }
+        
+        Set_Health(newHealth);
     }
 
     public void Adjust_Attack(float ammount)
@@ -148,6 +162,7 @@ public class EnemyBase : LivingEntity
         }
     }
 
+    
     public void Set_Health(float count)
     {
         if (count <= maxHealth)
@@ -158,8 +173,7 @@ public class EnemyBase : LivingEntity
             }
             else
             {
-                currentHealth = 0;
-                Die();
+                currentHealth = 0; 
             }
         }
         else
@@ -210,11 +224,19 @@ public class EnemyBase : LivingEntity
             agent.speed = speed;
         }
     }
-
+    
     public override void Die()
     {
+        
         base.Die();
+        
         WaveSystem.instance.current_summons_dead++;
         WaveSystem.instance.current_summons_alive--;
+
+        // Award kill points when the enemy dies
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.AddKillPoints();
+        }
     }
 }

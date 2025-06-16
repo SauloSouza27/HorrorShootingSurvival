@@ -22,6 +22,8 @@ public enum ShootType
 public class Weapon
 {
     public WeaponType weaponType;
+    
+    public int bulletDamage;
 
     [Header("Shooting specific")] 
     public ShootType shootType;
@@ -60,6 +62,7 @@ public class Weapon
 
     public Weapon(Weapon_Data weaponData)
     {
+        bulletDamage = weaponData.bulletDamage;
         bulletsInMagazine = weaponData.bulletsInMagazine;
         magazineCapacity = weaponData.magazineCapacity;
         totalReserveAmmo = weaponData.totalReserveAmmo;
