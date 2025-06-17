@@ -240,4 +240,7 @@ public class EnemyBase : LivingEntity
             ScoreManager.Instance.AddKillPoints();
         }
     }
+    
+    //IDamageable damageable = targetPlayer.gameObject.GetComponent<IDamageable>();
+    //damageable?.TakeDamage();
 }

@@ -29,9 +29,13 @@ public class ZombieEnemy : MonoBehaviour
         float distance = Vector3.Distance(transform.position, targetPlayer.transform.position);
         if (distance <= damageDistance)
         {
+            //IDamageable damageable = targetPlayer.gameObject.GetComponent<IDamageable>();
+            //damageable?.TakeDamage();
             KillPlayer();
         }
     }
+    
+    
 
     private void KillPlayer()
     {

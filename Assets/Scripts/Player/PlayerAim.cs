@@ -34,6 +34,9 @@ public class PlayerAim : MonoBehaviour
 
     private void Update()
     {
+        if (player.health.isDead)
+            return;
+        
         GetAimPosition(); 
         aim.position = lastValidAimPosition; 
 

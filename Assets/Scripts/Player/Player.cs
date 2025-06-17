@@ -19,6 +19,9 @@ public class Player : MonoBehaviour
     public PlayerWeaponController weapon { get; private set; }
     public PlayerWeaponVisuals weaponVisuals { get; private set; }
     public PlayerInteraction interaction { get; private set; }
+    public Ragdoll ragdoll { get; private set; }
+    public PlayerHealth health { get; private set; }
+    public Animator animator { get; private set; }
     
     // Track if player is aiming manually (toggle/hold) or auto (temporarily from shooting)
     private bool isManuallyAiming = false;
@@ -31,7 +34,10 @@ public class Player : MonoBehaviour
     {
         instance = this;
         controls = new PlayerControls();
-        // Cache references to required components on this GameObject
+        
+        animator = GetComponentInChildren<Animator>();
+        ragdoll = GetComponent<Ragdoll>();
+        health = GetComponent<PlayerHealth>();
         aim = GetComponent<PlayerAim>();
         movement = GetComponent<PlayerMovement>();
         weapon = GetComponent<PlayerWeaponController>();

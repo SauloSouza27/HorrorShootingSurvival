@@ -11,6 +11,8 @@ public class Bullet : MonoBehaviour
     private Rigidbody rb;
     private MeshRenderer meshRenderer;
     private TrailRenderer trailRenderer;
+    
+    private Player player;
 
     
     private TrailRenderer tr => GetComponentInChildren<TrailRenderer>();
@@ -22,6 +24,7 @@ public class Bullet : MonoBehaviour
 
     private void Awake()
     {
+        player = GetComponent<Player>();
         cd = GetComponent<BoxCollider>();
         rb = GetComponent<Rigidbody>();
         meshRenderer = GetComponent<MeshRenderer>();
@@ -74,6 +77,9 @@ public class Bullet : MonoBehaviour
     
     private void OnCollisionEnter(Collision collision)
     {
+        //IDamageable damageable = player.gameObject.GetComponentInChildren<IDamageable>();
+        //damageable?.TakeDamage();
+        
         if (collision.gameObject.CompareTag("Enemy"))
         {
             EnemyBase enemy = collision.gameObject.GetComponent<EnemyBase>();
