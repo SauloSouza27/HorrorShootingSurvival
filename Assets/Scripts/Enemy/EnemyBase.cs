@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -67,11 +68,18 @@ public class EnemyBase : LivingEntity
             }
             else
             {
-                Die();
+                //Die();
             }
         }
     }
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other.name);
+        IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
+        damageable?.TakeDamage();
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Bullet"))

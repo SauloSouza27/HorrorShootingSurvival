@@ -77,4 +77,15 @@ public class Player : MonoBehaviour
     {
         controls.Disable();
     }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.collider.CompareTag("Enemy"))
+        {
+            Debug.Log("Hit");
+        }
+        
+        IDamageable damageable = hit.gameObject.GetComponent<IDamageable>();
+        damageable?.TakeDamage();
+    }
 }
