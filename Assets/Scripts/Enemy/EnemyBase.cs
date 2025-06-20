@@ -73,12 +73,7 @@ public class EnemyBase : LivingEntity
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log(other.name);
-        IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
-        damageable?.TakeDamage();
-    }
+    
 
     private void OnCollisionEnter(Collision collision)
     {
