@@ -203,15 +203,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startHealth: 100
-  maxHealth: 100
+  maxHealth: 200
   currentHealth: 100
   speed: 1500
   attack: 1
-  maxspeed: 15
+  maxspeed: 6
   startSpeed: 5
   maxattack: 3
   startAttack: 1
-  multiplier: 1
+  multiplier: 1.1
   avaible_from_wave: 0
   avaible_to_wave: 100
 --- !u!65 &5339575538574583434
@@ -227,7 +227,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -248,7 +248,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Weapon_Pistol_D
   m_EditorClassIdentifier: 
   weaponName: Deagle
-  bulletDamage: 5
+  bulletDamage: 20
   weaponType: 0
   shootType: 0
   bulletsPerShot: 0
