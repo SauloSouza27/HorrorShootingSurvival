@@ -12,14 +12,14 @@ public class WaveSystem : MonoBehaviour
     }
 
     [Header("Main Settings")]
-    [SerializeField] private int currentWave = 1;
+    public int currentWave = 1;
     [Header("Increase Settings")]
     [SerializeField] private float spawn_multiplier = 1.2f;
     [SerializeField] private float strength_multiplier = 1.1f;
     [Header("Start Settings")]
     [SerializeField] private int start_summons = 10;
-    [SerializeField] private int current_summons = 10;
-    [SerializeField] private int summons_spawned = 0;
+    public int current_summons = 10;
+    public int summons_spawned = 0;
     public int current_summons_alive = 0;
     public int current_summons_dead = 0;
     private int current_max_summons_once = 30;
