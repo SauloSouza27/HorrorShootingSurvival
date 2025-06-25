@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenu;
+    public GameObject pauseSettings;
+    public GameObject pauseButtons;
     public bool isPaused;
 
     void Start()
@@ -36,6 +38,8 @@ public class PauseMenu : MonoBehaviour
 
     public void ResumeGame()
     {
+        pauseSettings.SetActive(false);
+        pauseButtons.SetActive(true);
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
