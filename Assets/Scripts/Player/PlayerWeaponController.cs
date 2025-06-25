@@ -67,6 +67,10 @@ public class PlayerWeaponController : MonoBehaviour
         {
             StartCoroutine(HandleShootWithAutoAim());
         }
+        if (currentWeapon != null && currentWeapon.CanReload() && WeaponReady() && currentWeapon.bulletsInMagazine == 0)
+        {
+            Reload();
+        }
     }
 
     private void EquipStartingWeapon()
