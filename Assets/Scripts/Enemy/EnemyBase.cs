@@ -23,6 +23,8 @@ public class EnemyBase : LivingEntity
 
     private NavMeshAgent agent;
 
+    private bool isDead = false;
+
     public override void SetLivingEntity()
     {
      
@@ -88,23 +90,21 @@ public class EnemyBase : LivingEntity
             }
         }
     }
-    
+
     public void TakeDamage(float damage)
     {
+        if (isDead) return;
+
         float newHealth = currentHealth - damage;
-        
+
         if (ScoreManager.Instance != null)
         {
-            // Award bullet hit points ONLY if the enemy will NOT die from this damage
-            // If newHealth is greater than 0, the enemy is still alive after this hit.
             if (newHealth > 0)
             {
                 ScoreManager.Instance.AddBulletHitPoints();
             }
-            // If newHealth is 0 or less, it means this hit kills the enemy.
-            // Kill points will be handled in the Die() method, which Set_Health will call.
         }
-        
+
         Set_Health(newHealth);
     }
 
@@ -228,22 +228,23 @@ public class EnemyBase : LivingEntity
             agent.speed = speed;
         }
     }
-    
+
     public override void Die()
     {
-        
+        if (isDead) return;
+        isDead = true;
+
         base.Die();
-        
+
         WaveSystem.instance.current_summons_dead++;
         WaveSystem.instance.current_summons_alive--;
 
-        // Award kill points when the enemy dies
         if (ScoreManager.Instance != null)
         {
             ScoreManager.Instance.AddKillPoints();
         }
     }
-    
+
     //IDamageable damageable = targetPlayer.gameObject.GetComponent<IDamageable>();
     //damageable?.TakeDamage();
 }
