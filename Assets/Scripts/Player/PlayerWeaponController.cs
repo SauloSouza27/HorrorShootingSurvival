@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine; // Removed Unity.VisualScripting as it wasn't explicitly used and might not be needed.
 using UnityEngine.InputSystem; // Essential for Unity's new Input System
 
@@ -44,6 +45,8 @@ public class PlayerWeaponController : MonoBehaviour
 
     [SerializeField] public AmmoCount ammoCount; // Referência à HUD
 
+    [SerializeField] private Image weaponSprite;
+
     private void Start()
     {
         player = GetComponent<Player>();
@@ -59,6 +62,7 @@ public class PlayerWeaponController : MonoBehaviour
             currentWeapon.bulletsInMagazine = currentWeapon.totalReserveAmmo; // This line seems to initialize ammo incorrectly; usually, it's magazineCapacity
         }
         UpdateHUD();
+        UpdateWeaponSprite();
     }
 
     private void Update()
@@ -110,6 +114,7 @@ public class PlayerWeaponController : MonoBehaviour
 
         player.weaponVisuals.PlayWeaponEquipAnimation(); // Play equip animation
         UpdateHUD(); // Update HUD to reflect new weapon's ammo
+        UpdateWeaponSprite(); // Update HUD to show new weapon's icon
     }
 
     public void PickupWeapon(Weapon newWeapon)
@@ -210,7 +215,7 @@ public class PlayerWeaponController : MonoBehaviour
         FireSingleBullet();
         UpdateHUD();
     }
-    
+
     private void FireSingleBullet()
     {
         if (currentWeapon.weaponType != WeaponType.Shotgun)
@@ -305,10 +310,10 @@ public class PlayerWeaponController : MonoBehaviour
         // NEW: Controller Weapon Swap Input
         // You will need to add an Action named "SwapWeaponController" in your Input Action Asset
         // and bind it to the desired controller button (e.g., Gamepad Left Shoulder or Face Button)
-        
+
         controls["Swap Weapon"].performed += ctx => SwapWeaponController();
-        
-        
+
+
     }
 
     /// <summary>
@@ -356,6 +361,14 @@ public class PlayerWeaponController : MonoBehaviour
         {
             ammoCount.UpdateAmmo(0, 0, 0);
         }
+    }
+
+    public void UpdateWeaponSprite()
+    {
+        if (currentWeapon.weaponIcon != null && currentWeapon != null)
+        {
+            weaponSprite.sprite = currentWeapon.weaponIcon;
+        } 
     }
 
     #endregion

@@ -22,6 +22,7 @@ public enum ShootType
 public class Weapon
 {
     public WeaponType weaponType;
+    public Sprite weaponIcon;
     
     public int bulletDamage;
 
@@ -62,6 +63,7 @@ public class Weapon
 
     public Weapon(Weapon_Data weaponData)
     {
+        weaponIcon = weaponData.weaponIcon;
         bulletDamage = weaponData.bulletDamage;
         bulletsInMagazine = weaponData.bulletsInMagazine;
         magazineCapacity = weaponData.magazineCapacity;

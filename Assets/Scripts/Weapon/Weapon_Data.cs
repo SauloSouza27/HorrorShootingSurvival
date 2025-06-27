@@ -5,6 +5,8 @@ public class Weapon_Data : ScriptableObject
 {
     public string weaponName;
 
+    public Sprite weaponIcon;
+
     [Header("Bullet info")]
     public int bulletDamage;
     

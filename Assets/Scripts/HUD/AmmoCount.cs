@@ -9,7 +9,7 @@ public class AmmoCount : MonoBehaviour
 
     public void UpdateAmmo(int currentAmmo, int maxAmmo, int totalAmmo)
     {
-        ammoText.text = "Ammo: " + currentAmmo + " / " + maxAmmo + " (" + totalAmmo + ")";
+        ammoText.text = currentAmmo + " / " + maxAmmo + " (" + totalAmmo + ")";
     }
 
 }
