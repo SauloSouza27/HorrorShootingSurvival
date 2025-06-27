@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum AimSource
 {
@@ -29,7 +30,7 @@ public class Player : MonoBehaviour
     
     // Returns true if player is currently aiming by any means
     public bool IsAiming => isManuallyAiming || isAutoAiming;
-
+    
     private void Awake()
     {
         instance = this;
@@ -44,6 +45,8 @@ public class Player : MonoBehaviour
         weaponVisuals = GetComponent<PlayerWeaponVisuals>();
         interaction = GetComponent<PlayerInteraction>();
     }
+    
+    
     
     // Sets manual aiming state and enables/disables aim laser accordingly
     public void SetManualAiming(bool aiming)

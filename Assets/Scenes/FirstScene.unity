@@ -2449,13 +2449,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 207586770534553672, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
-      propertyPath: m_TagString
-      value: Player
+    - target: {fileID: 555803341548196543, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: playerColors.Array.data[1].b
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3226561549836088344, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
-      propertyPath: m_TagString
-      value: Player
+    - target: {fileID: 555803341548196543, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: playerColors.Array.data[1].g
+      value: 0.3921566
+      objectReference: {fileID: 0}
+    - target: {fileID: 555803341548196543, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: playerColors.Array.data[1].r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3799707232156698982, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2509,18 +2513,6 @@ PrefabInstance:
       propertyPath: weaponSprite
       value: 
       objectReference: {fileID: 317101627}
-    - target: {fileID: 5706721091917057683, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
-      propertyPath: m_Height
-      value: 1.98
-      objectReference: {fileID: 0}
-    - target: {fileID: 5706721091917057683, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
-      propertyPath: m_Radius
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5706721091917057683, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
-      propertyPath: m_Center.y
-      value: 1.01
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
