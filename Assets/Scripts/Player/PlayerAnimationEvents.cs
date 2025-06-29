@@ -16,6 +16,7 @@ public class PlayerAnimationEvents : MonoBehaviour
     public void ReloadIsOver()
     {
         visualController.MaximizeRigWeight();
+        visualController.reload = false;
         weaponController.CurrentWeapon().ReloadBullets();
 
         weaponController.SetWeaponReady(true);
@@ -29,7 +30,13 @@ public class PlayerAnimationEvents : MonoBehaviour
     }
     public void WeaponEquipIsOver()
     {
+        visualController.reload = false;
         weaponController.SetWeaponReady(true);
+    }
+
+    public void FireIsOver()
+    {
+        visualController.reload = false;
     }
 
     public void SwitchOnWeaponModel() => visualController.SwitchOnCurrentWeaponModel();
