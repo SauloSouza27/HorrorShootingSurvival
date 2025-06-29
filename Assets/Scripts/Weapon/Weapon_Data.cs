@@ -5,6 +5,7 @@ public class Weapon_Data : ScriptableObject
 {
     public string weaponName;
 
+    public float weaponPrice;
     public Sprite weaponIcon;
 
     [Header("Bullet info")]

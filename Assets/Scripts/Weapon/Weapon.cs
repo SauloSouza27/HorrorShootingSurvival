@@ -24,6 +24,8 @@ public class Weapon
     public WeaponType weaponType;
     public Sprite weaponIcon;
     
+    public float weaponPrice;
+    
     public int bulletDamage;
 
     [Header("Shooting specific")] 
@@ -63,6 +65,7 @@ public class Weapon
 
     public Weapon(Weapon_Data weaponData)
     {
+        weaponPrice = weaponData.weaponPrice;
         weaponIcon = weaponData.weaponIcon;
         bulletDamage = weaponData.bulletDamage;
         bulletsInMagazine = weaponData.bulletsInMagazine;
