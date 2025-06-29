@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerHealth: HealthController
 {
     private Player player;
+    public GameObject defeatScreen;
     
     public bool isDead { get; private set; }
 
@@ -26,5 +27,6 @@ public class PlayerHealth: HealthController
         isDead = true;
         player.animator.enabled = false;
         player.ragdoll.RagdollActive(true);
+        defeatScreen.SetActive(true);
     }
 }

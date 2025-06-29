@@ -45,6 +45,11 @@ public class PauseMenu : MonoBehaviour
         isPaused = false;
     }
 
+    public void Retry()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     public void GoToMainMenu()
     {
         ResumeGame();
