@@ -45,9 +45,12 @@ public class Player : MonoBehaviour
         weaponVisuals = GetComponent<PlayerWeaponVisuals>();
         interaction = GetComponent<PlayerInteraction>();
     }
-    
-    
-    
+
+    private void Update()
+    {
+        Debug.Log("player aiming?" + IsAiming);
+    }
+
     // Sets manual aiming state and enables/disables aim laser accordingly
     public void SetManualAiming(bool aiming)
     {

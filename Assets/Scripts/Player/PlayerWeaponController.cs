@@ -75,6 +75,7 @@ public class PlayerWeaponController : MonoBehaviour
         {
             Reload();
         }
+        
     }
 
     private void EquipStartingWeapon()
@@ -119,6 +120,8 @@ public class PlayerWeaponController : MonoBehaviour
 
     public void PickupWeapon(Weapon newWeapon)
     {
+        int playerScore = ScoreManager.Instance.GetCurrentScore();
+        
         if (WeaponInSlots(newWeapon.weaponType) != null)
         {
             WeaponInSlots(newWeapon.weaponType).totalReserveAmmo += newWeapon.bulletsInMagazine;

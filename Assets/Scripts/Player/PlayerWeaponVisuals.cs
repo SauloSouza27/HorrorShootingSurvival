@@ -36,6 +36,11 @@ public class PlayerWeaponVisuals : MonoBehaviour
     {
         UpdateRigWeight();
         UpdateLeftHandIKWeight();
+
+        if (!player.IsAiming)
+        {
+            ReduceRigWeight();
+        }
     }
 
     public void PlayFireAnimation() => animator.SetTrigger("Fire");
