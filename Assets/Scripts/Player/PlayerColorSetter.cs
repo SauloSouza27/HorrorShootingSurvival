@@ -25,8 +25,7 @@ public class PlayerColorSetter : MonoBehaviour
         {
             Renderer renderer = part.GetComponent<Renderer>();
             if (renderer == null) continue;
-
-            Debug.Log($"Coloring {part.name} for player {playerIndex} with color {color}");
+            
 
             MaterialPropertyBlock block = new MaterialPropertyBlock();
             renderer.GetPropertyBlock(block, part.targetMaterialIndex);

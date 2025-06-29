@@ -4,6 +4,7 @@ using System;
 
 public class ScoreManager : MonoBehaviour
 {
+    
     public static ScoreManager Instance { get; private set; }
     
     [SerializeField] private int currentScore = 0;
@@ -30,7 +31,6 @@ public class ScoreManager : MonoBehaviour
     public void AddBulletHitPoints()
     {
         currentScore += BULLET_HIT_POINTS;
-        Debug.Log($"Bullet hit! Current Score: {currentScore}");
         // Invoke the event to notify subscribers about the score change
         OnScoreChanged?.Invoke(currentScore);
     }
@@ -38,7 +38,6 @@ public class ScoreManager : MonoBehaviour
     public void AddKillPoints()
     {
         currentScore += KILL_POINTS;
-        Debug.Log($"Enemy killed! Current Score: {currentScore}");
         // Invoke the event to notify subscribers about the score change
         OnScoreChanged?.Invoke(currentScore);
     }
@@ -46,7 +45,6 @@ public class ScoreManager : MonoBehaviour
     public void ResetScore()
     {
         currentScore = 0;
-        Debug.Log("Score reset to 0.");
         OnScoreChanged?.Invoke(currentScore);
     }
     

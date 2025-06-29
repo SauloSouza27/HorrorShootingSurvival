@@ -84,7 +84,6 @@ public class EnemyBase : LivingEntity
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
             if (bullet != null)
             {
-                Debug.Log($"{gameObject.name} hit by bullet. Damage: {bullet.bulletDamage}. Health before hit: {currentHealth}");
                 
                 TakeDamage(bullet.bulletDamage);
             }
