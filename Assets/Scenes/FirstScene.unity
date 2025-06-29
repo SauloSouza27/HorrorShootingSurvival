@@ -639,7 +639,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 5000
   field of view: 60.000004
   orthographic: 0
   orthographic size: 5
@@ -7739,9 +7739,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 720d8cc63a4e2944d93d5f5c7077fc33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInputManager: {fileID: 0}
-  playerHUD: {fileID: 4908416628936230845, guid: 22b8489f52093c14d8582a7aac9b1b3a, type: 3}
-  playerHUDSlots: {fileID: 859105546}
 --- !u!4 &1498758687
 Transform:
   m_ObjectHideFlags: 0
@@ -10521,7 +10518,7 @@ MonoBehaviour:
     FieldOfView: 60.000004
     OrthographicSize: 5
     NearClipPlane: 0.3
-    FarClipPlane: 1000
+    FarClipPlane: 5000
     Dutch: 0
     ModeOverride: 0
     PhysicalProperties:
