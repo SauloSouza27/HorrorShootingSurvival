@@ -23,6 +23,8 @@ public class PlayerWeaponVisuals : MonoBehaviour
     [SerializeField] private Transform leftHandIK_Target;
     private bool shouldIncrease_LeftHandIKWeight;
 
+    private int animationIndex;
+    public bool reload;
     private void Start()
     {
         player = GetComponent<Player>();
@@ -30,6 +32,8 @@ public class PlayerWeaponVisuals : MonoBehaviour
         rig = GetComponentInChildren<Rig>();
         weaponModels = GetComponentsInChildren<WeaponModel>(true);
         backupWeaponModels = GetComponentsInChildren<BackupWeaponModel>(true);
+        
+        animationIndex = ((int)CurrentWeaponModel().holdType);
     }
 
     private void Update()
@@ -37,17 +41,29 @@ public class PlayerWeaponVisuals : MonoBehaviour
         UpdateRigWeight();
         UpdateLeftHandIKWeight();
 
-        if (!player.IsAiming)
+        if (!player.IsAiming && !reload)
         {
             ReduceRigWeight();
+            animator.SetLayerWeight(animationIndex, 0.0001f);
+        }
+        else
+        {
+            animator.SetLayerWeight(animationIndex, 1);
         }
     }
 
-    public void PlayFireAnimation() => animator.SetTrigger("Fire");
-    
+    public void PlayFireAnimation()
+    {
+        reload = true;
+        animator.SetTrigger("Fire");
+    }
+
     public void PlayReloadAnimation()
     {
+        reload = true;
         float reloadSpeed = player.weapon.CurrentWeapon().ReloadSpeed;
+        
+        animator.SetLayerWeight(animationIndex, 1f);
         
         animator.SetFloat("ReloadSpeed", reloadSpeed);
         animator.SetTrigger("Reload");
@@ -56,6 +72,8 @@ public class PlayerWeaponVisuals : MonoBehaviour
     
     public void PlayWeaponEquipAnimation()
     {
+        reload = true;
+        animator.SetLayerWeight(animationIndex, 1f);
         EquipType equipType = CurrentWeaponModel().equipType;
         
         float equipSpeed = player.weapon.CurrentWeapon().EquipSpeed;
@@ -69,7 +87,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
     
     public void SwitchOnCurrentWeaponModel()
     {
-        int animationIndex = ((int)CurrentWeaponModel().holdType);
+        animationIndex = ((int)CurrentWeaponModel().holdType);
 
         SwitchOffWeaponModels();
         SwitchOffBackupWeaponModels();
