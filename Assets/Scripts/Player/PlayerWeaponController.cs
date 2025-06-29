@@ -45,7 +45,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     [SerializeField] public AmmoCount ammoCount; // Referência à HUD
 
-    [SerializeField] private Image weaponSprite;
+    [SerializeField] public Image weaponSprite;
 
     private void Start()
     {
