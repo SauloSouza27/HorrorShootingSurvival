@@ -25,6 +25,10 @@ public class EnemyBase : LivingEntity
 
     private bool isDead = false;
 
+    private GameObject targetPlayer;
+    private float checkInterval = 0.5f;
+    private float checkTimer = 0f;
+
     public override void SetLivingEntity()
     {
      
@@ -57,25 +61,52 @@ public class EnemyBase : LivingEntity
 
     public void Update()
     {
-        if (Player.instance != null)
-        {
-            float distance = Vector3.Distance(this.transform.position, Player.instance.transform.position);
+        checkTimer -= Time.deltaTime;
 
-            if (distance > 0.9f)
+        if (checkTimer <= 0f)
+        {
+            targetPlayer = GetClosestPlayer();
+            checkTimer = checkInterval;
+        }
+
+        if (targetPlayer == null) return;
+
+        float distance = Vector3.Distance(transform.position, targetPlayer.transform.position);
+
+        if (distance > 0.9f)
+        {
+            if (agent != null && agent.enabled)
             {
-                if (agent != null && agent.enabled)
-                {
-                    agent.SetDestination(Player.instance.transform.position);
-                }
-            }
-            else
-            {
-                //Die();
+                agent.SetDestination(targetPlayer.transform.position);
             }
         }
+        else
+        {
+            // Die(); 
+        }
+    }
+    private GameObject GetClosestPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        if (players.Length == 0) return null;
+
+        GameObject closest = null;
+        float minDistance = Mathf.Infinity;
+
+        foreach (GameObject player in players)
+        {
+            float distance = Vector3.Distance(transform.position, player.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closest = player;
+            }
+        }
+
+        return closest;
     }
 
-    
+
 
     private void OnCollisionEnter(Collision collision)
     {
