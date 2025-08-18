@@ -8540,9 +8540,9 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 2
-  m_Color: {r: 0.8352941, g: 0.73702425, b: 0, a: 1}
-  m_Intensity: 10
-  m_Range: 6
+  m_Color: {r: 0.92586327, g: 0.96851027, b: 0.9716981, a: 1}
+  m_Intensity: 8.27
+  m_Range: 7.7
   m_SpotAngle: 68.83963
   m_InnerSpotAngle: 51.635414
   m_CookieSize: 10

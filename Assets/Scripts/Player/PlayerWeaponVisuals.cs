@@ -41,15 +41,15 @@ public class PlayerWeaponVisuals : MonoBehaviour
         UpdateRigWeight();
         UpdateLeftHandIKWeight();
 
-        if (!player.IsAiming && !reload)
-        {
-            ReduceRigWeight();
-            animator.SetLayerWeight(animationIndex, 0.0001f);
-        }
-        else
-        {
-            animator.SetLayerWeight(animationIndex, 1);
-        }
+        //if (!player.IsAiming && !reload)
+        //{
+        //    ReduceRigWeight();
+        //    animator.SetLayerWeight(animationIndex, 0.0001f);
+        //}
+        //else
+        //{
+        //    animator.SetLayerWeight(animationIndex, 1);
+        //}
     }
 
     public void PlayFireAnimation()
@@ -63,7 +63,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
         reload = true;
         float reloadSpeed = player.weapon.CurrentWeapon().ReloadSpeed;
         
-        animator.SetLayerWeight(animationIndex, 1f);
+        //animator.SetLayerWeight(animationIndex, 1f);
         
         animator.SetFloat("ReloadSpeed", reloadSpeed);
         animator.SetTrigger("Reload");
@@ -73,7 +73,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
     public void PlayWeaponEquipAnimation()
     {
         reload = true;
-        animator.SetLayerWeight(animationIndex, 1f);
+        //animator.SetLayerWeight(animationIndex, 1f);
         EquipType equipType = CurrentWeaponModel().equipType;
         
         float equipSpeed = player.weapon.CurrentWeapon().EquipSpeed;
