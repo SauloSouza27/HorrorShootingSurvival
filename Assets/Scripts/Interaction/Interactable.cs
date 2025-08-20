@@ -15,6 +15,13 @@ public class Interactable : MonoBehaviour
 
         defaultMaterial = mesh.sharedMaterial;
     }
+    
+    // In Interactable.cs
+    public virtual void Interaction()
+    {
+        Interaction(null); // calls new signature
+    }
+
 
     protected void UpdateMeshAndMaterial(MeshRenderer newMesh)
     {
@@ -22,9 +29,9 @@ public class Interactable : MonoBehaviour
         defaultMaterial = newMesh.sharedMaterial;
     }
 
-public virtual void Interaction()
+    public virtual void Interaction(Player player)
     {
-        Debug.Log("Interacted with " + gameObject.name);
+        Debug.Log("Interacted with " + gameObject.name + " by " + player.name);
     }
     
     public void HighlightActive(bool active)

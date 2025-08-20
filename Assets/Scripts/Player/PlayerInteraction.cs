@@ -17,9 +17,11 @@ public class PlayerInteraction : MonoBehaviour
 
     private void InteractWithClosest()
     {
+        var player = GetComponent<Player>(); // ⬆️ add
+        
         closestInteractable?.Interaction();
         interactables.Remove(closestInteractable);
-        
+
         UpdateClosestInteractable();
     }
 

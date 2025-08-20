@@ -105,38 +105,38 @@ public class EnemyBase : LivingEntity
 
         return closest;
     }
-
-
-
+    
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Bullet"))
-        {
-            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
-            if (bullet != null)
-            {
-                
-                TakeDamage(bullet.bulletDamage);
-            }
-        }
+        
     }
 
-    public void TakeDamage(float damage)
+
+    public void TakeDamage(float damage, Player owner)
     {
         if (isDead) return;
 
         float newHealth = currentHealth - damage;
 
-        if (ScoreManager.Instance != null)
+        // ✅ Award hit points to correct player
+        if (owner != null && newHealth > 0)
         {
-            if (newHealth > 0)
+            var stats = owner.GetComponent<PlayerStats>();
+            if (stats != null)
             {
-                ScoreManager.Instance.AddBulletHitPoints();
+                stats.AddPoints(10); // hit reward
             }
         }
 
         Set_Health(newHealth);
+
+        if (currentHealth <= 0)
+        {
+            Die(owner); // credit kill
+        }
     }
+
+
 
     public void Adjust_Attack(float ammount)
     {
@@ -259,7 +259,7 @@ public class EnemyBase : LivingEntity
         }
     }
 
-    public override void Die()
+    public void Die(Player killer)
     {
         if (isDead) return;
         isDead = true;
@@ -269,11 +269,22 @@ public class EnemyBase : LivingEntity
         WaveSystem.instance.current_summons_dead++;
         WaveSystem.instance.current_summons_alive--;
 
-        if (ScoreManager.Instance != null)
+        if (killer != null)
         {
-            ScoreManager.Instance.AddKillPoints();
+            var stats = killer.GetComponent<PlayerStats>();
+            if (stats != null)
+            {
+                stats.AddPoints(100); // kill reward
+            }
         }
     }
+
+    
+    public override void Die()
+    {
+        Die(null); // default if no killer info
+    }
+
 
     //IDamageable damageable = targetPlayer.gameObject.GetComponent<IDamageable>();
     //damageable?.TakeDamage();

@@ -11,37 +11,38 @@ public class Bullet : MonoBehaviour
     private Rigidbody rb;
     private MeshRenderer meshRenderer;
     private TrailRenderer trailRenderer;
-    
-    private Player player;
 
-    
-    private TrailRenderer tr => GetComponentInChildren<TrailRenderer>();
+    // ✅ Add this
+    public Player Owner { get; private set; }
 
     private Vector3 startPosition;
     private float flyDistance;
     private bool bulletDisabled;
-    public int bulletDamage { get; private set; } // This damage value will be passed to the enemy
+    public int bulletDamage { get; private set; }
 
     private void Awake()
     {
-        player = GetComponent<Player>();
         cd = GetComponent<BoxCollider>();
         rb = GetComponent<Rigidbody>();
         meshRenderer = GetComponent<MeshRenderer>();
         trailRenderer = GetComponent<TrailRenderer>();
     }
 
-    public void BulletSetup(int bulletDamage1,float flyDistance1)
+    // ✅ Extend to also take "Player owner"
+    public void BulletSetup(int bulletDamage1, float flyDistance1, Player owner)
     {
         bulletDisabled = false;
         cd.enabled = true;
         meshRenderer.enabled = true;
+
         this.bulletDamage = bulletDamage1;
+        this.Owner = owner; // 🔥 Store who fired the bullet
 
         trailRenderer.time = .04f;
         startPosition = transform.position;
-        this.flyDistance = flyDistance1 + .5f; // remember this
+        this.flyDistance = flyDistance1 + .5f;
     }
+
 
     private void FixedUpdate()
     {
@@ -54,7 +55,7 @@ public class Bullet : MonoBehaviour
     {
         if (trailRenderer.time < 0)
         {
-            tr.Clear();
+            trailRenderer.Clear();
             ReturnBulletToPool();
         }
     }
@@ -77,23 +78,20 @@ public class Bullet : MonoBehaviour
     
     private void OnCollisionEnter(Collision collision)
     {
-        //IDamageable damageable = player.gameObject.GetComponentInChildren<IDamageable>();
-        //damageable?.TakeDamage();
-        
         if (collision.gameObject.CompareTag("Enemy"))
         {
             EnemyBase enemy = collision.gameObject.GetComponent<EnemyBase>();
-            
             if (enemy != null)
             {
-                enemy.TakeDamage(bulletDamage);
+                enemy.TakeDamage(bulletDamage, Owner); // ✅ shooter passed here
             }
         }
-        // Always clear the trail and return the bullet to the pool after a collision
-        tr.Clear();
+
+        trailRenderer.Clear();
         CreateImpactFx(collision);
         ObjectPool.instance.ReturnObject(0, gameObject);
     }
+
 
     private void ReturnBulletToPool() => ObjectPool.instance.ReturnObject(0, gameObject);
 

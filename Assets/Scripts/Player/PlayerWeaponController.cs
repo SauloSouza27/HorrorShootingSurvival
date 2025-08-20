@@ -229,14 +229,18 @@ public class PlayerWeaponController : MonoBehaviour
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
 
         Bullet bulletScript = newBullet.GetComponent<Bullet>();
-        // Assuming BulletSetup signature is (float damage, float distance)
-        bulletScript.BulletSetup(currentWeapon.bulletDamage, currentWeapon.BulletDistance);
+        if (bulletScript != null)
+        {
+            // ✅ Pass player as owner
+            bulletScript.BulletSetup(currentWeapon.bulletDamage, currentWeapon.BulletDistance, player);
+        }
 
         Vector3 bulletsDirection = currentWeapon.ApplySpread(BulletDirection());
 
         rbNewBullet.mass = REFERENCE_BULLET_SPEED / bulletSpeed;
         rbNewBullet.linearVelocity = bulletsDirection * bulletSpeed;
     }
+
 
     private void Reload()
     {

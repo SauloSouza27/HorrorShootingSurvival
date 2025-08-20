@@ -1,6 +1,8 @@
 
 using UnityEngine;
-using System; 
+using System;
+using System.Collections.Generic;
+
 
 public class ScoreManager : MonoBehaviour
 {
@@ -12,6 +14,10 @@ public class ScoreManager : MonoBehaviour
     private const int BULLET_HIT_POINTS = 10;
     
     private const int KILL_POINTS = 80;
+    
+    private Dictionary<int, int> playerScores = new Dictionary<int, int>(); // ✏️ replace currentScore
+
+    public event Action<int,int> OnPlayerScoreChanged; // (playerIndex, newScore)
 
     // Event that can be subscribed to by UI elements to update the score display
     public event Action<int> OnScoreChanged;
@@ -28,19 +34,29 @@ public class ScoreManager : MonoBehaviour
         }
     }
     
-    public void AddBulletHitPoints()
+    public void RegisterPlayer(int playerIndex, int initialScore = 0) // ⬆️ new
     {
-        currentScore += BULLET_HIT_POINTS;
-        // Invoke the event to notify subscribers about the score change
-        OnScoreChanged?.Invoke(currentScore);
+        playerScores[playerIndex] = initialScore;
+        OnPlayerScoreChanged?.Invoke(playerIndex, initialScore);
+    }
+
+    public void AddScoreForPlayer(int playerIndex, int amount) // ⬆️ new
+    {
+        if (!playerScores.ContainsKey(playerIndex)) playerScores[playerIndex] = 0;
+        playerScores[playerIndex] += amount;
+        OnPlayerScoreChanged?.Invoke(playerIndex, playerScores[playerIndex]);
     }
     
-    public void AddKillPoints()
+    public void AddBulletHitPoints(int playerIndex)
     {
-        currentScore += KILL_POINTS;
-        // Invoke the event to notify subscribers about the score change
-        OnScoreChanged?.Invoke(currentScore);
+        AddScoreForPlayer(playerIndex, 10);
     }
+
+    public void AddKillPoints(int playerIndex)
+    {
+        AddScoreForPlayer(playerIndex, 80);
+    }
+
     
     public void ResetScore()
     {
