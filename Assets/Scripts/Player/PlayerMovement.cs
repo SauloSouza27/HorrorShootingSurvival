@@ -118,6 +118,8 @@ public class PlayerMovement : MonoBehaviour
             verticalVelocity = -.5f;
         }
     }
+    
+
 
     private void AssignInputEvents()
     {

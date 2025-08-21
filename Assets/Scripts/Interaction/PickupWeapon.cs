@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PickupWeapon : Interactable
 {
+    public override bool RequiresPlayer => false;
     private PlayerWeaponController weaponController;
     [SerializeField] private Weapon_Data weaponData;
     [SerializeField] private Weapon weapon;
@@ -49,11 +50,10 @@ public class PickupWeapon : Interactable
             }
         }
     }
-
+    
     public override void Interaction()
     {
         weaponController.PickupWeapon(weapon);
-        
         ObjectPool.instance.ReturnObject(0, gameObject);
     }
 

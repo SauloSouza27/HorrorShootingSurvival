@@ -4,6 +4,7 @@ using UnityEngine;
 public class Interactable : MonoBehaviour
 {
     protected MeshRenderer mesh;
+    public virtual bool RequiresPlayer => false;
 
     [SerializeField] private Material highlightMaterial;
     protected Material defaultMaterial;
@@ -15,13 +16,20 @@ public class Interactable : MonoBehaviour
 
         defaultMaterial = mesh.sharedMaterial;
     }
-    
-    // In Interactable.cs
+
+    // Back-compat overload: still here if something calls it without a Player
     public virtual void Interaction()
     {
-        Interaction(null); // calls new signature
+        // Default behavior when NO player context is needed
+        Debug.Log("Interacted with " + gameObject.name);
     }
 
+    // ✅ Null-safe: no null deref when player is not provided
+    public virtual void Interaction(Player player)
+    {
+        // Default behavior when a player is passed in
+        Debug.Log("Interacted with " + gameObject.name + " by " + player?.name);
+    }
 
     protected void UpdateMeshAndMaterial(MeshRenderer newMesh)
     {
@@ -29,40 +37,27 @@ public class Interactable : MonoBehaviour
         defaultMaterial = newMesh.sharedMaterial;
     }
 
-    public virtual void Interaction(Player player)
-    {
-        Debug.Log("Interacted with " + gameObject.name + " by " + player.name);
-    }
-    
     public void HighlightActive(bool active)
     {
-        if (active)
-            mesh.material = highlightMaterial;
-        else
-        {
-            mesh.material = defaultMaterial;
-        }
+        mesh.material = active ? highlightMaterial : defaultMaterial;
     }
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        PlayerInteraction playerInteraction = other.GetComponent<PlayerInteraction>();
+        var playerInteraction = other.GetComponent<PlayerInteraction>();
+        if (playerInteraction == null) return;
 
-        if (playerInteraction == null)
-            return;
-        
         playerInteraction.GetInteractables().Add(this);
         playerInteraction.UpdateClosestInteractable();
     }
 
     protected virtual void OnTriggerExit(Collider other)
     {
-        PlayerInteraction playerInteraction = other.GetComponent<PlayerInteraction>();
+        var playerInteraction = other.GetComponent<PlayerInteraction>();
+        if (playerInteraction == null) return;
 
-        if (playerInteraction == null)
-            return;
-        
         playerInteraction.GetInteractables().Remove(this);
         playerInteraction.UpdateClosestInteractable();
     }
 }
+

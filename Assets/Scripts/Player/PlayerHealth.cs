@@ -1,10 +1,9 @@
 using UnityEngine;
 
-public class PlayerHealth: HealthController
+public class PlayerHealth : HealthController
 {
     private Player player;
     public GameObject defeatScreen;
-    
     public bool isDead { get; private set; }
 
     protected override void Awake()
@@ -13,9 +12,9 @@ public class PlayerHealth: HealthController
         player = GetComponent<Player>();
     }
 
-    protected void Start() // ⬆️ add override
+    protected void Start()
     {
-
+        // ensure maxHealth matches PlayerStats
         var stats = GetComponent<PlayerStats>();
         if (stats != null)
         {
@@ -24,7 +23,8 @@ public class PlayerHealth: HealthController
             healthBar.SetMaxHealth(maxHealth);
             healthBar.SetHealth(currentHealth);
 
-            stats.OnStatsChanged += OnPlayerStatsChanged; // ⬆️ subscribe
+            // subscribe to stats changes so HP updates if perk changes max health
+            stats.OnStatsChanged += OnPlayerStatsChanged;
         }
     }
 
@@ -32,7 +32,7 @@ public class PlayerHealth: HealthController
     {
         var stats = GetComponent<PlayerStats>();
         if (stats != null)
-            stats.OnStatsChanged -= OnPlayerStatsChanged; // ⬆️ unsubscribe
+            stats.OnStatsChanged -= OnPlayerStatsChanged;
     }
 
     private void OnPlayerStatsChanged()
@@ -42,7 +42,7 @@ public class PlayerHealth: HealthController
         SetMaxHealth(stats.MaxHealth, healToFull: false);
     }
 
-// ⬆️ new method
+    // Expose a method to adjust max health from PlayerStats
     public void SetMaxHealth(int newMax, bool healToFull = false)
     {
         maxHealth = newMax;
@@ -53,5 +53,21 @@ public class PlayerHealth: HealthController
 
         healthBar.SetMaxHealth(maxHealth);
         healthBar.SetHealth(currentHealth);
+    }
+
+    public override void ReduceHealth()
+    {
+        base.ReduceHealth();
+
+        if (ShouldDie())
+            Die();
+    }
+
+    private void Die()
+    {
+        isDead = true;
+        player.animator.enabled = false;
+        player.ragdoll.RagdollActive(true);
+        defeatScreen.SetActive(true);
     }
 }

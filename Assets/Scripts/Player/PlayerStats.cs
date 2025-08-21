@@ -17,7 +17,7 @@ public class PlayerStats : MonoBehaviour
 
     // 🔹 Currency
     [SerializeField] private int startingPoints = 500;
-    [SerializeField] private int currentPoints;
+    private int currentPoints;
 
     // 🔹 Base stats
     [Header("Base Stats")]

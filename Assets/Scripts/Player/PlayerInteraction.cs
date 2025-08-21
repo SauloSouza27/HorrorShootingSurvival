@@ -6,6 +6,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     private List<Interactable> interactables = new List<Interactable>();
     private Interactable closestInteractable;
+    
 
 
     private void Start()
@@ -17,13 +18,21 @@ public class PlayerInteraction : MonoBehaviour
 
     private void InteractWithClosest()
     {
-        var player = GetComponent<Player>(); // ⬆️ add
-        
-        closestInteractable?.Interaction();
-        interactables.Remove(closestInteractable);
+        if (closestInteractable == null) return;
 
+        var player = GetComponent<Player>();
+
+        if (closestInteractable.RequiresPlayer)
+            closestInteractable.Interaction(player);
+        else
+            closestInteractable.Interaction();
+
+        interactables.Remove(closestInteractable);
         UpdateClosestInteractable();
     }
+
+
+
 
     public void UpdateClosestInteractable()
     {

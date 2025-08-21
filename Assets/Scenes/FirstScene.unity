@@ -5629,6 +5629,14 @@ PrefabInstance:
       propertyPath: defeatScreen
       value: 
       objectReference: {fileID: 2074453860}
+    - target: {fileID: 7449679233253252038, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: runSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7449679233253252038, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: walkSpeed
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9248,6 +9256,11 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &899296226 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4238639499307447674, guid: 544949d7b7daeba4f93d45dfd2e4e8a8, type: 3}
+  m_PrefabInstance: {fileID: 16707583335540212}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &904374776
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23452,6 +23465,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3259866990721269288, guid: 544949d7b7daeba4f93d45dfd2e4e8a8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4238639499307447674, guid: 544949d7b7daeba4f93d45dfd2e4e8a8, type: 3}
       propertyPath: m_Name
       value: BuyPerkPlaceHolder
@@ -23460,16 +23477,59 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: feedc55c7b2305a43a7e7c05be6f75c4, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3259866990721269288, guid: 544949d7b7daeba4f93d45dfd2e4e8a8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4238639499307447674, guid: 544949d7b7daeba4f93d45dfd2e4e8a8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 16707583335540218}
+    - targetCorrespondingSourceObject: {fileID: 4238639499307447674, guid: 544949d7b7daeba4f93d45dfd2e4e8a8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 16707583335540217}
   m_SourcePrefab: {fileID: 100100000, guid: 544949d7b7daeba4f93d45dfd2e4e8a8, type: 3}
 --- !u!4 &16707583335540213 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 942092457547436746, guid: 544949d7b7daeba4f93d45dfd2e4e8a8, type: 3}
   m_PrefabInstance: {fileID: 16707583335540212}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &16707583335540217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899296226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd230e30b2fc98145b2f7b2c4cdec016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightMaterial: {fileID: 38168849951982358, guid: 86d50f2a91194514a88d1714dffb333b, type: 3}
+  perkType: 0
+  cost: 300
+--- !u!65 &16707583335540218
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899296226}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.4448912, y: 2, z: 1.7274159}
+  m_Center: {x: -0.0027909966, y: 4.255101e-25, z: 0.038991783}
 --- !u!4 &338258277382418484 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3638976694616041308, guid: 2da54de17b15e6148bee03b3bb4dfe81, type: 3}
