@@ -60,12 +60,16 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
     public void PlayReloadAnimation()
     {
-        reload = true;
-        float reloadSpeed = player.weapon.CurrentWeapon().ReloadSpeed;
+        float baseReloadSpeed = player.weapon.CurrentWeapon().ReloadSpeed;
+
+        // ⬇️ integrate Speed Cola multiplier
+        var stats = player.GetComponent<PlayerStats>();
+        float timeMult = stats != null ? Mathf.Max(0.01f, stats.ReloadSpeedMultiplier) : 1f;
         
-        //animator.SetLayerWeight(animationIndex, 1f);
-        
-        animator.SetFloat("ReloadSpeed", reloadSpeed);
+        // If ReloadSpeedMultiplier is TIME (0.5 = half the time), we invert it for speed:
+        float effectiveAnimSpeed = baseReloadSpeed * (1f / timeMult);
+
+        animator.SetFloat("ReloadSpeed", effectiveAnimSpeed);
         animator.SetTrigger("Reload");
         ReduceRigWeight();
     }

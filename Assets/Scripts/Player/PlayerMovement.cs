@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerControls controls;
     private CharacterController characterController;
     private Animator animator;
+    private PlayerStats stats;
 
     [Header("Movement Info")]
     [SerializeField] private float walkSpeed;
@@ -15,23 +16,38 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float runSpeed;
     [SerializeField] private float gravityScale = 9.81f;
     [SerializeField] private float turnSpeed;
+    
     private float verticalVelocity;
     private float speed;
     private Vector3 movementDirection;
     private Vector2 moveInput;
     private bool isRunning;
     
+    private float baseWalkSpeed;
+    private float baseAimingWalkSpeed;
+    private float baseRunSpeed;
+    
     private readonly int idleToWalkBlendTreeHash = Animator.StringToHash("idleToWalk");
 
     private void Start()
     {
         player = GetComponent<Player>();
-
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
+        stats = GetComponent<PlayerStats>(); // ⬅️ add
+
+        // cache base speeds
+        baseWalkSpeed = walkSpeed;
+        baseAimingWalkSpeed = aimingWalkSpeed;
+        baseRunSpeed = runSpeed;
+
+        // subscribe to stat changes
+        if (stats != null)
+            stats.OnStatsChanged += ApplySpeedFromStats;  // ⬅️ add
+
+        ApplySpeedFromStats(); // initialize with current multipliers
 
         speed = walkSpeed;
-
         AssignInputEvents();
     }
 
@@ -142,5 +158,22 @@ public class PlayerMovement : MonoBehaviour
             speed = walkSpeed;
             isRunning = false;
         };
+    }
+    
+    private void ApplySpeedFromStats()
+    {
+        float mult = stats != null ? stats.RunSpeedMultiplier : 1f;
+        walkSpeed = baseWalkSpeed * mult;
+        aimingWalkSpeed = baseAimingWalkSpeed * mult;
+        runSpeed = baseRunSpeed * mult;
+
+        // keep current "speed" coherent if we were running/walking already
+        speed = isRunning ? runSpeed : walkSpeed;
+    }
+    
+    private void OnDestroy()
+    {
+        if (stats != null)
+            stats.OnStatsChanged -= ApplySpeedFromStats; // ⬅️ add
     }
 }
