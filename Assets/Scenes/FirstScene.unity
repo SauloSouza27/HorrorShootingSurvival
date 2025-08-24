@@ -31888,7 +31888,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -151447854806567414, guid: de6255df0c8b5b9409957f74326cbbb8, type: 3}
       propertyPath: alturaMax
-      value: 3.34
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -151447854806567414, guid: de6255df0c8b5b9409957f74326cbbb8, type: 3}
       propertyPath: alturaMin
