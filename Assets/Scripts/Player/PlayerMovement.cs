@@ -53,8 +53,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (player.health.isDead)
+        if (player.health.isDead || player.health.isDowned)
             return;
+
         
         ApplyMovement();
         UpdateRotation();

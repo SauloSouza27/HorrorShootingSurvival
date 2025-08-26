@@ -11,7 +11,7 @@ public enum AimSource
 
 public class Player : MonoBehaviour
 {
-    public static Player instance; // Singleton instance for easy global access
+     // Singleton instance for easy global access
     
     // Core player component references
     public PlayerControls controls { get; private set; }
@@ -33,7 +33,6 @@ public class Player : MonoBehaviour
     
     private void Awake()
     {
-        instance = this;
         controls = new PlayerControls();
         
         animator = GetComponentInChildren<Animator>();

@@ -43,17 +43,16 @@ public class PlayerStats : MonoBehaviour
     private void Awake()
     {
         player = GetComponent<Player>();
+        ResetStats();                 // sets MaxHealth / multipliers from base values
+        currentPoints = startingPoints;
+        OnPointsChanged?.Invoke(currentPoints); // optional: update UI immediately
     }
 
     private void Start()
     {
-        currentPoints = startingPoints;
-
-        // Reset stats to base values at start
-        ResetStats();
-
-        // Register player with ScoreManager
-        ScoreManager.Instance.RegisterPlayer(player.GetComponent<UnityEngine.InputSystem.PlayerInput>().playerIndex, startingPoints);
+        var pi = GetComponent<UnityEngine.InputSystem.PlayerInput>();
+        if (ScoreManager.Instance != null && pi != null)
+            ScoreManager.Instance.RegisterPlayer(pi.playerIndex, currentPoints);
     }
 
     // 🔹 Reset stats to base values (called at start or on reset)
