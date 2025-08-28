@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PerkMachine : Interactable
 {
-    public override bool RequiresPlayer => true;
+    public bool RequiresPlayer => true;
     [SerializeField] private PerkType perkType;
     [SerializeField] private int cost = 3000;
 

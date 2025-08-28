@@ -15667,6 +15667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5749ffcef13583b459b8cf715c30ce43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mesh: {fileID: 0}
   highlightMaterial: {fileID: 38168849951982358, guid: 86d50f2a91194514a88d1714dffb333b, type: 3}
   weaponData: {fileID: 11400000, guid: 14516013c8e758b4d93aa62addd486cf, type: 2}
   weapon:
@@ -24403,6 +24404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5749ffcef13583b459b8cf715c30ce43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mesh: {fileID: 0}
   highlightMaterial: {fileID: 38168849951982358, guid: 86d50f2a91194514a88d1714dffb333b, type: 3}
   weaponData: {fileID: 11400000, guid: e9594823525f08a4fa83417f232961b3, type: 2}
   weapon:
@@ -26346,7 +26348,7 @@ MonoBehaviour:
   currentWave: 1
   spawn_multiplier: 1.2
   strength_multiplier: 1.1
-  start_summons: 10
+  start_summons: 2
   current_summons: 10
   summons_spawned: 0
   current_summons_alive: 0
@@ -43725,6 +43727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5749ffcef13583b459b8cf715c30ce43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mesh: {fileID: 0}
   highlightMaterial: {fileID: 38168849951982358, guid: 86d50f2a91194514a88d1714dffb333b, type: 3}
   weaponData: {fileID: 11400000, guid: d3c4b5a45a80716498815b5da71c3741, type: 2}
   weapon:

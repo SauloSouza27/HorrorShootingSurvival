@@ -110,7 +110,7 @@ public class PlayerHealth : HealthController
         while (t > 0f && isDowned && !isDead)
         {
             t -= Time.deltaTime;
-            reviveTarget?.UpdateBleedoutUI(t / bleedoutTime); // optional UI hook
+            //reviveTarget?.UpdateBleedoutUI(t / bleedoutTime); // optional UI hook
             yield return null;
         }
 

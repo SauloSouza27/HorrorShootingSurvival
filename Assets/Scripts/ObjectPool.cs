@@ -25,7 +25,7 @@ public class ObjectPool : MonoBehaviour
 
     private void Start()
     {
-        InitializeNewPool(weaponPickup);
+        //InitializeNewPool(weaponPickup);
     }
 
     public GameObject GetObject(GameObject prefab)

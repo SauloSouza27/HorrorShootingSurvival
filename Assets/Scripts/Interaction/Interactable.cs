@@ -1,45 +1,42 @@
-using System;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    protected MeshRenderer mesh;
-    public virtual bool RequiresPlayer => false;
+    // ⬇️ Use Renderer (works for MeshRenderer or SkinnedMeshRenderer)
+    [SerializeField] protected Renderer mesh;
 
     [SerializeField] private Material highlightMaterial;
     protected Material defaultMaterial;
 
+    // ⬇️ Let children disable highlight (ReviveTarget will override)
+    public virtual bool SupportsHighlight => true;
+
     private void Start()
     {
         if (mesh == null)
-            mesh = GetComponentInChildren<MeshRenderer>();
+            mesh = GetComponentInChildren<Renderer>(true); // safe lookup
 
-        defaultMaterial = mesh.sharedMaterial;
+        if (mesh != null)
+            defaultMaterial = mesh.sharedMaterial;
     }
 
-    // Back-compat overload: still here if something calls it without a Player
-    public virtual void Interaction()
-    {
-        // Default behavior when NO player context is needed
-        Debug.Log("Interacted with " + gameObject.name);
-    }
-
-    // ✅ Null-safe: no null deref when player is not provided
-    public virtual void Interaction(Player player)
-    {
-        // Default behavior when a player is passed in
-        Debug.Log("Interacted with " + gameObject.name + " by " + player?.name);
-    }
-
-    protected void UpdateMeshAndMaterial(MeshRenderer newMesh)
+    protected void UpdateMeshAndMaterial(Renderer newMesh)
     {
         mesh = newMesh;
-        defaultMaterial = newMesh.sharedMaterial;
+        defaultMaterial = newMesh != null ? newMesh.sharedMaterial : null;
     }
 
     public void HighlightActive(bool active)
     {
+        if (!SupportsHighlight || mesh == null || highlightMaterial == null || defaultMaterial == null)
+            return; // ⬅️ null-safe bailouts
+
         mesh.material = active ? highlightMaterial : defaultMaterial;
+    }
+
+    public virtual void Interaction(Player player)
+    {
+        Debug.Log($"Interacted with {name} by {player?.name}");
     }
 
     protected virtual void OnTriggerEnter(Collider other)
@@ -60,4 +57,3 @@ public class Interactable : MonoBehaviour
         playerInteraction.UpdateClosestInteractable();
     }
 }
-

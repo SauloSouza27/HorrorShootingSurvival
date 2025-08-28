@@ -15,24 +15,17 @@ public class PlayerInteraction : MonoBehaviour
 
         player.controls.Character.Interaction.performed += context => InteractWithClosest();
     }
-
+    
     private void InteractWithClosest()
     {
         if (closestInteractable == null) return;
 
         var player = GetComponent<Player>();
-
-        if (closestInteractable.RequiresPlayer)
-            closestInteractable.Interaction(player);
-        else
-            closestInteractable.Interaction();
+        closestInteractable.Interaction(player); // always pass the player
 
         interactables.Remove(closestInteractable);
         UpdateClosestInteractable();
     }
-
-
-
 
     public void UpdateClosestInteractable()
     {
