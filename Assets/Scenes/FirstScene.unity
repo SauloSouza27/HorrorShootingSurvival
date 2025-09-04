@@ -42954,7 +42954,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 2.452125}
+  m_Size: {x: 1, y: 1, z: 4.54}
   m_Center: {x: 4.9515325e-10, y: 6.793591e-26, z: 0.119873054}
 --- !u!4 &2172910922588678472
 Transform:
@@ -44241,14 +44241,15 @@ MonoBehaviour:
   bridgePlatform: {fileID: 3681182369588260899}
   liftHeight: 3
   liftTime: 1
+  bridgeWalkCollider: {fileID: 0}
   groundBlockers:
   - {fileID: 1484276097}
-  bridgeCollider: {fileID: 0}
-  enableBridgeColliderOnOpen: 1
   audioSrc: {fileID: 0}
   buyClip: {fileID: 0}
   openClip: {fileID: 0}
   deniedClip: {fileID: 0}
+  debugPriceUI: 1
+  uiWorldOffset: {x: 0, y: 2, z: 0}
 --- !u!4 &7759393251919431659
 Transform:
   m_ObjectHideFlags: 0
