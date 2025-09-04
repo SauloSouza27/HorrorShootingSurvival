@@ -11,6 +11,8 @@ public class PickupWeapon : Interactable
     private bool oldWeapon;
     private bool isClaimed;
     private Collider pickupCollider;
+    
+    public new virtual bool RemoveAfterInteract => true;
 
     private void Awake()
     {

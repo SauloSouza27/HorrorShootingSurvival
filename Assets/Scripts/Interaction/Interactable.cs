@@ -11,6 +11,7 @@ public class Interactable : MonoBehaviour
     // ⬇️ Let children disable highlight (ReviveTarget will override)
     public virtual bool SupportsHighlight => true;
     public virtual bool RemoveAfterInteract => false;
+    
     private void Start()
     {
         if (mesh == null)
