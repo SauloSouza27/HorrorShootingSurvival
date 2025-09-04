@@ -450,9 +450,10 @@ MonoBehaviour:
   maxHealth: 200
   currentHealth: 100
   speed: 1500
+  rotationSpeed: 2000
   attack: 1
-  maxspeed: 6
-  startSpeed: 5
+  maxspeed: 12
+  startSpeed: 8
   maxattack: 3
   startAttack: 1
   multiplier: 1.1

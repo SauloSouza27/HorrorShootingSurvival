@@ -10,6 +10,7 @@ public class EnemyBase : LivingEntity
 {
     [Header("Enemy Settings")]
     [SerializeField] private float speed = 1;
+    [SerializeField] private float rotationSpeed = 1200;
     [SerializeField] private float attack = 1;
     [SerializeField] private float maxspeed = 5;
     [SerializeField] private float startSpeed = 1;
@@ -40,6 +41,7 @@ public class EnemyBase : LivingEntity
         if (agent != null)
         {
             agent.speed = speed;
+            agent.angularSpeed = rotationSpeed;
         }
     }
 
