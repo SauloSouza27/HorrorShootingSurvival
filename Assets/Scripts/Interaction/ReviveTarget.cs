@@ -66,12 +66,12 @@ public class ReviveTarget : Interactable
 
     public override void Interaction(Player rescuer)
     {
-        if (!enabled || downedHealth == null || downedHealth.isDead || !downedHealth.isDowned)
-            return;
+        if (!enabled || downedHealth == null || downedHealth.isDead || !downedHealth.isDowned) return;
 
         if (reviveRoutine != null) StopCoroutine(reviveRoutine);
         reviveRoutine = StartCoroutine(ReviveProcess(rescuer));
     }
+
 
     private IEnumerator ReviveProcess(Player rescuer)
     {
@@ -83,7 +83,7 @@ public class ReviveTarget : Interactable
         float requiredTime = baseReviveTime * timeMult;
 
         var rescuerInput = rescuer.GetComponent<PlayerInput>();
-        if (rescuerInput == null) yield break;
+        if (rescuerInput == null) { CleanupReviveState(); yield break; }
 
         var interactAction = rescuerInput.actions["Interaction"];
         float t = 0f;
@@ -91,13 +91,14 @@ public class ReviveTarget : Interactable
         while (t < requiredTime)
         {
             if (!enabled || downedHealth == null || downedHealth.isDead || !downedHealth.isDowned)
+            {
+                CleanupReviveState();
                 yield break;
+            }
 
-            // cancel if rescuer moved too far
             float dist = Vector3.Distance(rescuer.transform.position, transform.position);
-            if (dist > reviveRadius) yield break;
+            if (dist > reviveRadius) { CleanupReviveState(); yield break; }
 
-            // must be holding Interaction
             if (interactAction.IsPressed())
             {
                 t += Time.deltaTime;
@@ -105,19 +106,26 @@ public class ReviveTarget : Interactable
             }
             else
             {
-                // released → cancel progress
-                currentProgress01 = 0f;
+                // Button released -> cancel and reset so we can immediately try again
+                CleanupReviveState();
                 yield break;
             }
 
             yield return null;
         }
 
-        // success
         downedHealth.CompleteRevive();
         currentProgress01 = 1f;
-        currentRescuer = null;
+        CleanupReviveState();
     }
+
+    private void CleanupReviveState()
+    {
+        currentRescuer = null;
+        reviveRoutine = null;
+        currentProgress01 = 0f;
+    }
+
 
     // ====== Trigger tracking just for "in range" debug text ======
     protected override void OnTriggerEnter(Collider other)

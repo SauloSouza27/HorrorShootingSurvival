@@ -18,30 +18,44 @@ public class PlayerInteraction : MonoBehaviour
     
     private void InteractWithClosest()
     {
+        // Clean dead/disabled entries first
+        interactables.RemoveAll(i => i == null || !i.isActiveAndEnabled);
+
         if (closestInteractable == null) return;
 
         var player = GetComponent<Player>();
-        closestInteractable.Interaction(player); // always pass the player
+        var target = closestInteractable; // copy in case closest changes during call
 
-        interactables.Remove(closestInteractable);
+        target.Interaction(player);
+
+        // If the interactable wants to be removed (e.g., pickup), remove it.
+        if (target != null && target.RemoveAfterInteract)
+        {
+            interactables.Remove(target);
+        }
+
         UpdateClosestInteractable();
     }
 
     public void UpdateClosestInteractable()
     {
+        // Clean dead/disabled entries
+        interactables.RemoveAll(i => i == null || !i.isActiveAndEnabled);
+
+        // Un-highlight old
         closestInteractable?.HighlightActive(false);
-        
+
         closestInteractable = null;
         float closestDistance = float.MaxValue;
 
-        foreach (Interactable interactable in interactables)
+        foreach (var i in interactables)
         {
-            float distance = Vector3.Distance(transform.position, interactable.transform.position);
-
-            if (distance < closestDistance)
+            if (i == null) continue;
+            float d = Vector3.Distance(transform.position, i.transform.position);
+            if (d < closestDistance)
             {
-                closestDistance = distance;
-                closestInteractable = interactable;
+                closestDistance = d;
+                closestInteractable = i;
             }
         }
 
