@@ -6,25 +6,18 @@ public enum DoorOpenMode { DisableBlockers, Slide, Rotate }
 
 public class DoorPurchase : Interactable
 {
-    public override bool RemoveAfterInteract => true; // one-shot after open
+    public override bool RemoveAfterInteract => true;
 
     [Header("Purchase")]
     [SerializeField] private int cost = 750;
+    public int Cost => cost;
 
     [Header("Open Behaviour")]
     [SerializeField] private DoorOpenMode openMode = DoorOpenMode.DisableBlockers;
-
-    [Tooltip("Objects to disable when purchased (colliders/meshes).")]
     [SerializeField] private List<GameObject> blockers = new List<GameObject>();
-
-    [Tooltip("If Slide/Rotate, the target to move/rotate (e.g., the door mesh root).")]
     [SerializeField] private Transform doorTransform;
-
-    [Header("Slide Settings")]
     [SerializeField] private Vector3 slideOffset = new Vector3(0, 0, 2f);
     [SerializeField] private float slideTime = 0.6f;
-
-    [Header("Rotate Settings")]
     [SerializeField] private Vector3 rotateAngles = new Vector3(0f, 90f, 0f);
     [SerializeField] private float rotateTime = 0.5f;
 
@@ -34,18 +27,25 @@ public class DoorPurchase : Interactable
     [SerializeField] private AudioClip openClip;
     [SerializeField] private AudioClip deniedClip;
 
+    [Header("DEBUG Prompt")]
+    [SerializeField] private bool debugPriceUI = true;
+    [SerializeField] private Vector3 uiWorldOffset = new Vector3(0, 2f, 0);
+
     private bool opened;
+    public bool IsOpened => opened;
+
+    // track who is in range to show the prompt
+    private readonly HashSet<Player> playersInRange = new HashSet<Player>();
 
     public override void Interaction(Player player)
     {
-        if (opened) return;
+        if (opened || player == null) return;
 
         var stats = player.GetComponent<PlayerStats>();
         if (stats == null) return;
 
         if (!stats.SpendPoints(cost))
         {
-            // not enough points
             if (audioSrc && deniedClip) audioSrc.PlayOneShot(deniedClip);
             return;
         }
@@ -59,8 +59,6 @@ public class DoorPurchase : Interactable
     {
         opened = true;
         HighlightActive(false);
-
-        // Optional open sfx
         if (audioSrc && openClip) audioSrc.PlayOneShot(openClip);
 
         switch (openMode)
@@ -68,64 +66,88 @@ public class DoorPurchase : Interactable
             case DoorOpenMode.DisableBlockers:
                 DisableBlockers();
                 break;
-
             case DoorOpenMode.Slide:
-                if (doorTransform != null)
-                    yield return SlideRoutine(doorTransform, slideOffset, slideTime);
-                DisableBlockers(); // usually also disable colliders after the motion
+                if (doorTransform) yield return SlideRoutine(doorTransform, slideOffset, slideTime);
+                DisableBlockers();
                 break;
-
             case DoorOpenMode.Rotate:
-                if (doorTransform != null)
-                    yield return RotateRoutine(doorTransform, rotateAngles, rotateTime);
+                if (doorTransform) yield return RotateRoutine(doorTransform, rotateAngles, rotateTime);
                 DisableBlockers();
                 break;
         }
-
-        // Optionally destroy or pool this interactable object
-        // Destroy(gameObject);
     }
 
     private void DisableBlockers()
     {
         foreach (var go in blockers)
         {
-            if (go == null) continue;
-            // Disable colliders
-            foreach (var col in go.GetComponentsInChildren<Collider>(true))
-                col.enabled = false;
-            // Optionally hide renderers or the entire GO
-            // foreach (var r in go.GetComponentsInChildren<Renderer>(true))
-            //     r.enabled = false;
+            if (!go) continue;
+            foreach (var col in go.GetComponentsInChildren<Collider>(true)) col.enabled = false;
             go.SetActive(false);
         }
     }
 
     private IEnumerator SlideRoutine(Transform t, Vector3 offset, float duration)
     {
-        Vector3 start = t.position;
-        Vector3 end = start + offset;
-        float tNorm = 0f;
-        while (tNorm < 1f)
-        {
-            tNorm += Time.deltaTime / Mathf.Max(0.01f, duration);
-            t.position = Vector3.Lerp(start, end, Mathf.SmoothStep(0, 1, tNorm));
-            yield return null;
-        }
-        t.position = end;
+        Vector3 a = t.position, b = a + offset;
+        float u = 0f;
+        while (u < 1f) { u += Time.deltaTime / Mathf.Max(0.01f, duration); t.position = Vector3.Lerp(a, b, Mathf.SmoothStep(0,1,u)); yield return null; }
+        t.position = b;
     }
 
     private IEnumerator RotateRoutine(Transform t, Vector3 angles, float duration)
     {
-        Quaternion start = t.rotation;
-        Quaternion end = start * Quaternion.Euler(angles);
-        float tNorm = 0f;
-        while (tNorm < 1f)
+        Quaternion a = t.rotation, b = a * Quaternion.Euler(angles);
+        float u = 0f;
+        while (u < 1f) { u += Time.deltaTime / Mathf.Max(0.01f, duration); t.rotation = Quaternion.Slerp(a, b, Mathf.SmoothStep(0,1,u)); yield return null; }
+        t.rotation = b;
+    }
+
+    // --- Interactable proximity tracking (to show prompt) ---
+    protected override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+        var p = other.GetComponent<Player>();
+        if (p != null) playersInRange.Add(p);
+    }
+
+    protected override void OnTriggerExit(Collider other)
+    {
+        base.OnTriggerExit(other);
+        var p = other.GetComponent<Player>();
+        if (p != null) playersInRange.Remove(p);
+    }
+
+    private void OnGUI()
+    {
+        if (!debugPriceUI || IsOpened) return;
+        if (playersInRange.Count == 0) return;
+        var cam = Camera.main; if (!cam) return;
+
+        // choose the nearest player (so text reflects *their* points)
+        Player nearest = null; float minD = float.MaxValue;
+        foreach (var p in playersInRange)
         {
-            tNorm += Time.deltaTime / Mathf.Max(0.01f, duration);
-            t.rotation = Quaternion.Slerp(start, end, Mathf.SmoothStep(0, 1, tNorm));
-            yield return null;
+            if (!p) continue;
+            float d = Vector3.Distance(p.transform.position, transform.position);
+            if (d < minD) { minD = d; nearest = p; }
         }
-        t.rotation = end;
+        if (!nearest) return;
+
+        var stats = nearest.GetComponent<PlayerStats>();
+        int points = stats ? stats.GetPoints() : 0;
+        bool canAfford = stats && stats.CanAfford(cost);
+
+        Vector3 screen = cam.WorldToScreenPoint(transform.position + uiWorldOffset);
+        if (screen.z < 0) return;
+        screen.y = Screen.height - screen.y;
+
+        var rect = new Rect(screen.x - 120, screen.y - 40, 240, 38);
+        GUI.color = new Color(0,0,0,0.7f);
+        GUI.Box(rect, GUIContent.none);
+        GUI.color = Color.white;
+
+        string line1 = canAfford ? $"Press Interact to buy  ({cost})" : $"Not enough points  ({points}/{cost})";
+        GUI.Label(new Rect(rect.x + 8, rect.y + 8, rect.width - 16, 22), line1);
     }
 }
