@@ -64,17 +64,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void AnimatorControllers()
     {
-        if (movementDirection.magnitude == 0)
-        {
-            animator.SetFloat(idleToWalkBlendTreeHash, 0, .1f, Time.deltaTime );
-        }
-        else
-        {
-            animator.SetFloat(idleToWalkBlendTreeHash, 1, .1f, Time.deltaTime );
-        }
-        
-        animator.SetBool("isAiming", player.IsAiming);
-        
         float xVelocity = Vector3.Dot(movementDirection.normalized, transform.right);
         float zVelocity = Vector3.Dot(movementDirection.normalized, transform.forward);
 
@@ -87,20 +76,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateRotation()
     {
-        if (player.IsAiming)
+        Vector3 lookingDirection = player.aim.GetAimPosition() - transform.position;
+        lookingDirection.y = 0f;
+        if (lookingDirection != Vector3.zero)
         {
-            Vector3 lookingDirection = player.aim.GetAimPosition() - transform.position;
-            lookingDirection.y = 0f;
-            if (lookingDirection != Vector3.zero)
-            {
-                Quaternion desiredRotation = Quaternion.LookRotation(lookingDirection);
-                transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime * turnSpeed);
-            }
-        }
-        else if (movementDirection.sqrMagnitude > 0.01f)
-        {
-            movementDirection.y = 0f;
-            Quaternion desiredRotation = Quaternion.LookRotation(movementDirection);
+            Quaternion desiredRotation = Quaternion.LookRotation(lookingDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime * turnSpeed);
         }
     }
@@ -112,14 +92,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (movementDirection.magnitude > 0)
         {
-            if (!player.IsAiming)
-            {
-                characterController.Move(movementDirection * (Time.deltaTime * speed));
-            }
-            else
-            {
-                characterController.Move(movementDirection * (Time.deltaTime * aimingWalkSpeed));
-            }
+            characterController.Move(movementDirection * (Time.deltaTime * speed));
         }
     }
 
@@ -136,8 +109,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     
-
-
     private void AssignInputEvents()
     {
         var playerInput = GetComponent<PlayerInput>();
@@ -148,11 +119,8 @@ public class PlayerMovement : MonoBehaviour
 
         controls["Run"].performed += ctx =>
         {
-            if (!player.IsAiming)
-            {
-                speed = runSpeed;
-                isRunning = true;
-            }
+            speed = runSpeed;
+            isRunning = true;
         };
         controls["Run"].canceled += ctx =>
         {

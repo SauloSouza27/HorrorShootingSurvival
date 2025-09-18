@@ -88,8 +88,6 @@ public class PlayerHealth : HealthController
         player.animator.SetBool("isDowned", true);
         player.animator.enabled = true;                // use a downed anim instead of ragdoll
         player.ragdoll.RagdollActive(false);           // keep kinematic so we can be revived
-        player.SetManualAiming(false);
-        player.SetAutoAiming(false);
         player.weapon.SetWeaponReady(false);
 
         // prevent movement & actions at source (quick approach)
@@ -136,6 +134,7 @@ public class PlayerHealth : HealthController
         GetComponent<CharacterController>().enabled = true;
         player.animator.SetBool("isDowned", false);
         player.ragdoll.RagdollActive(false);
+        player.weapon.SetWeaponReady(true);
         reviveTarget.enabled = false;
         if (bleedoutRoutine != null) StopCoroutine(bleedoutRoutine);
 

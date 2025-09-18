@@ -24,12 +24,6 @@ public class Player : MonoBehaviour
     public PlayerHealth health { get; private set; }
     public Animator animator { get; private set; }
     
-    // Track if player is aiming manually (toggle/hold) or auto (temporarily from shooting)
-    private bool isManuallyAiming = false;
-    private bool isAutoAiming = false;
-    
-    // Returns true if player is currently aiming by any means
-    public bool IsAiming => isManuallyAiming || isAutoAiming;
     
     private void Awake()
     {
@@ -46,28 +40,7 @@ public class Player : MonoBehaviour
     }
     
 
-    // Sets manual aiming state and enables/disables aim laser accordingly
-    public void SetManualAiming(bool aiming)
-    {
-        isManuallyAiming = aiming;
-        aim?.SetAimLaserEnabled(IsAiming);
-    }
-
-    // Toggles manual aiming on/off and updates aim laser state
-    public void ToggleManualAiming()
-    {
-        isManuallyAiming = !isManuallyAiming;
-        aim?.SetAimLaserEnabled(IsAiming);
-    }
-
-    // Sets automatic aiming state (e.g. when shooting) and updates aim laser
-    public void SetAutoAiming(bool aiming)
-    {
-        isAutoAiming = aiming;
-        aim?.SetAimLaserEnabled(IsAiming);
-    }
-
-    public bool IsManuallyAiming() => isManuallyAiming;
+    
 
     private void OnEnable()
     {

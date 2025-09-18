@@ -54,7 +54,6 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
     public void PlayFireAnimation()
     {
-        reload = true;
         animator.SetTrigger("Fire");
     }
 
@@ -76,7 +75,6 @@ public class PlayerWeaponVisuals : MonoBehaviour
     
     public void PlayWeaponEquipAnimation()
     {
-        reload = true;
         //animator.SetLayerWeight(animationIndex, 1f);
         EquipType equipType = CurrentWeaponModel().equipType;
         

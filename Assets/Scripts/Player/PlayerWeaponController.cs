@@ -69,7 +69,7 @@ public class PlayerWeaponController : MonoBehaviour
     {
         if (isShooting)
         {
-            StartCoroutine(HandleShootWithAutoAim());
+            Shoot();
         }
         if (currentWeapon != null && currentWeapon.CanReload() && WeaponReady() && currentWeapon.bulletsInMagazine == 0)
         {
@@ -77,6 +77,10 @@ public class PlayerWeaponController : MonoBehaviour
         }
     }
 
+    
+
+    #region Slots management - Pickup/Equip/DropWeapon/ReadyWeapon
+    
     private void EquipStartingWeapon()
     {
         // Ensure weaponSlots has at least one slot
@@ -91,13 +95,6 @@ public class PlayerWeaponController : MonoBehaviour
 
         EquipWeapon(0); // Equip the first weapon (default weapon)
     }
-
-    #region Slots management - Pickup/Equip/DropWeapon/ReadyWeapon
-    /// <summary>
-    /// Equips a weapon from a specific slot index.
-    /// Updates the current weapon and its index.
-    /// </summary>
-    /// <param name="slotIndex">The index of the weapon slot to equip.</param>
     private void EquipWeapon(int slotIndex)
     {
         // Basic validation: ensure the slotIndex is valid
@@ -196,7 +193,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void Shoot()
     {
-        if (!WeaponReady() || !currentWeapon.CanShoot() || !player.IsAiming) return;
+        if (!WeaponReady() || !currentWeapon.CanShoot()) return;
 
         player.weaponVisuals.PlayFireAnimation();
 
@@ -316,13 +313,9 @@ public class PlayerWeaponController : MonoBehaviour
         // and bind it to the desired controller button (e.g., Gamepad Left Shoulder or Face Button)
 
         controls["Swap Weapon"].performed += ctx => SwapWeaponController();
-
-
+        
     }
-
-    /// <summary>
-    /// Cycles through available weapon slots when the controller swap button is pressed.
-    /// </summary>
+    
     private void SwapWeaponController()
     {
         if (weaponSlots.Count <= 1)
@@ -339,21 +332,7 @@ public class PlayerWeaponController : MonoBehaviour
         EquipWeapon(currentWeaponSlotIndex);
     }
 
-
-    private IEnumerator HandleShootWithAutoAim()
-    {
-        bool wasAlreadyAiming = player.IsAiming;
-
-        if (!wasAlreadyAiming)
-            player.SetAutoAiming(true);
-
-        Shoot();
-
-        yield return new WaitForSeconds(0.1f); // allow aiming state to apply for this frame
-
-        if (!wasAlreadyAiming)
-            player.SetAutoAiming(false);
-    }
+    
     //Atualiza a HUD com a quantidade de munição
     public void UpdateHUD()
     {

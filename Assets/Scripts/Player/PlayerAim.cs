@@ -39,11 +39,8 @@ public class PlayerAim : MonoBehaviour
         
         GetAimPosition(); 
         aim.position = lastValidAimPosition; 
-
-        if (player.IsAiming)
-        {
-            UpdateAimLaser(); // Refresh the aim laser visuals if the player is aiming.
-        }
+        UpdateAimLaser(); // Refresh the aim laser visuals if the player is aiming.
+        
     }
 
     // Updates the position, direction, and appearance of the aim laser.
@@ -120,7 +117,6 @@ public class PlayerAim : MonoBehaviour
     public void SetAimLaserEnabled(bool state)
     {
         aimLaser.enabled = state;
-        
     }
     public Transform GetAim() => aim; 
 
@@ -130,29 +126,6 @@ public class PlayerAim : MonoBehaviour
     {
         var playerInput = GetComponent<PlayerInput>();
         var controls = playerInput.actions; 
-
-        // Handle "ActivateAim" input for starting/stopping manual aim.
-        controls["ActivateAim"].performed += ctx =>
-        {
-            if (isToggleAim) // Toggle behavior for aiming.
-            {
-                player.ToggleManualAiming();
-            }
-            else // Hold behavior for aiming.
-            {
-                player.SetManualAiming(true);
-            }
-        };
-
-        // If not using toggle aim, explicitly stop aiming when the input is released.
-        if (!isToggleAim)
-        {
-            controls["ActivateAim"].canceled += ctx =>
-            {
-                player.SetManualAiming(false);
-            };
-        }
-
         
         controls["Aim"].performed += ctx =>
         {
