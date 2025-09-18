@@ -2,15 +2,14 @@ using UnityEngine;
 
 public class MeleeAttack : MonoBehaviour, IEnemyAttack
 {
-    [Header("Melee Attack Settings")]
-    [SerializeField] private float _attackRange = 1.5f;
-    [SerializeField] private float _attackCooldown = 2f;
-    [SerializeField] private float _attackDuration = 1f;
-    [SerializeField] private int _attackDamage = 10;
+    [SerializeField] private float attackRange = 1.5f;
+    [SerializeField] private float attackCooldown = 2f;
+    [SerializeField] private float attackDuration = 1f;
+    [SerializeField] private int attackDamage = 10;
 
-    public float AttackRange => _attackRange;
-    public float AttackCooldown => _attackCooldown;
-    public float AttackDuration => _attackDuration;
+    public float AttackRange => attackRange;
+    public float AttackCooldown => attackCooldown;
+    public float AttackDuration => attackDuration;
 
     public void ExecuteAttack(GameObject target)
     {

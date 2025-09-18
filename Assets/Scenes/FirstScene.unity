@@ -26534,6 +26534,7 @@ MonoBehaviour:
   EnemyHolder: {fileID: 252532964}
   enemy_Container:
   - {fileID: 5176086620979845965, guid: 3148d10a4072afa48892389e7667b489, type: 3}
+  - {fileID: 5176086620979845965, guid: dea0d8156cd39214f9b99740ad6ca579, type: 3}
   time_between_summons: 0.8
   use_time_between_summons: 1
   newWaveData: []
