@@ -30,6 +30,10 @@ public class EnemyBase : LivingEntity
     private float checkInterval = 0.5f;
     private float checkTimer = 0f;
 
+    private IEnemyAttack attackScript; 
+    private bool isAttacking = false;
+    private float cooldownTimer = 0f;
+
     public override void SetLivingEntity()
     {
      
@@ -43,6 +47,8 @@ public class EnemyBase : LivingEntity
             agent.speed = speed;
             agent.angularSpeed = rotationSpeed;
         }
+
+        attackScript = GetComponent<IEnemyAttack>();
     }
 
     public void AdjustEnemyToWave()
@@ -63,29 +69,80 @@ public class EnemyBase : LivingEntity
 
     public void Update()
     {
-        checkTimer -= Time.deltaTime;
+        if (isDead || isAttacking) return; 
 
+        checkTimer -= Time.deltaTime;
         if (checkTimer <= 0f)
         {
             targetPlayer = GetClosestPlayer();
             checkTimer = checkInterval;
         }
 
-        if (targetPlayer == null) return;
-
-        float distance = Vector3.Distance(transform.position, targetPlayer.transform.position);
-
-        if (distance > 0.9f)
+        if (targetPlayer == null)
         {
-            if (agent != null && agent.enabled)
-            {
-                agent.SetDestination(targetPlayer.transform.position);
-            }
+            StopMoving();
+            return;
+        }
+
+        if (cooldownTimer > 0)
+        {
+            cooldownTimer -= Time.deltaTime;
+        }
+
+        float distanceToPlayer = Vector3.Distance(transform.position, targetPlayer.transform.position);
+
+        if (distanceToPlayer <= attackScript.AttackRange && cooldownTimer <= 0)
+        {
+            StartCoroutine(AttackSequence());
+        }
+        else if (distanceToPlayer <= attackScript.AttackRange)
+        {
+            StopMoving();
         }
         else
         {
-            // Die(); 
+            MoveTowardsPlayer();
         }
+    }
+
+    private void MoveTowardsPlayer()
+    {
+        if (agent != null && agent.enabled)
+        {
+            agent.isStopped = false;
+            agent.SetDestination(targetPlayer.transform.position);
+        }
+    }
+
+    private void StopMoving()
+    {
+        if (agent != null && agent.enabled)
+        {
+            agent.isStopped = true;
+        }
+    }
+
+    private IEnumerator AttackSequence()
+    {
+        isAttacking = true;
+        StopMoving();
+
+        Quaternion lookRotation = Quaternion.LookRotation(targetPlayer.transform.position - transform.position);
+        float time = 0;
+        while (time < 0.2f)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, time * 5f);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        attackScript.ExecuteAttack(targetPlayer);
+
+        yield return new WaitForSeconds(attackScript.AttackDuration);
+
+        cooldownTimer = attackScript.AttackCooldown;
+
+        isAttacking = false;
     }
     private GameObject GetClosestPlayer()
     {
