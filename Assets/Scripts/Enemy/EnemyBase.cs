@@ -34,6 +34,8 @@ public class EnemyBase : LivingEntity
     private bool isAttacking = false;
     private float cooldownTimer = 0f;
 
+    private Animator animator;
+
     public override void SetLivingEntity()
     {
      
@@ -49,6 +51,8 @@ public class EnemyBase : LivingEntity
         }
 
         attackScript = GetComponent<IEnemyAttack>();
+
+        animator = GetComponent<Animator>();
     }
 
     public void AdjustEnemyToWave()
