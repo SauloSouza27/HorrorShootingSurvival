@@ -41,6 +41,11 @@ public class PlayerCameraController : MonoBehaviour
         playerWeaponController.ammoCount = ammoCount;
         playerWeaponController.weaponSprite = weaponSprite;
 
+        // Conecta a pontuação de cada player
+        PlayerStats playerStats = playerInput.GetComponent<PlayerStats>();
+        ScoreCount scoreCount = newHUD.GetComponentInChildren<ScoreCount>();
+        playerStats.scoreCount = scoreCount;
+
         // Conecta a tela de morte para cada jogador
         playerHp.defeatScreen = defeatMenu;
         

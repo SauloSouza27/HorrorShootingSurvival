@@ -40,12 +40,16 @@ public class PlayerStats : MonoBehaviour
     public event Action<int> OnPointsChanged;
     public event Action<PerkType> OnPerkPurchased;
 
+    // HUD reference
+    public ScoreCount scoreCount;
+
     private void Awake()
     {
         player = GetComponent<Player>();
         ResetStats();                 // sets MaxHealth / multipliers from base values
         currentPoints = startingPoints;
         OnPointsChanged?.Invoke(currentPoints); // optional: update UI immediately
+        updateScoreDisplay();
     }
 
     private void Start()
@@ -75,6 +79,7 @@ public class PlayerStats : MonoBehaviour
     {
         currentPoints += amount;
         OnPointsChanged?.Invoke(currentPoints);
+        updateScoreDisplay();
     }
 
     public bool SpendPoints(int cost)
@@ -83,6 +88,7 @@ public class PlayerStats : MonoBehaviour
 
         currentPoints -= cost;
         OnPointsChanged?.Invoke(currentPoints);
+        updateScoreDisplay();
         return true;
     }
 
@@ -129,4 +135,9 @@ public class PlayerStats : MonoBehaviour
     }
 
     public bool HasPerk(PerkType perkType) => ownedPerks.Contains(perkType);
+
+    private void updateScoreDisplay()
+    {
+        scoreCount.UpdateScore(currentPoints);
+    }
 }

@@ -7,7 +7,7 @@ public class ScoreCount : MonoBehaviour
 
     public void UpdateScore(int currentScore)
     {
-        scoreText.text = "Score: " + currentScore;
+        scoreText.text = "" + currentScore;
         
     }
     
