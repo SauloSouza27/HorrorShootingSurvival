@@ -2215,7 +2215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 3
-  aimingWalkSpeed: 1.7
+  aimingWalkSpeed: 1
   runSpeed: 4
   gravityScale: 9.81
   turnSpeed: 6
@@ -2234,6 +2234,9 @@ MonoBehaviour:
   defaultWeaponData: {fileID: 11400000, guid: d3c4b5a45a80716498815b5da71c3741, type: 2}
   currentWeapon:
     weaponType: 0
+    weaponIcon: {fileID: 0}
+    weaponPrice: 0
+    bulletDamage: 0
     shootType: 0
     fireRate: 1
     burstActive: 0
@@ -2246,6 +2249,9 @@ MonoBehaviour:
   aim: {fileID: 7777322245410812970}
   weaponSlots:
   - weaponType: 2
+    weaponIcon: {fileID: 0}
+    weaponPrice: 0
+    bulletDamage: 0
     shootType: 1
     fireRate: 12
     burstActive: 0
@@ -2254,6 +2260,7 @@ MonoBehaviour:
     totalReserveAmmo: 500
   weaponPickupPrefab: {fileID: 5282804390393103520, guid: e90f25430279ed841adb9689bb93e4ab, type: 3}
   ammoCount: {fileID: 0}
+  weaponSprite: {fileID: 0}
 --- !u!143 &1594177591469952030
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2297,6 +2304,7 @@ MonoBehaviour:
   leftHandIkWeightIncreaseRate: 2.5
   leftHandIK: {fileID: 3597256771897377648}
   leftHandIK_Target: {fileID: 9206878721844636587}
+  reload: 0
 --- !u!114 &2551867383925094655
 MonoBehaviour:
   m_ObjectHideFlags: 0
