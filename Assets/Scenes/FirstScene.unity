@@ -27178,7 +27178,7 @@ MonoBehaviour:
   currentWave: 1
   spawn_multiplier: 1.2
   strength_multiplier: 1.1
-  start_summons: 0
+  start_summons: 10
   current_summons: 10
   summons_spawned: 0
   current_summons_alive: 0
@@ -30616,6 +30616,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1750294697265676703, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 087a3113010917d4a9460a7b0ec32db0, type: 2}
+    - target: {fileID: 1750294697265676703, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 087a3113010917d4a9460a7b0ec32db0, type: 2}
     - target: {fileID: 3799707232156698982, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.958679
@@ -30654,6 +30662,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3799707232156698982, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3936935295125405130, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e5bb75fbfc3856e4197a53684d7740a3, type: 2}
+    - target: {fileID: 4153337601723968992, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4277313886014268211, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5467763555753817681, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 642d3d98e3aaf1f44a1031e8059df260, type: 2}
+    - target: {fileID: 6969031262440039738, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7320993406139482479, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5331e20ef5637f144806e8698f6a844a, type: 2}
+    - target: {fileID: 7336005924748359728, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -43462,7 +43498,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 4874126678125670354, guid: e9bfcb49303440c4a96044165247cff4, type: 3}
+  - {fileID: 2100000, guid: 5331e20ef5637f144806e8698f6a844a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -44705,8 +44741,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6478536213147159724, guid: 2b9fb61cd33563543acdda512d815c2c, type: 3}
-  - {fileID: -3846018093981099296, guid: 2b9fb61cd33563543acdda512d815c2c, type: 3}
+  - {fileID: 2100000, guid: 087a3113010917d4a9460a7b0ec32db0, type: 2}
+  - {fileID: 2100000, guid: 087a3113010917d4a9460a7b0ec32db0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -45501,7 +45537,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: ed2cda05982fe9c459eecd5b8605652c, type: 3}
+  - {fileID: 2100000, guid: e5bb75fbfc3856e4197a53684d7740a3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -46114,8 +46150,8 @@ SceneRoots:
   - {fileID: 1711765481}
   - {fileID: 252532964}
   - {fileID: 586879379}
-  - {fileID: 5320110290132560218}
   - {fileID: 827198347}
+  - {fileID: 5320110290132560218}
   - {fileID: 1280403764}
   - {fileID: 832971298}
   - {fileID: 2301409955857623653}
