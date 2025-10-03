@@ -61,6 +61,7 @@ public class Weapon
     private float lastSpreadUpdateTime;
     private float spreadCooldown = 1;
     
+    public int PackAPunchTier { get; private set; } = 0; // 0 = base, 1–3 = upgraded
     public Weapon_Data WeaponData {get; private set;} // serves as default weapon data
 
     public Weapon(Weapon_Data weaponData)
@@ -211,5 +212,30 @@ public class Weapon
             totalReserveAmmo = 0;
     }
     
+    
+    
     #endregion
+    
+    
+    public void Upgrade(int tier)
+    {
+        if (tier <= PackAPunchTier) return; // already upgraded to this or higher
+        PackAPunchTier = tier;
+
+        if (tier == 1)
+        {
+            fireRate *= 1.25f;
+            magazineCapacity = Mathf.RoundToInt(magazineCapacity * 1.5f);
+            totalReserveAmmo = Mathf.RoundToInt(totalReserveAmmo * 2f);
+            bulletDamage = Mathf.RoundToInt(bulletDamage * 2f);
+        }
+        else if (tier == 2)
+        {
+            bulletDamage = Mathf.RoundToInt(bulletDamage * 2f);
+        }
+        else if (tier == 3)
+        {
+            bulletDamage = Mathf.RoundToInt(bulletDamage * 2f);
+        }
+    }
 }
