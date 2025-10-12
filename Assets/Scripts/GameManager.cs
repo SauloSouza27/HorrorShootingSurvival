@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public UIManager UIManager;
+    public InputManager InputManager { get; private set; }
     public static GameManager Instance { get; private set; }
 
     private bool gameOver = false;
@@ -17,6 +19,7 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        InputManager = new InputManager();
 
         SceneManager.sceneLoaded += OnSceneLoaded; // Listen for scene reloads
     }

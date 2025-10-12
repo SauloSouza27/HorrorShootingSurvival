@@ -426,6 +426,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UI",
+            "id": "284906ec-c7eb-4cf0-8a71-26d96983922d",
+            "actions": [
+                {
+                    "name": "OpenClosePauseMenu",
+                    "type": "Button",
+                    "id": "adb204f1-b85a-4eff-8cd7-cb20a9bc202e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2a41bc33-3028-41bc-b6a5-97f4c57b7c75",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenClosePauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

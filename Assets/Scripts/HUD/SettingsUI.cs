@@ -6,10 +6,11 @@ public class SettingsUI : MonoBehaviour
 {
     [SerializeField] private Button backButton;
 
-    private void OnEnable()
+    private void Start()
     {
         backButton.onClick.AddListener(CloseSettingsMenu);
     }
+
 
     private void CloseSettingsMenu()
     {
