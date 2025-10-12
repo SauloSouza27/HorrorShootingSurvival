@@ -20,7 +20,7 @@ public class PauseUI : MonoBehaviour
 
    private void ClosePauseMenu()
    {
-       this.gameObject.SetActive(false);
+        GameManager.Instance.UIManager.OpenClosePauseMenu();
    }
 
     private void OpenSettingsMenu()

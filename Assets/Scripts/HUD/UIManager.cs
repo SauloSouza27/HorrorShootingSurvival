@@ -20,12 +20,14 @@ public class UIManager : MonoBehaviour
    public void OpenClosePauseMenu()
    {
        if (PausePanel.activeSelf == false && SettingsPanel.activeSelf == false)
-       {
+        {
+            Time.timeScale = 0;
             PausePanel.SetActive(true);
             SettingsPanel.SetActive(false);
        }
        else
-       {
+        {
+            Time.timeScale = 1;
             PausePanel.SetActive(false);
             SettingsPanel.SetActive(false);   
        }
