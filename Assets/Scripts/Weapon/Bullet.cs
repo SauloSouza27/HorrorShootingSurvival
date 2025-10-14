@@ -1,26 +1,25 @@
-
-using System;
-using Unity.VisualScripting; 
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private GameObject bulletImpactFX;
 
-    private BoxCollider cd;
-    private Rigidbody rb;
-    private MeshRenderer meshRenderer;
-    private TrailRenderer trailRenderer;
+    // 👇 make these protected so child classes can use them
+    protected BoxCollider cd;
+    protected Rigidbody rb;
+    protected MeshRenderer meshRenderer;
+    protected TrailRenderer trailRenderer;
 
-    // ✅ Add this
     public Player Owner { get; private set; }
 
-    private Vector3 startPosition;
-    private float flyDistance;
-    private bool bulletDisabled;
-    public int bulletDamage { get; private set; }
+    protected Vector3 startPosition;
+    protected float flyDistance;
+    protected bool bulletDisabled;
 
-    private void Awake()
+    // 👇 protected property instead of private field
+    public int BulletDamage { get; protected set; }
+
+    protected virtual void Awake()
     {
         cd = GetComponent<BoxCollider>();
         rb = GetComponent<Rigidbody>();
@@ -28,83 +27,82 @@ public class Bullet : MonoBehaviour
         trailRenderer = GetComponent<TrailRenderer>();
     }
 
-    // ✅ Extend to also take "Player owner"
-    public void BulletSetup(int bulletDamage1, float flyDistance1, Player owner)
+    // 👇 virtual so child can extend if needed
+    public virtual void BulletSetup(int bulletDamage1, float flyDistance1, Player owner)
     {
         bulletDisabled = false;
-        cd.enabled = true;
-        meshRenderer.enabled = true;
+        if (cd) cd.enabled = true;
+        if (meshRenderer) meshRenderer.enabled = true;
 
-        this.bulletDamage = bulletDamage1;
-        this.Owner = owner; // 🔥 Store who fired the bullet
+        BulletDamage = bulletDamage1;
+        Owner = owner;
 
-        trailRenderer.time = .04f;
+        if (trailRenderer) trailRenderer.time = .04f;
         startPosition = transform.position;
-        this.flyDistance = flyDistance1 + .5f;
+        flyDistance = flyDistance1 + .5f;
     }
 
-
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         FadeTrail();
         DisableBullet();
         ReturnToPoolIfNeeded();
     }
 
-    private void ReturnToPoolIfNeeded()
+    protected void ReturnToPoolIfNeeded()
     {
-        if (trailRenderer.time < 0)
+        if (trailRenderer && trailRenderer.time < 0)
         {
             trailRenderer.Clear();
-            ReturnBulletToPool();
+            ReturnToPool();
         }
     }
 
-    private void DisableBullet()
+    protected void DisableBullet()
     {
         if (Vector3.Distance(startPosition, transform.position) > flyDistance && !bulletDisabled)
         {
-            cd.enabled = false;
-            meshRenderer.enabled = false;
+            if (cd) cd.enabled = false;
+            if (meshRenderer) meshRenderer.enabled = false;
             bulletDisabled = true;
         }
     }
 
-    private void FadeTrail()
+    protected void FadeTrail()
     {
+        if (!trailRenderer) return;
         if (Vector3.Distance(startPosition, transform.position) > flyDistance - 1.5f)
             trailRenderer.time -= 2 * Time.deltaTime;
     }
-    
-    private void OnCollisionEnter(Collision collision)
+
+    // 👇 virtual so child can replace collision behavior
+    protected virtual void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
             EnemyBase enemy = collision.gameObject.GetComponent<EnemyBase>();
             if (enemy != null)
             {
-                enemy.TakeDamage(bulletDamage, Owner); // ✅ shooter passed here
+                enemy.TakeDamage(BulletDamage, Owner);
             }
         }
 
-        trailRenderer.Clear();
+        if (trailRenderer) trailRenderer.Clear();
         CreateImpactFx(collision);
-        ObjectPool.instance.ReturnObject(0, gameObject);
+        ReturnToPool();
     }
 
+    // 👇 protected so child can optionally call it
+    protected void ReturnToPool() => ObjectPool.instance.ReturnObject(0, gameObject);
 
-    private void ReturnBulletToPool() => ObjectPool.instance.ReturnObject(0, gameObject);
-
-    private void CreateImpactFx(Collision collision)
+    // 👇 protected so child can optionally call a visual impact
+    protected void CreateImpactFx(Collision collision)
     {
-        if (collision.contacts.Length > 0)
-        {
-            ContactPoint contact = collision.contacts[0];
+        if (!bulletImpactFX || collision.contacts.Length == 0) return;
 
-            GameObject newImpactFx = ObjectPool.instance.GetObject(bulletImpactFX);
-            newImpactFx.transform.position = contact.point;
-
-            ObjectPool.instance.ReturnObject(1, newImpactFx);
-        }
+        ContactPoint contact = collision.contacts[0];
+        GameObject newImpactFx = ObjectPool.instance.GetObject(bulletImpactFX);
+        newImpactFx.transform.position = contact.point;
+        ObjectPool.instance.ReturnObject(1, newImpactFx);
     }
 }

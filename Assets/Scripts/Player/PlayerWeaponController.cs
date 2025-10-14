@@ -16,6 +16,8 @@ public class PlayerWeaponController : MonoBehaviour
 {
     private Player player;
 
+    [SerializeField] private GameObject sniperBulletPrefab;
+    
     [SerializeField] private Weapon_Data defaultWeaponData;
     [SerializeField] private Weapon currentWeapon;
     private bool weaponReady;
@@ -218,25 +220,26 @@ public class PlayerWeaponController : MonoBehaviour
         if (currentWeapon.weaponType != WeaponType.Shotgun)
             currentWeapon.bulletsInMagazine--;
 
-        GameObject newBullet = ObjectPool.instance.GetObject(bulletPrefab);
+        // pick bullet prefab
+        GameObject prefab = bulletPrefab;
+        if (currentWeapon.weaponType == WeaponType.Sniper && sniperBulletPrefab != null)
+            prefab = sniperBulletPrefab;
 
+        GameObject newBullet = ObjectPool.instance.GetObject(prefab);
         newBullet.transform.position = GunPoint().position;
         newBullet.transform.rotation = Quaternion.LookRotation(GunPoint().forward);
 
-        Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
+        var rbNewBullet = newBullet.GetComponent<Rigidbody>();
+        var bulletScript = newBullet.GetComponent<Bullet>();
 
-        Bullet bulletScript = newBullet.GetComponent<Bullet>();
         if (bulletScript != null)
-        {
-            // ✅ Pass player as owner
             bulletScript.BulletSetup(currentWeapon.bulletDamage, currentWeapon.BulletDistance, player);
-        }
 
-        Vector3 bulletsDirection = currentWeapon.ApplySpread(BulletDirection());
-
+        Vector3 dir = currentWeapon.ApplySpread(BulletDirection());
         rbNewBullet.mass = REFERENCE_BULLET_SPEED / bulletSpeed;
-        rbNewBullet.linearVelocity = bulletsDirection * bulletSpeed;
+        rbNewBullet.linearVelocity = dir * bulletSpeed;
     }
+
 
 
     private void Reload()
