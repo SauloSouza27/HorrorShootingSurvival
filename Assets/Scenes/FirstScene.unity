@@ -26274,7 +26274,7 @@ MonoBehaviour:
   currentWave: 1
   spawn_multiplier: 1.2
   strength_multiplier: 1.1
-  start_summons: 10
+  start_summons: 0
   current_summons: 10
   summons_spawned: 0
   current_summons_alive: 0
@@ -29720,6 +29720,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: 087a3113010917d4a9460a7b0ec32db0, type: 2}
+    - target: {fileID: 3796103313814107620, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3796103313814107620, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3799707232156698982, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.958679
@@ -29783,6 +29791,10 @@ PrefabInstance:
     - target: {fileID: 6969031262440039738, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258583417556373455, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7320993406139482479, guid: 6498e13ca8e331b49a625ad6e1bf6e8c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
