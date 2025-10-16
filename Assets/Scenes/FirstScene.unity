@@ -26274,7 +26274,7 @@ MonoBehaviour:
   currentWave: 1
   spawn_multiplier: 1.2
   strength_multiplier: 1.1
-  start_summons: 0
+  start_summons: 2
   current_summons: 10
   summons_spawned: 0
   current_summons_alive: 0

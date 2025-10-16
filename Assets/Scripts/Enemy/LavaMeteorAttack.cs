@@ -17,6 +17,12 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
     [SerializeField] private GameObject groundIndicatorVFX;
     [SerializeField] private GameObject impactVFX;
 
+    private Animator animator;
+
+    private void Awake()
+    {
+        animator = GetComponentInParent<Animator>();
+    }
 
     public float AttackRange => attackRange;
     public float AttackCooldown => attackCooldown;
@@ -29,6 +35,7 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
 
     private IEnumerator AttackCoroutine(GameObject target)
     {
+        animator.SetBool("isAttacking", true);
         Vector3 targetPosition = target.transform.position;
 
         if (groundIndicatorVFX != null)
@@ -37,6 +44,7 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
         }
 
         yield return new WaitForSeconds(damageDelay);
+        animator.SetBool("isAttacking", false);
 
         if (impactVFX != null)
         {
