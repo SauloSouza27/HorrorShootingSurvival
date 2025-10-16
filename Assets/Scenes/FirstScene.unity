@@ -23934,8 +23934,8 @@ Transform:
   m_GameObject: {fileID: 1263245704}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 0.77, z: -5.586}
-  m_LocalScale: {x: 0.72674626, y: 0.80390406, z: 0.46790293}
+  m_LocalPosition: {x: 3.0033, y: 0.77, z: -5.586}
+  m_LocalScale: {x: 1.8936136, y: 0.48304185, z: 0.46790293}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 908961524}
@@ -26274,7 +26274,7 @@ MonoBehaviour:
   currentWave: 1
   spawn_multiplier: 1.2
   strength_multiplier: 1.1
-  start_summons: 2
+  start_summons: 10
   current_summons: 10
   summons_spawned: 0
   current_summons_alive: 0
