@@ -151,8 +151,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletImpactFX: {fileID: 6398714318726896200, guid: 9169a760de7b44a41a39c980ba3f7e37, type: 3}
-  maxPenetrations: 3
-  damageFalloff: 1
+  basePenetrations: 3
+  baseFalloff: 0.85
+  impactLayers:
+    serializedVersion: 2
+    m_Bits: 2241
 --- !u!96 &7836127342499303356
 TrailRenderer:
   serializedVersion: 3

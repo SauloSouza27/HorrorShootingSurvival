@@ -5,36 +5,30 @@ public class SniperBullet : Bullet
     [Header("Base Sniper Settings")]
     [SerializeField] private int basePenetrations = 3;
     [SerializeField] private float baseFalloff = 0.85f;
-
-    [Header("FX Scaling")]
-    [SerializeField] private Gradient trailColorGradient;  // optional colored gradient
-    [SerializeField] private Light tracerLight;            // optional small light for glow
-    [SerializeField] private float baseTrailWidth = 0.05f;
-    [SerializeField] private float baseLightIntensity = 1.5f;
-    [SerializeField] private Color baseImpactColor = Color.white;
+    [SerializeField] private LayerMask impactLayers; // Optional: walls, props, etc.
 
     private int penetrationsRemaining;
     private bool initialized;
 
     private int maxPenetrations;
     private float damageFalloff;
+    private Vector3 lastPosition;
 
     private void OnEnable()
     {
         initialized = true;
         if (cd) cd.isTrigger = true;
+        lastPosition = transform.position;
     }
 
     public override void BulletSetup(int bulletDamage1, float flyDistance1, Player owner)
     {
         base.BulletSetup(bulletDamage1, flyDistance1, owner);
 
+        // read shooter's weapon tier (Pack-a-Punch level)
         Weapon weapon = owner.weapon.CurrentWeapon();
         int tier = weapon != null ? weapon.PackAPunchTier : 0;
 
-        // ----------------------------
-        // 🔹 Scale mechanical behavior
-        // ----------------------------
         switch (tier)
         {
             case 0:
@@ -56,39 +50,26 @@ public class SniperBullet : Bullet
         }
 
         penetrationsRemaining = maxPenetrations;
-
-        // ----------------------------
-        // 🔹 Scale visual intensity
-        // ----------------------------
-        ApplyVisualUpgrades(tier);
+        lastPosition = transform.position;
     }
 
-    private void ApplyVisualUpgrades(int tier)
+    private void Update()
     {
-        if (!trailRenderer) return;
+        if (!initialized) return;
 
-        // Increase trail width & color intensity
-        float width = baseTrailWidth * (1f + 0.4f * tier);
-        trailRenderer.startWidth = width;
-        trailRenderer.endWidth = width * 0.5f;
-
-        // Optional gradient color (cool tier glow)
-        if (trailColorGradient != null)
+        // 🔹 Raycast between previous and current position for surface impact
+        Vector3 direction = transform.position - lastPosition;
+        float distance = direction.magnitude;
+        if (distance > 0.001f)
         {
-            trailRenderer.colorGradient = trailColorGradient;
-        }
-        else
-        {
-            Color upgradedColor = Color.Lerp(baseImpactColor, Color.cyan, tier * 0.3f);
-            trailRenderer.material.SetColor("_EmissionColor", upgradedColor * (1f + 0.5f * tier));
+            if (Physics.Raycast(lastPosition, direction.normalized, out RaycastHit hit, distance, impactLayers))
+            {
+                // Spawn wall/floor impact FX (do not affect enemies)
+                SpawnImpactFx(hit.point, hit.normal);
+            }
         }
 
-        // Optional tracer glow
-        if (tracerLight)
-        {
-            tracerLight.intensity = baseLightIntensity * (1f + 0.5f * tier);
-            tracerLight.color = Color.Lerp(baseImpactColor, Color.cyan, 0.3f * tier);
-        }
+        lastPosition = transform.position;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -97,11 +78,13 @@ public class SniperBullet : Bullet
 
         if (other.CompareTag("Enemy"))
         {
-            var enemy = other.GetComponent<EnemyBase>();
+            EnemyBase enemy = other.GetComponent<EnemyBase>();
             if (enemy)
             {
                 enemy.TakeDamage(BulletDamage, Owner);
                 penetrationsRemaining--;
+
+                // Slight damage reduction per target
                 BulletDamage = Mathf.Max(1, Mathf.RoundToInt(BulletDamage * damageFalloff));
             }
 
@@ -117,9 +100,19 @@ public class SniperBullet : Bullet
         }
     }
 
+    private void SpawnImpactFx(Vector3 point, Vector3 normal)
+    {
+        if (!bulletImpactFX) return;
+
+        GameObject fx = ObjectPool.instance.GetObject(bulletImpactFX);
+        fx.transform.position = point;
+        fx.transform.rotation = Quaternion.LookRotation(normal);
+        ObjectPool.instance.ReturnObject(1, fx);
+    }
+
     private void EndBullet()
     {
         if (trailRenderer) trailRenderer.Clear();
-        ReturnToPool();
+        ReturnBulletToPool();
     }
 }
