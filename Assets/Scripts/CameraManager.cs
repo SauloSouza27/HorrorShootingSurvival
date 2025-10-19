@@ -44,6 +44,7 @@ public class PlayerCameraController : MonoBehaviour
         // Conecta a pontuação de cada player
         PlayerStats playerStats = playerInput.GetComponent<PlayerStats>();
         ScoreCount scoreCount = newHUD.GetComponentInChildren<ScoreCount>();
+        playerStats.scoreCount = scoreCount;
 
         // Conecta os slots de perks (não funciona ainda?)
         Transform playerPerksSlots = newHUD.transform.Find("PerksSlots");
