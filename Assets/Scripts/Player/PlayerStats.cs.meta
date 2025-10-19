@@ -1,2 +1,18 @@
 fileFormatVersion: 2
 guid: 8ca378f0cb4b85142bd4a3e0d8467e2a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - juggernogSprite: {fileID: 21300000, guid: eed7f6fd46fc50640b829011a02ffae4, type: 3}
+  - speedColaSprite: {fileID: 21300000, guid: 8f59d1dad1a357342950d1df954f67d6, type: 3}
+  - staminUpSprite: {fileID: 21300000, guid: d0a61853fb018c448b641efe14e55241, type: 3}
+  - quickReviveSprite: {fileID: 21300000, guid: 4f9caed7836a20644a5704ce0f5f04ed, type: 3}
+  - scoreCount: {instanceID: 0}
+  - perkSlots: {instanceID: 0}
+  - perkIconSlot: {fileID: 2725645534536041309, guid: 8769d47bb8e829a4f8823d46c3577b1d, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

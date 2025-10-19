@@ -23,6 +23,9 @@ public class Player : MonoBehaviour
     public Ragdoll ragdoll { get; private set; }
     public PlayerHealth health { get; private set; }
     public Animator animator { get; private set; }
+
+    //HUD
+    public Transform playerPerksSlots;
     
     
     private void Awake()
@@ -37,6 +40,7 @@ public class Player : MonoBehaviour
         weapon = GetComponent<PlayerWeaponController>();
         weaponVisuals = GetComponent<PlayerWeaponVisuals>();
         interaction = GetComponent<PlayerInteraction>();
+        //playerPerksSlots = GetComponent<>();
     }
     
 
