@@ -91,6 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7d1de71fd8cfc34e866c3e86238d2b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerPerksSlots: {fileID: 0}
 --- !u!114 &4687158811436264045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,6 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67722754edc61774bb49d3a32aadb6ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sniperBulletPrefab: {fileID: 0}
   defaultWeaponData: {fileID: 11400000, guid: deab02123b269614a8a7892d1325557c, type: 2}
   currentWeapon:
     weaponType: 0
@@ -291,7 +293,13 @@ MonoBehaviour:
   baseReloadSpeedMultiplier: 1
   baseRunSpeedMultiplier: 1
   baseReviveSpeedMultiplier: 1
+  juggernogSprite: {fileID: 21300000, guid: eed7f6fd46fc50640b829011a02ffae4, type: 3}
+  speedColaSprite: {fileID: 21300000, guid: 8f59d1dad1a357342950d1df954f67d6, type: 3}
+  staminUpSprite: {fileID: 21300000, guid: d0a61853fb018c448b641efe14e55241, type: 3}
+  quickReviveSprite: {fileID: 21300000, guid: 4f9caed7836a20644a5704ce0f5f04ed, type: 3}
   scoreCount: {fileID: 0}
+  perkSlots: {fileID: 0}
+  perkIconSlot: {fileID: 2725645534536041309, guid: 8769d47bb8e829a4f8823d46c3577b1d, type: 3}
 --- !u!114 &8650254728549323603
 MonoBehaviour:
   m_ObjectHideFlags: 0

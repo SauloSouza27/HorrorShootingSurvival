@@ -49,8 +49,8 @@ public class PlayerStats : MonoBehaviour
 
     // HUD reference
     public ScoreCount scoreCount;
-    //public Transform perkSlots;
-    //public GameObject perkIconSlot;
+    public Transform perkSlots;
+    public GameObject perkIconSlot;
 
     private void Awake()
     {
@@ -58,7 +58,6 @@ public class PlayerStats : MonoBehaviour
         ResetStats();                 // sets MaxHealth / multipliers from base values
         currentPoints = startingPoints;
         OnPointsChanged?.Invoke(currentPoints); // optional: update UI immediately
-        //perkSlots = player.playerPerksSlots;
         updateScoreDisplay();
     }
 
@@ -123,28 +122,28 @@ public class PlayerStats : MonoBehaviour
     // 🔹 Apply perk effects
     private void ApplyPerk(PerkType perkType)
     {
-        //GameObject newPerkIcon = Instantiate(perkIconSlot, perkSlots, false);
+        GameObject newPerkIcon = Instantiate(perkIconSlot, perkSlots, false);
         switch (perkType)
         {
             case PerkType.Juggernog:
                 MaxHealth = Mathf.RoundToInt(baseMaxHealth * 2f); // Double health
                 player.health.SetMaxHealth(MaxHealth, healToFull: true);
-                //newPerkIcon.GetComponent<SpriteRenderer>().sprite = juggernogSprite;
+                newPerkIcon.GetComponent<Image>().sprite = juggernogSprite;
                 break;
 
             case PerkType.SpeedCola:
                 ReloadSpeedMultiplier = 0.5f; // 50% reload time
-                //newPerkIcon.GetComponent<SpriteRenderer>().sprite = speedColaSprite;
+                newPerkIcon.GetComponent<Image>().sprite = speedColaSprite;
                 break;
 
             case PerkType.StaminUp:
                 RunSpeedMultiplier = 1.5f; // 50% faster run
-                //newPerkIcon.GetComponent<SpriteRenderer>().sprite = staminUpSprite;
+                newPerkIcon.GetComponent<Image>().sprite = staminUpSprite;
                 break;
 
             case PerkType.QuickRevive:
                 ReviveSpeedMultiplier = 0.5f; // 50% faster revive
-                //newPerkIcon.GetComponent<SpriteRenderer>().sprite = quickReviveSprite;
+                newPerkIcon.GetComponent<Image>().sprite = quickReviveSprite;
                 break;
         }
     }

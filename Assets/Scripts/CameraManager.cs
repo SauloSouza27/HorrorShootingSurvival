@@ -10,6 +10,7 @@ public class PlayerCameraController : MonoBehaviour
     public GameObject playerHUD;
     public Transform playerHUDSlots;
     public GameObject defeatMenu;
+    public Transform perkSlots;
 
     void Start()
     {
@@ -47,7 +48,8 @@ public class PlayerCameraController : MonoBehaviour
         playerStats.scoreCount = scoreCount;
 
         // Conecta os slots de perks (não funciona ainda?)
-        Transform playerPerksSlots = newHUD.transform.Find("PerksSlots");
+        Transform perkSlots = newHUD.transform.Find("PerksSlots");
+        playerStats.perkSlots = perkSlots;
 
         // Conecta a tela de morte para cada jogador
         playerHp.defeatScreen = defeatMenu;
