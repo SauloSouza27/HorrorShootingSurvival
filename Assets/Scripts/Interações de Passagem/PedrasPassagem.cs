@@ -60,10 +60,11 @@ public class PedrasPassagem : MonoBehaviour
             t.GetComponent<MeshCollider>().enabled = false;
         }
 
-        while (tempo < duracaoFadeOut)
+        while (tempo < duracaoFadeOut - 0.1f)
         {
             tempo += Time.deltaTime;
-            float alpha = Mathf.Lerp(1f, 0f, tempo / duracaoFadeOut);// força o alpha de 1 até 0
+            float tQuadratico = tempo * tempo;
+            float alpha = Mathf.Lerp(1f, 0f, tQuadratico / duracaoFadeOut);// força o alpha de 1 até 0
             corAtual.a = alpha;
 
             foreach (Renderer r in render)
