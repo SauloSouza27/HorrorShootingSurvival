@@ -3812,9 +3812,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 421497058}
-        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
-        m_MethodName: GoToMainMenu
+      - m_Target: {fileID: 2074453862}
+        m_TargetAssemblyTypeName: GameRestart, Assembly-CSharp
+        m_MethodName: QuitToMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

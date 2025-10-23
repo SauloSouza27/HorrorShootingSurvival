@@ -22,6 +22,15 @@ public class MainMenu : MonoBehaviour
 
     private void StartGame()
     {
+        // Reset timescale just in case game was paused
+        Time.timeScale = 1;
+
+        // Clear singletons (to avoid “ghost” objects blocking logic)
+        if (GameManager.Instance != null)
+        {
+            Destroy(GameManager.Instance.gameObject);
+        }
+        
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
