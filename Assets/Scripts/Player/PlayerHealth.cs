@@ -153,6 +153,7 @@ public class PlayerHealth : HealthController
 
         // your old death flow
         player.animator.enabled = false;
+        Debug.Log("ragdoll active");
         player.ragdoll.RagdollActive(true);
         defeatScreen.SetActive(true);
     }

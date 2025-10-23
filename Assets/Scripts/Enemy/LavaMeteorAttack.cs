@@ -58,7 +58,7 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
             IDamageable damageable = hit.gameObject.GetComponent<IDamageable>();
             damageable?.TakeDamage();
             {
-                Debug.Log($"Hit {hit.name} for {attackDamage} damage!");
+                //Debug.Log($"Hit {hit.name} for {attackDamage} damage!");
             }
         }
     }
