@@ -393,7 +393,7 @@ MonoBehaviour:
   maxattack: 3
   startAttack: 1
   multiplier: 1.1
-  avaible_from_wave: 0
+  avaible_from_wave: 2
   avaible_to_wave: 100
 --- !u!114 &2048165912453249814
 MonoBehaviour:

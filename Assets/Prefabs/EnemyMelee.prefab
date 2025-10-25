@@ -476,12 +476,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 617f49cf6b714d44e955738247d9ad94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 1.6
+  attackRange: 1.7
   attackCooldown: 2
-  attackDuration: 0.7
+  attackDuration: 0.6
   attackDamage: 15
   bite: {fileID: 5074358976206155798}
-  biteDuration: 0.7
+  biteDuration: 0.6
 --- !u!65 &5339575538574583434
 BoxCollider:
   m_ObjectHideFlags: 0
