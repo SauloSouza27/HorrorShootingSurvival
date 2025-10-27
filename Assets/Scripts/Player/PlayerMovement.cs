@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     private Player player;
-    private PlayerControls controls;
     private CharacterController characterController;
     private Animator animator;
     private PlayerStats stats;
@@ -16,17 +15,29 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float runSpeed;
     [SerializeField] private float gravityScale = 9.81f;
     [SerializeField] private float turnSpeed;
-    
+
+    [Header("Stamina")]
+    [SerializeField] private float maxStamina = 5f;          // seconds of sprint time
+    [SerializeField] private float staminaRegenRate = 1.5f;  // per second
+    [SerializeField] private float staminaDrainRate = 1f;    // per second while running
+    [SerializeField] private float staminaCooldown = 1.5f;   // delay after exhaustion
+
+    private float currentStamina;
+    private bool isRunning;
+    private bool canRun = true;
+    private float staminaCooldownTimer;
+
     private float verticalVelocity;
     private float speed;
     private Vector3 movementDirection;
     private Vector2 moveInput;
-    private bool isRunning;
-    
+
     private float baseWalkSpeed;
     private float baseAimingWalkSpeed;
     private float baseRunSpeed;
-    
+    private float baseMaxStamina;
+    private float baseStaminaRegenRate;
+
     private readonly int idleToWalkBlendTreeHash = Animator.StringToHash("idleToWalk");
 
     private void Start()
@@ -34,20 +45,21 @@ public class PlayerMovement : MonoBehaviour
         player = GetComponent<Player>();
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
-        stats = GetComponent<PlayerStats>(); // ⬅️ add
+        stats = GetComponent<PlayerStats>();
 
-        // cache base speeds
+        // cache base values
         baseWalkSpeed = walkSpeed;
         baseAimingWalkSpeed = aimingWalkSpeed;
         baseRunSpeed = runSpeed;
+        baseMaxStamina = maxStamina;
+        baseStaminaRegenRate = staminaRegenRate;
 
-        // subscribe to stat changes
+        currentStamina = maxStamina;
+
         if (stats != null)
-            stats.OnStatsChanged += ApplySpeedFromStats;  // ⬅️ add
+            stats.OnStatsChanged += ApplySpeedAndStaminaFromStats;
 
-        ApplySpeedFromStats(); // initialize with current multipliers
-
-        speed = walkSpeed;
+        ApplySpeedAndStaminaFromStats();
         AssignInputEvents();
     }
 
@@ -56,10 +68,49 @@ public class PlayerMovement : MonoBehaviour
         if (player.health.isDead || player.health.isDowned)
             return;
 
-        
+        HandleStamina();
         ApplyMovement();
         UpdateRotation();
         AnimatorControllers();
+    }
+
+    private void HandleStamina()
+    {
+        // stamina logic
+        if (isRunning && movementDirection.magnitude > 0 && canRun)
+        {
+            currentStamina -= staminaDrainRate * Time.deltaTime;
+            if (currentStamina <= 0f)
+            {
+                currentStamina = 0f;
+                canRun = false;
+                staminaCooldownTimer = staminaCooldown;
+                StopRunning();
+            }
+        }
+        else
+        {
+            if (staminaCooldownTimer > 0f)
+            {
+                staminaCooldownTimer -= Time.deltaTime;
+                if (staminaCooldownTimer <= 0f)
+                    canRun = true;
+            }
+            else if (currentStamina < maxStamina)
+            {
+                currentStamina += staminaRegenRate * Time.deltaTime;
+                currentStamina = Mathf.Min(currentStamina, maxStamina);
+            }
+        }
+
+        // debug info
+        Debug.DrawRay(transform.position + Vector3.up * 2f, Vector3.right * (currentStamina / maxStamina), Color.green);
+    }
+
+    private void StopRunning()
+    {
+        isRunning = false;
+        speed = walkSpeed;
     }
 
     private void AnimatorControllers()
@@ -76,12 +127,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateRotation()
     {
-        Vector3 lookingDirection = player.aim.GetAimPosition() - transform.position;
-        lookingDirection.y = 0f;
-        if (lookingDirection != Vector3.zero)
+        Vector3 lookDir = player.aim.GetAimPosition() - transform.position;
+        lookDir.y = 0f;
+        if (lookDir != Vector3.zero)
         {
-            Quaternion desiredRotation = Quaternion.LookRotation(lookingDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime * turnSpeed);
+            Quaternion targetRot = Quaternion.LookRotation(lookDir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * turnSpeed);
         }
     }
 
@@ -108,7 +159,7 @@ public class PlayerMovement : MonoBehaviour
             verticalVelocity = -.5f;
         }
     }
-    
+
     private void AssignInputEvents()
     {
         var playerInput = GetComponent<PlayerInput>();
@@ -119,30 +170,80 @@ public class PlayerMovement : MonoBehaviour
 
         controls["Run"].performed += ctx =>
         {
-            speed = runSpeed;
-            isRunning = true;
+            if (canRun && currentStamina > 0)
+            {
+                speed = runSpeed;
+                isRunning = true;
+            }
         };
         controls["Run"].canceled += ctx =>
         {
-            speed = walkSpeed;
-            isRunning = false;
+            StopRunning();
         };
     }
-    
-    private void ApplySpeedFromStats()
+
+    private void ApplySpeedAndStaminaFromStats()
     {
         float mult = stats != null ? stats.RunSpeedMultiplier : 1f;
         walkSpeed = baseWalkSpeed * mult;
         aimingWalkSpeed = baseAimingWalkSpeed * mult;
         runSpeed = baseRunSpeed * mult;
 
-        // keep current "speed" coherent if we were running/walking already
+        // stamina bonus from StaminUp
+        if (stats != null && stats.HasPerk(PerkType.StaminUp))
+        {
+            maxStamina = baseMaxStamina * 2f;
+            staminaRegenRate = baseStaminaRegenRate * 1.5f;
+        }
+        else
+        {
+            maxStamina = baseMaxStamina;
+            staminaRegenRate = baseStaminaRegenRate;
+        }
+
         speed = isRunning ? runSpeed : walkSpeed;
+        currentStamina = Mathf.Min(currentStamina, maxStamina);
     }
-    
+
     private void OnDestroy()
     {
         if (stats != null)
-            stats.OnStatsChanged -= ApplySpeedFromStats; // ⬅️ add
+            stats.OnStatsChanged -= ApplySpeedAndStaminaFromStats;
     }
+    
+#if UNITY_EDITOR
+    private void OnGUI()
+    {
+        // Only for debug visualization
+        if (player == null || player.health == null || player.health.isDead)
+            return;
+
+        // Dimensions
+        float width = 200f;
+        float height = 20f;
+        float x = 20f;
+        float y = Screen.height - height - 20f;
+
+        // Background
+        GUI.color = Color.black;
+        GUI.Box(new Rect(x - 2, y - 2, width + 4, height + 4), GUIContent.none);
+
+        // Fill color based on stamina percentage
+        float staminaPercent = currentStamina / maxStamina;
+        Color barColor = canRun ? Color.Lerp(Color.red, Color.green, staminaPercent) : Color.gray;
+        GUI.color = barColor;
+
+        // Draw the fill bar
+        GUI.Box(new Rect(x, y, width * staminaPercent, height), GUIContent.none);
+
+        // Text label
+        GUI.color = Color.white;
+        GUI.Label(new Rect(x + 5, y - 20, width, 20), $"Stamina: {currentStamina:F1}/{maxStamina:F1}");
+    }
+#endif
+
+
+
+
+
 }
