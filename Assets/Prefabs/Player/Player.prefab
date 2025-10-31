@@ -127,6 +127,10 @@ MonoBehaviour:
   runSpeed: 7
   gravityScale: 9.81
   turnSpeed: 6
+  maxStamina: 5
+  staminaRegenRate: 1.5
+  staminaDrainRate: 1
+  staminaCooldown: 1.5
 --- !u!114 &4906365836593033238
 MonoBehaviour:
   m_ObjectHideFlags: 0

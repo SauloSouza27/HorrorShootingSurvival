@@ -37,8 +37,13 @@ public class PlayerMovement : MonoBehaviour
     private float baseRunSpeed;
     private float baseMaxStamina;
     private float baseStaminaRegenRate;
+    
+    public float StaminaNormalized => currentStamina / maxStamina;
+    public bool IsRunning => isRunning;
 
-    private readonly int idleToWalkBlendTreeHash = Animator.StringToHash("idleToWalk");
+// Debug toggle
+    public bool ShowDebugUI = true;
+
 
     private void Start()
     {
@@ -61,6 +66,10 @@ public class PlayerMovement : MonoBehaviour
 
         ApplySpeedAndStaminaFromStats();
         AssignInputEvents();
+        
+        if (!TryGetComponent(out StaminaDebugUI debugUI))
+            gameObject.AddComponent<StaminaDebugUI>();
+
     }
 
     private void Update()
@@ -210,40 +219,4 @@ public class PlayerMovement : MonoBehaviour
         if (stats != null)
             stats.OnStatsChanged -= ApplySpeedAndStaminaFromStats;
     }
-    
-#if UNITY_EDITOR
-    private void OnGUI()
-    {
-        // Only for debug visualization
-        if (player == null || player.health == null || player.health.isDead)
-            return;
-
-        // Dimensions
-        float width = 200f;
-        float height = 20f;
-        float x = 20f;
-        float y = Screen.height - height - 20f;
-
-        // Background
-        GUI.color = Color.black;
-        GUI.Box(new Rect(x - 2, y - 2, width + 4, height + 4), GUIContent.none);
-
-        // Fill color based on stamina percentage
-        float staminaPercent = currentStamina / maxStamina;
-        Color barColor = canRun ? Color.Lerp(Color.red, Color.green, staminaPercent) : Color.gray;
-        GUI.color = barColor;
-
-        // Draw the fill bar
-        GUI.Box(new Rect(x, y, width * staminaPercent, height), GUIContent.none);
-
-        // Text label
-        GUI.color = Color.white;
-        GUI.Label(new Rect(x + 5, y - 20, width, 20), $"Stamina: {currentStamina:F1}/{maxStamina:F1}");
-    }
-#endif
-
-
-
-
-
 }
