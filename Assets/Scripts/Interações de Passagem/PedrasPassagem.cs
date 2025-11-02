@@ -29,7 +29,7 @@ public class PedrasPassagem : MonoBehaviour
         StartPedrasRigidBody();
     }
 
-    public void StartPedrasRigidBody()
+    private void StartPedrasRigidBody()
     {
         foreach (Transform t in pedras)
         {
