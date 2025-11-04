@@ -341,11 +341,11 @@ public class PlayerWeaponController : MonoBehaviour
     {
         if (ammoCount != null && currentWeapon != null)
         {
-            ammoCount.UpdateAmmo(currentWeapon.bulletsInMagazine, currentWeapon.magazineCapacity, currentWeapon.totalReserveAmmo);
+            ammoCount.UpdateAmmo(currentWeapon.bulletsInMagazine, currentWeapon.totalReserveAmmo);
         }
         else if (ammoCount != null && currentWeapon == null)
         {
-            ammoCount.UpdateAmmo(0, 0, 0);
+            ammoCount.UpdateAmmo(0, 0);
         }
     }
 

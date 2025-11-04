@@ -7,9 +7,9 @@ public class AmmoCount : MonoBehaviour
 {
     public TextMeshProUGUI ammoText;
 
-    public void UpdateAmmo(int currentAmmo, int maxAmmo, int totalAmmo)
+    public void UpdateAmmo(int currentAmmo, int totalAmmo)
     {
-        ammoText.text = currentAmmo + " / " + maxAmmo + " (" + totalAmmo + ")";
+        ammoText.text = currentAmmo + " / " + totalAmmo;
     }
 
 }
