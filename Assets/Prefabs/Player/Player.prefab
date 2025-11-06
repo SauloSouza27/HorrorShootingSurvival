@@ -104,6 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d20fa9b8a7736ee48b17e925756299d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minAimDistance: 3
   isToggleAim: 1
   aimLaser: {fileID: 7046041712662986786}
   aim: {fileID: 3796103313814107620}
@@ -131,6 +132,7 @@ MonoBehaviour:
   staminaRegenRate: 1.5
   staminaDrainRate: 1
   staminaCooldown: 1.5
+  ShowDebugUI: 1
 --- !u!114 &4906365836593033238
 MonoBehaviour:
   m_ObjectHideFlags: 0
