@@ -45,7 +45,7 @@ public class DoorPurchase : Interactable
     // track who is in range to show the prompt
     private readonly HashSet<Player> playersInRange = new HashSet<Player>();
 
-    private void Start()
+    private void Awake()
     {
         // get pedras filhas
         quantidadePedras = transform.childCount;
@@ -85,8 +85,12 @@ public class DoorPurchase : Interactable
     // Abrir porta modo pedras caindo
     private void StartPedrasRigidBody()
     {
+        opened = true;
+        HighlightActive(false);
+        this.gameObject.GetComponent<Renderer>().enabled = false;
         foreach (Transform t in pedras)
         {
+            t.GetComponent<MeshRenderer>().enabled = true;
             t.GetComponent<Rigidbody>().isKinematic = false;
         }
 

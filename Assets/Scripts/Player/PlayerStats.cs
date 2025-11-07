@@ -8,7 +8,8 @@ public enum PerkType
     Juggernog,     // More health
     SpeedCola,     // Faster reload
     StaminUp,      // Run faster
-    QuickRevive    // Revive faster
+    QuickRevive,   // Revive faster
+    DoubleTap      // Cadência tiro
 }
 
 [RequireComponent(typeof(Player))]
@@ -142,6 +143,11 @@ public class PlayerStats : MonoBehaviour
                 break;
 
             case PerkType.QuickRevive:
+                ReviveSpeedMultiplier = 0.5f; // 50% faster revive
+                newPerkIcon.GetComponent<Image>().sprite = quickReviveSprite;
+                break;
+
+            case PerkType.DoubleTap:
                 ReviveSpeedMultiplier = 0.5f; // 50% faster revive
                 newPerkIcon.GetComponent<Image>().sprite = quickReviveSprite;
                 break;
