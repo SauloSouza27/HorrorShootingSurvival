@@ -49,12 +49,12 @@ Material:
     - _Cull: 2
     - _DstBlend: 0
     - _FresnelControl: 2
-    - _Metallic: 0.731
+    - _Metallic: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RENDERFACE: 0
     - _ReceiveShadows: 1
-    - _Smoothnnes: 0.527
+    - _Smoothnnes: 0
     - _SrcBlend: 1
     - _Surface: 0
     - _TopLine: 0.825
