@@ -3656,6 +3656,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3696454302709540516, guid: 16607478516b4a840abc5ab5ecf3adea, type: 3}
   m_PrefabInstance: {fileID: 127923290}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &134805893 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1656068732155733012, guid: 0834e17dd208e0040b33c79d3cd0a95c, type: 3}
+  m_PrefabInstance: {fileID: 299425528268612937}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c8584419560b2428bea1db68ac388b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &139010252
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7032,6 +7043,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7440520443301321096, guid: e94308c1ae17deb4dafcf32256de0904, type: 3}
   m_PrefabInstance: {fileID: 268678615}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &271200723 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 13071934987472014, guid: 0834e17dd208e0040b33c79d3cd0a95c, type: 3}
+  m_PrefabInstance: {fileID: 1916974892}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c8584419560b2428bea1db68ac388b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &274101888
 GameObject:
   m_ObjectHideFlags: 0
@@ -13226,6 +13248,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 480577653}
   m_CullTransparentMesh: 1
+--- !u!114 &481069840 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6062394438085440003, guid: 0834e17dd208e0040b33c79d3cd0a95c, type: 3}
+  m_PrefabInstance: {fileID: 439850457}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c8584419560b2428bea1db68ac388b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &487470449
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25173,7 +25206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5749ffcef13583b459b8cf715c30ce43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mesh: {fileID: 0}
+  mesh: {fileID: 1281639519}
   highlightMaterial: {fileID: 2100000, guid: 193c1df0f71bf25499c292a20e001ea2, type: 2}
   weaponData: {fileID: 11400000, guid: 14516013c8e758b4d93aa62addd486cf, type: 2}
   weapon:
@@ -25188,10 +25221,13 @@ MonoBehaviour:
     magazineCapacity: 0
     totalReserveAmmo: 0
   models:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 848891746}
+  - {fileID: 134805893}
+  - {fileID: 1927796236}
+  - {fileID: 1281639518}
+  - {fileID: 1263418544}
+  weaponCost: 1000
+  debugUI: 1
 --- !u!65 &832971297
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25211,8 +25247,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.3817182, y: 1.2748992, z: 0.849037}
-  m_Center: {x: 0.5166476, y: 0, z: 0}
+  m_Size: {x: 2.3817182, y: 1.2748992, z: 1.4084244}
+  m_Center: {x: 0.5166476, y: 0, z: -0.004078865}
 --- !u!4 &832971298
 Transform:
   m_ObjectHideFlags: 0
@@ -25222,7 +25258,7 @@ Transform:
   m_GameObject: {fileID: 832971295}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.63, y: 1, z: 9.96}
+  m_LocalPosition: {x: -8.745, y: 1, z: 9.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -25824,6 +25860,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3819458497874792509, guid: dc5c14dd05617a349a6c1eea1be4e5c7, type: 3}
   m_PrefabInstance: {fileID: 846827294}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &848891746 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6062394438085440003, guid: 0834e17dd208e0040b33c79d3cd0a95c, type: 3}
+  m_PrefabInstance: {fileID: 299425528268612937}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c8584419560b2428bea1db68ac388b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &851991279
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36834,6 +36881,18 @@ MonoBehaviour:
   minIntensity: 15
   maxIntensity: 30
   flickerSpeed: 0.1
+  isActive: 0
+--- !u!114 &1263418544 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 13071934987472014, guid: 0834e17dd208e0040b33c79d3cd0a95c, type: 3}
+  m_PrefabInstance: {fileID: 299425528268612937}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c8584419560b2428bea1db68ac388b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1264585325
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37223,10 +37282,9 @@ MonoBehaviour:
     magazineCapacity: 0
     totalReserveAmmo: 0
   models:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 271200723}
+  weaponCost: 1000
+  debugUI: 1
 --- !u!65 &1280403763
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -37246,8 +37304,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.47866172, y: 0.9994838, z: 1.5598699}
-  m_Center: {x: -1.3233679e-15, y: 0.035166502, z: 0.40687615}
+  m_Size: {x: 0.94556296, y: 0.9994838, z: 1.5598699}
+  m_Center: {x: -0.045283854, y: 0.035166502, z: 0.4068761}
 --- !u!4 &1280403764
 Transform:
   m_ObjectHideFlags: 0
@@ -37665,6 +37723,22 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7638228360108803913, guid: 7339cdcd5a35b1c4e841a71b78f9adfe, type: 3}
   m_PrefabInstance: {fileID: 1280518578}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1281639518 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4968207566285417870, guid: 0834e17dd208e0040b33c79d3cd0a95c, type: 3}
+  m_PrefabInstance: {fileID: 299425528268612937}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c8584419560b2428bea1db68ac388b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!23 &1281639519 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5269795194011508286, guid: 0834e17dd208e0040b33c79d3cd0a95c, type: 3}
+  m_PrefabInstance: {fileID: 299425528268612937}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1283924283
 PrefabInstance:
@@ -40698,7 +40772,7 @@ MonoBehaviour:
   currentWave: 1
   spawn_multiplier: 1.2
   strength_multiplier: 1.1
-  start_summons: 10
+  start_summons: 0
   current_summons: 10
   summons_spawned: 0
   current_summons_alive: 0
@@ -59392,6 +59466,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1590058963964291177, guid: 092ce7500ce1c4a42872eb3e64e1f854, type: 3}
   m_PrefabInstance: {fileID: 1925718076}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1927796236 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6322300850112570036, guid: 0834e17dd208e0040b33c79d3cd0a95c, type: 3}
+  m_PrefabInstance: {fileID: 299425528268612937}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c8584419560b2428bea1db68ac388b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1930229839
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66773,8 +66858,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.3313894, y: 1.408841, z: 0.66310406}
-  m_Center: {x: 0.7835803, y: 0.12656265, z: 0.2045083}
+  m_Size: {x: 1.3313894, y: 1.0835559, z: 1.3402481}
+  m_Center: {x: 0.7835803, y: -0.036079884, z: 0.24334049}
 --- !u!4 &3005429393075702635 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1286144872637354725, guid: 9bac9255f2a8e5f4a9427a5dc15f90ca, type: 3}
@@ -67208,7 +67293,7 @@ Transform:
   m_GameObject: {fileID: 3452323208281297993}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.51, y: 1, z: 9.69}
+  m_LocalPosition: {x: -11.92, y: 1, z: 9.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -67949,10 +68034,9 @@ MonoBehaviour:
     magazineCapacity: 0
     totalReserveAmmo: 0
   models:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 481069840}
+  weaponCost: 1000
+  debugUI: 1
 --- !u!114 &7087766551094937080
 MonoBehaviour:
   m_ObjectHideFlags: 0
