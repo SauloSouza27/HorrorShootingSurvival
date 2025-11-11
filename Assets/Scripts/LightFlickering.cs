@@ -19,6 +19,8 @@ public class LightFlicker : MonoBehaviour
 
     void Update()
     {
+        if (!isActive) return;
+
         SetLightFlicker(isActive);
     }
 
@@ -39,6 +41,9 @@ public class LightFlicker : MonoBehaviour
             lightScene.intensity = Mathf.Lerp(lightScene.intensity, targetIntensity, Time.deltaTime * 10f);
         }
 
-        else return;
+        else
+        {
+            lightScene.intensity = 5f;
+        }
     }
 }
