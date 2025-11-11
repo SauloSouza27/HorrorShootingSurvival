@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Highlight Interactable
-  m_Shader: {fileID: -6465566751694194690, guid: 475ed3c86c73a8341ad2d4c383f8808d, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 6f5fad73ec3def545b35e28c0fa80f4b, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -40,17 +40,18 @@ Material:
     m_Ints: []
     m_Floats:
     - _BottomLine: 0
-    - _FresnelControl: 1.66
+    - _FresnelControl: 2.3
     - _Metallic: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RENDERFACE: 0
     - _Smoothnnes: 0
-    - _TopLine: 1
+    - _TopLine: 0
     m_Colors:
-    - _BaseColor: {r: 0.16470589, g: 0.16062263, b: 0, a: 1}
-    - _BottomColor: {r: 2.9960785, g: 2.9139533, b: 0, a: 0}
-    - _TopColor: {r: 2.7211895, g: 2.9960783, b: 0, a: 0}
+    - _BaseColor: {r: 0, g: 0, b: 0, a: 1}
+    - _BottomColor: {r: 4.9245777, g: 4.8454766, b: 0, a: 0}
+    - _EmissionColor: {r: 5.9921575, g: 5.672819, b: 0, a: 1}
+    - _TopColor: {r: 62.62031, g: 68.5935, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &6766423712159186917
