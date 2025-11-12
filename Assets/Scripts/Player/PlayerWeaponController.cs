@@ -198,6 +198,7 @@ public class PlayerWeaponController : MonoBehaviour
         if (!WeaponReady() || !currentWeapon.CanShoot()) return;
 
         player.weaponVisuals.PlayFireAnimation();
+        AudioManager.Instance.PlaySFX(currentWeapon.WeaponData.shootSFX);
 
         if (currentWeapon.shootType == ShootType.Single)
         {
@@ -234,6 +235,8 @@ public class PlayerWeaponController : MonoBehaviour
 
         if (bulletScript != null)
             bulletScript.BulletSetup(currentWeapon.bulletDamage, currentWeapon.BulletDistance, player);
+        
+        
 
         Vector3 dir = currentWeapon.ApplySpread(BulletDirection());
         rbNewBullet.mass = REFERENCE_BULLET_SPEED / bulletSpeed;

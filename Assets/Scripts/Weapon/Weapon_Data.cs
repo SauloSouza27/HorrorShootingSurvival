@@ -39,4 +39,10 @@ public class Weapon_Data : ScriptableObject
     [Range(1, 5)] public float reloadSpeed = 1;
     [Range(1, 5)] public float equipSpeed = 1;
     [Range(4, 12)] public float bulletDistance = 4;
+    
+    [Header("Audio")]
+    public AudioClip shootSFX;
+    public AudioClip reloadSFX;
+    public AudioClip emptySFX;
+
 }
