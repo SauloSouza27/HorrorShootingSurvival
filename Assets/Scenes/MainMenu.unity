@@ -187,7 +187,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.308
+  m_Volume: 0.129
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1417,6 +1417,7 @@ MonoBehaviour:
   gameplayMusic: {fileID: 8300000, guid: cf1408003ac46e842a1621afa34f94c0, type: 3}
   soundEffects:
   - {fileID: 8300000, guid: f64caa2e2e6627b4db781b926abf53ab, type: 3}
+  - {fileID: 8300000, guid: 4ea75cd7c8a2e7646be78d9494bd8b99, type: 3}
 --- !u!4 &1614039762
 Transform:
   m_ObjectHideFlags: 0
@@ -1476,7 +1477,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.237
+  m_Volume: 0.362
   m_Pitch: 1
   Loop: 0
   Mute: 0

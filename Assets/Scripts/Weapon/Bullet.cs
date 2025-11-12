@@ -28,6 +28,11 @@ public class Bullet : MonoBehaviour
     [SerializeField] private Color tier1Emission = new Color(0.3f, 0.6f, 1f);
     [SerializeField] private Color tier2Emission = new Color(1f, 0.4f, 0.8f);
     [SerializeField] private Color tier3Emission = new Color(1f, 0.9f, 0.3f);
+    
+    [Header("Audio")]
+    public AudioClip shootSFX;
+    [Range(0f, 1f)] public float shootVolume = 1f;
+
 
     protected virtual void Awake()
     {
@@ -143,6 +148,7 @@ public class Bullet : MonoBehaviour
     {
         if (collision.contacts.Length > 0)
         {
+            AudioManager.Instance.PlaySFX("BulletImpact",  3f);
             ContactPoint contact = collision.contacts[0];
             GameObject newImpactFx = ObjectPool.instance.GetObject(bulletImpactFX);
             newImpactFx.transform.position = contact.point;

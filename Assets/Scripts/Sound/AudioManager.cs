@@ -57,19 +57,20 @@ public class AudioManager : MonoBehaviour
     public void SwitchToGameplayMusic() => PlayMusic(gameplayMusic);
 
     // 🔊 SFX METHODS
-    public void PlaySFX(string clipName)
+    public void PlaySFX(string clipName, float volume = 1f)
     {
         if (sfxDictionary.TryGetValue(clipName, out var clip))
-            sfxSource.PlayOneShot(clip);
+            sfxSource.PlayOneShot(clip, volume);
         else
             Debug.LogWarning($"SFX '{clipName}' not found in AudioManager.");
     }
 
-    public void PlaySFX(AudioClip clip)
+    public void PlaySFX(AudioClip clip, float volume = 1f)
     {
         if (clip == null) return;
-        sfxSource.PlayOneShot(clip);
+        sfxSource.PlayOneShot(clip, volume);
     }
+
 
     // ⚙️ MIXER VOLUME CONTROL
     public void SetMasterVolume(float value) => SetMixerVolume("MasterVolume", value);
