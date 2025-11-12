@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 691b771fb9fa3374e80818ce4cc4b1a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletImpactFX: {fileID: 6398714318726896200, guid: 9169a760de7b44a41a39c980ba3f7e37, type: 3}
+  bulletImpactFX: {fileID: 2944396702758532163, guid: 1c6a5cd711bb9974ebedd522e16c0333, type: 3}
   baseTrailColor:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
