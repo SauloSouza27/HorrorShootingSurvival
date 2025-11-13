@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Weapon_BurstRifle_D
   m_EditorClassIdentifier: 
   weaponName: BurstRifle
+  weaponPrice: 3000
   weaponIcon: {fileID: 21300000, guid: 6c4ca72d1bd5baf49a5db922b3d3a4c3, type: 3}
   bulletDamage: 20
-  weaponType: 4
+  weaponType: 1
   shootType: 0
   bulletsPerShot: 3
   fireRate: 6
@@ -32,3 +33,6 @@ MonoBehaviour:
   reloadSpeed: 1
   equipSpeed: 1
   bulletDistance: 10
+  shootSFX: {fileID: 0}
+  reloadSFX: {fileID: 0}
+  emptySFX: {fileID: 0}

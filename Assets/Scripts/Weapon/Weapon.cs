@@ -5,8 +5,8 @@ using UnityEngine.Serialization;
 public enum WeaponType
 {
     Pistol,
-    Revolver,
-    AutoRifle,
+    BurstRifle,
+    MiniGun,
     Shotgun,
     Sniper,
 }
