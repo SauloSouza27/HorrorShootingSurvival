@@ -19,14 +19,14 @@ MonoBehaviour:
   weaponType: 2
   shootType: 1
   bulletsPerShot: 1
-  fireRate: 10
+  fireRate: 20
   burstAvailable: 0
   burstActive: 0
   burstBulletPerShot: 0
   burstFireDelay: 0.1
-  bulletsInMagazine: 30
-  magazineCapacity: 30
-  totalReserveAmmo: 500
+  bulletsInMagazine: 100
+  magazineCapacity: 100
+  totalReserveAmmo: 1000
   baseSpread: 0.15
   maxSpread: 3
   spreadIncreaseRate: 0.15

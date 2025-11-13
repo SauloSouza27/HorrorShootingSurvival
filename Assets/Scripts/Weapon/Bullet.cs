@@ -148,7 +148,7 @@ public class Bullet : MonoBehaviour
     {
         if (collision.contacts.Length > 0)
         {
-            AudioManager.Instance.PlaySFX("BulletImpact",  3f);
+            AudioManager.Instance.PlaySFX("BulletImpact",  shootVolume);
             ContactPoint contact = collision.contacts[0];
             GameObject newImpactFx = ObjectPool.instance.GetObject(bulletImpactFX);
             newImpactFx.transform.position = contact.point;
