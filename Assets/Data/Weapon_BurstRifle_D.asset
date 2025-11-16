@@ -33,6 +33,6 @@ MonoBehaviour:
   reloadSpeed: 1
   equipSpeed: 1
   bulletDistance: 10
-  shootSFX: {fileID: 0}
+  shootSFX: {fileID: 8300000, guid: a6d65b2b199ab994e96f9ca0a28bf1ee, type: 3}
   reloadSFX: {fileID: 0}
   emptySFX: {fileID: 0}
