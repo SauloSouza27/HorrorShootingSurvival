@@ -483,8 +483,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.008, y: 0.008154567, z: 0.01}
-  m_Center: {x: 4.541323e-16, y: -0.000922716, z: 5.499816e-11}
+  m_Size: {x: 0.008, y: 0.009308372, z: 0.01}
+  m_Center: {x: 1.7019935e-16, y: -0.00034581477, z: 2.0612166e-11}
 --- !u!1 &4588279211612268544
 GameObject:
   m_ObjectHideFlags: 0
@@ -705,7 +705,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 617f49cf6b714d44e955738247d9ad94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 1.7
+  attackRange: 2.1
   attackCooldown: 2
   attackDuration: 0.6
   attackDamage: 15

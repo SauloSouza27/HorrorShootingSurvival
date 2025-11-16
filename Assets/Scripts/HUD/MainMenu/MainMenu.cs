@@ -15,9 +15,21 @@ public class MainMenu : MonoBehaviour
 
     private void OnEnable()
     {
-        playButton.onClick.AddListener(StartGame);
-        settingsButton.onClick.AddListener(OpenSettingsMenu);
-        quitButton.onClick.AddListener(QuitGame);
+        playButton.onClick.AddListener(() =>
+        {
+            AudioManager.Instance.PlaySFX("ButtonClick");
+            StartGame();
+        });
+        settingsButton.onClick.AddListener(() =>
+        {
+            AudioManager.Instance.PlaySFX("ButtonClick");
+            OpenSettingsMenu();
+        });
+        quitButton.onClick.AddListener(() =>
+        {
+            AudioManager.Instance.PlaySFX("ButtonClick");
+            QuitGame();
+        });
     }
 
     private void StartGame()
@@ -31,6 +43,8 @@ public class MainMenu : MonoBehaviour
             Destroy(GameManager.Instance.gameObject);
         }
         
+        AudioManager.Instance.PlaySFX("ButtonClick");
+        AudioManager.Instance.SwitchToGameplayMusic();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

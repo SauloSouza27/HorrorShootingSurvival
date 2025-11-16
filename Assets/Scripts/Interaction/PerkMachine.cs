@@ -92,6 +92,7 @@ public class PerkMachine : Interactable
             case PerkType.SpeedCola: return "Speed Cola";
             case PerkType.StaminUp: return "Stamin-Up";
             case PerkType.QuickRevive: return "Quick Revive";
+            case PerkType.DoubleTap: return "DoubleTap";
             default: return type.ToString();
         }
     }
@@ -103,7 +104,8 @@ public class PerkMachine : Interactable
             case PerkType.Juggernog: return "Increases max health.";
             case PerkType.SpeedCola: return "Reloads 50% faster.";
             case PerkType.StaminUp: return "Run speed increased by 50%.";
-            case PerkType.QuickRevive: return "Revive allies 50% faster.";
+            case PerkType.QuickRevive: return "Revive allies 50% faster.";                
+            case PerkType.DoubleTap: return "DoubleTap";
             default: return "Perk effect.";
         }
     }

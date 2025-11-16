@@ -5,7 +5,7 @@ public class Interactable : MonoBehaviour
     // ⬇️ Use Renderer (works for MeshRenderer or SkinnedMeshRenderer)
     [SerializeField] protected Renderer mesh;
 
-    [SerializeField] private Material highlightMaterial;
+    [SerializeField] public Material highlightMaterial;
     protected Material defaultMaterial;
 
     // ⬇️ Let children disable highlight (ReviveTarget will override)

@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 public class PlayerAim : MonoBehaviour
 {
     private Player player;
+    
+    [Header("Aim Constraints")]
+    [SerializeField] private float minAimDistance = 1f;
 
     [Header("Aim Settings")] [SerializeField]
     private bool isToggleAim; // If true, aim input acts as a toggle; otherwise, it must be held.
@@ -53,10 +56,26 @@ public class PlayerAim : MonoBehaviour
             return; // Skip laser rendering if it's disabled.
 
         WeaponModel weaponModel = player.weaponVisuals.CurrentWeaponModel();
-        
-        // Orient the weapon model and its gunpoint towards the aim target.
-        weaponModel.transform.LookAt(aim);
-        weaponModel.gunPoint.LookAt(aim);
+
+        Vector3 flatAimDir = (aim.position - weaponModel.transform.position);
+        flatAimDir.y = 0f;
+
+        if (flatAimDir.sqrMagnitude > 0.001f)
+        {
+            Quaternion flatRot = Quaternion.LookRotation(flatAimDir);
+            weaponModel.transform.rotation =
+                Quaternion.Slerp(weaponModel.transform.rotation, flatRot, Time.deltaTime * 15f);
+        }
+
+        Vector3 flatGunDir = (aim.position - weaponModel.gunPoint.position);
+        flatGunDir.y = 0f;
+
+        if (flatGunDir.sqrMagnitude > 0.001f)
+        {
+            Quaternion gunRot = Quaternion.LookRotation(flatGunDir);
+            weaponModel.gunPoint.rotation = gunRot;
+        }
+
         
         Transform gunPoint = player.weapon.GunPoint(); // Starting point of the laser.
         Vector3 laserDirection = player.weapon.BulletDirection(); 
@@ -82,36 +101,38 @@ public class PlayerAim : MonoBehaviour
     // Calculates the world space aim position based on active input (controller or mouse).
     public Vector3 GetAimPosition()
     {
+        Vector3 aimPosition = lastValidAimPosition;
+
         if (controllerAimInput.sqrMagnitude > 0.01f)
         {
-            // Calculate aim position based on controller input direction and a fixed distance.
-            Vector3 aimPosition =
-                transform.position +
-                new Vector3(controllerAimInput.x, 0, controllerAimInput.y).normalized * 10f; // Project 10 units away.
-
-            aimPosition.y = transform.position.y + 1.6f; // Set aim height relative to player.
-            lastValidAimPosition = aimPosition;
-            return aimPosition;
+            aimPosition = transform.position +
+                          new Vector3(controllerAimInput.x, 0, controllerAimInput.y).normalized * 10f;
+            aimPosition.y = transform.position.y + 1.6f;
         }
-
-        // Use mouse input if no significant controller input.
-        if (mouseAimInput != Vector2.zero)
+        else if (mouseAimInput != Vector2.zero)
         {
             Ray ray = Camera.main.ScreenPointToRay(mouseAimInput);
             if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask))
             {
-                // Aim point is on the raycast hit, with Y fixed relative to player.
-                Vector3 aimPosition =
-                    new Vector3(hitInfo.point.x, transform.position.y + 1.6f, hitInfo.point.z);
-
-                lastValidAimPosition = aimPosition;
-                return aimPosition;
+                aimPosition = new Vector3(hitInfo.point.x, transform.position.y + 1.6f, hitInfo.point.z);
             }
         }
 
-        // If no current input provides a new position, return the last valid one.
-        return lastValidAimPosition;
+        // ✅ Prevent aim from getting too close to player
+        Vector3 flatDir = aimPosition - transform.position;
+        flatDir.y = 0f;
+
+        if (flatDir.magnitude < minAimDistance)
+        {
+            flatDir = flatDir.normalized * minAimDistance;
+            aimPosition = transform.position + flatDir;
+            aimPosition.y = transform.position.y + 1.6f; 
+        }
+
+        lastValidAimPosition = aimPosition;
+        return aimPosition;
     }
+
 
    
     public void SetAimLaserEnabled(bool state)

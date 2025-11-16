@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Weapon_Shotgun_D
   m_EditorClassIdentifier: 
   weaponName: Shotgun
+  weaponPrice: 3000
   weaponIcon: {fileID: 21300000, guid: f851a48633ec3fd4da52da9798667a29, type: 3}
   bulletDamage: 15
   weaponType: 3
@@ -32,3 +33,6 @@ MonoBehaviour:
   reloadSpeed: 1
   equipSpeed: 1
   bulletDistance: 6
+  shootSFX: {fileID: 0}
+  reloadSFX: {fileID: 0}
+  emptySFX: {fileID: 0}

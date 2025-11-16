@@ -13,7 +13,7 @@ public class ObjectPool : MonoBehaviour
         new Dictionary<GameObject, Queue<GameObject>>();
 
     [Header("To Initialize")] 
-    [SerializeField] private GameObject weaponPickup;
+    [SerializeField] public GameObject weaponPickup;
     
     private void Awake()
     {
@@ -57,13 +57,35 @@ public class ObjectPool : MonoBehaviour
     
     private void ReturnToPool(GameObject objectToReturn)
     {
-        GameObject originalPrefab = objectToReturn.GetComponent<PooledObject>().originalPrefab;
-        
+        if (objectToReturn == null)
+        {
+            Debug.LogWarning("Tried to return a null object to the pool.");
+            return;
+        }
+
+        PooledObject pooled = objectToReturn.GetComponent<PooledObject>();
+        if (pooled == null || pooled.originalPrefab == null)
+        {
+            // Object wasn’t spawned from the pool — just destroy it
+            Debug.LogWarning($"[ObjectPool] '{objectToReturn.name}' was not pooled. Destroying instead.");
+            Destroy(objectToReturn);
+            return;
+        }
+
+        GameObject originalPrefab = pooled.originalPrefab;
+
+        if (!poolDictionary.ContainsKey(originalPrefab))
+        {
+            Debug.LogWarning($"[ObjectPool] Pool for prefab '{originalPrefab.name}' not found. Destroying '{objectToReturn.name}'.");
+            Destroy(objectToReturn);
+            return;
+        }
+
         objectToReturn.SetActive(false);
         objectToReturn.transform.SetParent(transform);
-        
         poolDictionary[originalPrefab].Enqueue(objectToReturn);
     }
+
     
     private void InitializeNewPool(GameObject prefab)
     {
