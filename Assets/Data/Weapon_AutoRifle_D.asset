@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: M4
   weaponPrice: 5000
-  weaponIcon: {fileID: 21300000, guid: f46986a7e01052f41947a23fa64780b4, type: 3}
+  weaponIcon: {fileID: 21300000, guid: ea6f3cfe5ada5f14da1197f40f918b6b, type: 3}
   bulletDamage: 20
   weaponType: 2
   shootType: 1

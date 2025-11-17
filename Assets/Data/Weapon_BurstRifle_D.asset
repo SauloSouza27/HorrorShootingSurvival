@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: BurstRifle
   weaponPrice: 3000
-  weaponIcon: {fileID: 21300000, guid: 6c4ca72d1bd5baf49a5db922b3d3a4c3, type: 3}
+  weaponIcon: {fileID: 21300000, guid: 9d4b0815b808b9644921738bcece0a73, type: 3}
   bulletDamage: 20
   weaponType: 1
   shootType: 0

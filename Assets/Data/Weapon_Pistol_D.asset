@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Deagle
   weaponPrice: 0
-  weaponIcon: {fileID: 21300000, guid: 30a29a9928dac3544bba74721d603365, type: 3}
+  weaponIcon: {fileID: 21300000, guid: 653f9b6fe18d03246ace30eed7336465, type: 3}
   bulletDamage: 20
   weaponType: 0
   shootType: 0
