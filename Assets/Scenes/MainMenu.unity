@@ -282,7 +282,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Horror Shooting Game
+  m_text: Dark Side of Horror
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2016,7 +2016,15 @@ PrefabInstance:
     m_TransformParent: {fileID: 1171443708}
     m_Modifications:
     - target: {fileID: 1135800187648094581, guid: 76d0bd2aaab827e46ae825e8210cfdd0, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1135800187648094581, guid: 76d0bd2aaab827e46ae825e8210cfdd0, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1217622849567834890, guid: 76d0bd2aaab827e46ae825e8210cfdd0, type: 3}
+      propertyPath: m_AnchorMax.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1217622849567834890, guid: 76d0bd2aaab827e46ae825e8210cfdd0, type: 3}
@@ -2024,7 +2032,19 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1398825082758735604, guid: 76d0bd2aaab827e46ae825e8210cfdd0, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1398825082758735604, guid: 76d0bd2aaab827e46ae825e8210cfdd0, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1398825082758735604, guid: 76d0bd2aaab827e46ae825e8210cfdd0, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994993692809959900, guid: 76d0bd2aaab827e46ae825e8210cfdd0, type: 3}
+      propertyPath: m_AnchorMax.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2994993692809959900, guid: 76d0bd2aaab827e46ae825e8210cfdd0, type: 3}
@@ -2032,11 +2052,27 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3034343553320320034, guid: 76d0bd2aaab827e46ae825e8210cfdd0, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3034343553320320034, guid: 76d0bd2aaab827e46ae825e8210cfdd0, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3034343553320320034, guid: 76d0bd2aaab827e46ae825e8210cfdd0, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835614039440002653, guid: 76d0bd2aaab827e46ae825e8210cfdd0, type: 3}
+      propertyPath: m_AnchorMax.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3835614039440002653, guid: 76d0bd2aaab827e46ae825e8210cfdd0, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835614039440002653, guid: 76d0bd2aaab827e46ae825e8210cfdd0, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5289558051624812174, guid: 76d0bd2aaab827e46ae825e8210cfdd0, type: 3}
