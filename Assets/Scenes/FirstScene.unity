@@ -44060,20 +44060,12 @@ MonoBehaviour:
   tier1Cost: 5000
   tier2Cost: 10000
   tier3Cost: 20000
-  tier1Material: {fileID: 2100000, guid: c62ddad3bb92e374893d4cb57cda0349, type: 2}
-  tier2Material: {fileID: 2100000, guid: f181a9f5414a4844dbf010673dcfe2e2, type: 2}
-  tier3Material: {fileID: 2100000, guid: efd2c7852b93cca4c9d0a216e4b19918, type: 2}
+  tier1Material: {fileID: 0}
+  tier2Material: {fileID: 0}
+  tier3Material: {fileID: 0}
   weaponMaterialSets:
-  - weaponType: 0
-    tier1: {fileID: 0}
-    tier2: {fileID: 0}
-    tier3: {fileID: 0}
-  - weaponType: 0
-    tier1: {fileID: 0}
-    tier2: {fileID: 0}
-    tier3: {fileID: 0}
-  - weaponType: 0
-    tier1: {fileID: 0}
+  - weaponType: 1
+    tier1: {fileID: 2100000, guid: 6000f5a8143d0ff458e8ab6066971c16, type: 2}
     tier2: {fileID: 0}
     tier3: {fileID: 0}
 --- !u!65 &1263245707
