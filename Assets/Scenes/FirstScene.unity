@@ -44006,6 +44006,19 @@ MonoBehaviour:
   tier1Material: {fileID: 2100000, guid: c62ddad3bb92e374893d4cb57cda0349, type: 2}
   tier2Material: {fileID: 2100000, guid: f181a9f5414a4844dbf010673dcfe2e2, type: 2}
   tier3Material: {fileID: 2100000, guid: efd2c7852b93cca4c9d0a216e4b19918, type: 2}
+  weaponMaterialSets:
+  - weaponType: 0
+    tier1: {fileID: 0}
+    tier2: {fileID: 0}
+    tier3: {fileID: 0}
+  - weaponType: 0
+    tier1: {fileID: 0}
+    tier2: {fileID: 0}
+    tier3: {fileID: 0}
+  - weaponType: 0
+    tier1: {fileID: 0}
+    tier2: {fileID: 0}
+    tier3: {fileID: 0}
 --- !u!65 &1263245707
 BoxCollider:
   m_ObjectHideFlags: 0

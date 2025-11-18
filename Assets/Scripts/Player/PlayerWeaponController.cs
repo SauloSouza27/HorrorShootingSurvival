@@ -249,6 +249,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void Reload()
     {
+        AudioManager.Instance.PlaySFX(currentWeapon.WeaponData.reloadSFX);
         SetWeaponReady(false);
         player.weaponVisuals.PlayReloadAnimation();
     }
