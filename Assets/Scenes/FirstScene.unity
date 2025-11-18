@@ -43342,7 +43342,7 @@ MonoBehaviour:
   tier1Cost: 5000
   tier2Cost: 10000
   tier3Cost: 20000
-  tier1Material: {fileID: 0}
+  tier1Material: {fileID: 2100000, guid: c62ddad3bb92e374893d4cb57cda0349, type: 2}
   tier2Material: {fileID: 0}
   tier3Material: {fileID: 0}
 --- !u!65 &1263245707
