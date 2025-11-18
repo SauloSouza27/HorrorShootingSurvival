@@ -43435,7 +43435,7 @@ MonoBehaviour:
   minIntensity: 15
   maxIntensity: 30
   flickerSpeed: 0.1
-  isActive: 0
+  isActive: 1
 --- !u!65 &1263245711
 BoxCollider:
   m_ObjectHideFlags: 0
