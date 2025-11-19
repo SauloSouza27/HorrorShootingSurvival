@@ -29,7 +29,7 @@ public class FloatingRotatingItem : MonoBehaviour
         transform.position = newPos;
 
         // Spin around Y (top-down friendly)
-        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
+        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.Self);
     }
 
     void OnDrawGizmos()
