@@ -104,10 +104,16 @@ public class SniperBullet : Bullet
     {
         if (!bulletImpactFX) return;
 
-        GameObject fx = ObjectPool.instance.GetObject(bulletImpactFX);
-        fx.transform.position = point;
-        fx.transform.rotation = Quaternion.LookRotation(normal);
-        ObjectPool.instance.ReturnObject(1, fx);
+        GameObject newImpactFx = ObjectPool.instance.GetObject(bulletImpactFX);
+        newImpactFx.transform.position = point;
+        newImpactFx.transform.rotation = Quaternion.LookRotation(normal);
+        var impact = newImpactFx.GetComponent<ImpactFX>();
+        if (impact != null)
+        {
+            impact.ApplyColor(GetTierColor());
+        }
+
+        ObjectPool.instance.ReturnObject(1, newImpactFx);
     }
 
     private void EndBullet()

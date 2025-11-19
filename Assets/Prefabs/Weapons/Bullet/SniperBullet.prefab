@@ -150,7 +150,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e42f7cbd34893c34f983822ae35cbeee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletImpactFX: {fileID: 6398714318726896200, guid: 9169a760de7b44a41a39c980ba3f7e37, type: 3}
+  bulletImpactFX: {fileID: 2944396702758532163, guid: 657a3d06987930b489dd0d3b0cd99902, type: 3}
+  baseTrailMat: {fileID: 2100000, guid: 0d141aa926ec3e747adb074bf3c0f758, type: 2}
+  tier1TrailMat: {fileID: 2100000, guid: b0c6dd0934dca7c45b6dd83a7883bcc3, type: 2}
+  tier2TrailMat: {fileID: 2100000, guid: d0b1d47cfde4e1a4eb4931e70313edac, type: 2}
+  tier3TrailMat: {fileID: 2100000, guid: 5aaed13a8c9bc7843861776e018f6f35, type: 2}
+  shootSFX: {fileID: 0}
+  shootVolume: 1
   basePenetrations: 3
   baseFalloff: 0.85
   impactLayers:

@@ -161,7 +161,7 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    private Color GetTierColor()
+    protected Color GetTierColor()
     {
         return currentTierColor;
     }
