@@ -31,4 +31,10 @@ public class FloatingRotatingItem : MonoBehaviour
         // Spin around Y (top-down friendly)
         transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
     }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, 1f);
+    }
 }
