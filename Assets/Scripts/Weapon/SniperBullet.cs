@@ -21,9 +21,9 @@ public class SniperBullet : Bullet
         lastPosition = transform.position;
     }
 
-    public override void BulletSetup(int bulletDamage1, float flyDistance1, Player owner)
+    public override void BulletSetup(int bulletDamage1, float flyDistance1, Player owner, int packtier)
     {
-        base.BulletSetup(bulletDamage1, flyDistance1, owner);
+        base.BulletSetup(bulletDamage1, flyDistance1, owner, packtier);
 
         // read shooter's weapon tier (Pack-a-Punch level)
         Weapon weapon = owner.weapon.CurrentWeapon();

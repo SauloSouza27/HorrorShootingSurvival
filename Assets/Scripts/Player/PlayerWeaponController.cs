@@ -234,9 +234,17 @@ public class PlayerWeaponController : MonoBehaviour
 
         var rbNewBullet = newBullet.GetComponent<Rigidbody>();
         var bulletScript = newBullet.GetComponent<Bullet>();
-
+        
         if (bulletScript != null)
-            bulletScript.BulletSetup(currentWeapon.bulletDamage, currentWeapon.BulletDistance, player);
+        {
+            // 🔹 Pass the current Pack-a-Punch tier
+            bulletScript.BulletSetup(
+                currentWeapon.bulletDamage,
+                currentWeapon.BulletDistance,
+                player,
+                currentWeapon.PackAPunchTier
+            );
+        }
         
         
 
