@@ -124,17 +124,19 @@ public class PackAPunchMachine : Interactable
     private void ApplyMaterialToCurrentWeaponModel(Player player, Material newMat)
     {
         if (newMat == null) return;
-
+        
+        var backupWeaponModel = player.weaponVisuals.CurrentBackupWeaponModel();
         var weaponModel = player.weaponVisuals.CurrentWeaponModel();
-        if (weaponModel == null)
+        if (weaponModel == null && backupWeaponModel == null)
         {
             Debug.LogWarning("No WeaponModel found on player to apply Pack-a-Punch material.");
             return;
         }
 
         // Get all mesh renderers under this weapon model (in case the gun is split into multiple meshes)
+        var backupRenderers = backupWeaponModel.GetComponentsInChildren<MeshRenderer>(true);
         var renderers = weaponModel.GetComponentsInChildren<MeshRenderer>(true);
-        if (renderers == null || renderers.Length == 0)
+        if ((renderers == null || renderers.Length == 0) && (backupRenderers != null || backupRenderers.Length > 0))
         {
             Debug.LogWarning("No MeshRenderer found under WeaponModel.");
             return;
@@ -152,5 +154,19 @@ public class PackAPunchMachine : Interactable
             }
             renderer.sharedMaterials = mats;
         }
+        
+        foreach (var backupRenderer in backupRenderers)
+        {
+            if (backupRenderer == null) continue;
+
+            // If the mesh uses multiple materials, replace them all
+            var mats = backupRenderer.sharedMaterials;
+            for (int i = 0; i < mats.Length; i++)
+            {
+                mats[i] = newMat;
+            }
+            backupRenderer.sharedMaterials = mats;
+        }
+        
     }
 }

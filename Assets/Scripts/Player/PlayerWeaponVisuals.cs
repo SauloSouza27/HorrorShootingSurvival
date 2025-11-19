@@ -154,6 +154,23 @@ public class PlayerWeaponVisuals : MonoBehaviour
         return weaponModel;
     }
     
+    public BackupWeaponModel CurrentBackupWeaponModel()
+    {
+        BackupWeaponModel backupWeaponModel = null;
+
+        WeaponType weaponType = player.weapon.CurrentWeapon().weaponType;
+
+        for (int i = 0; i < backupWeaponModels.Length; i++)
+        {
+            if (backupWeaponModels[i].WeaponType == weaponType)
+                backupWeaponModel = backupWeaponModels[i];
+        }
+
+        return backupWeaponModel;
+    }
+
+
+    
     #region Animation Rigging Methods
 
     private void UpdateLeftHandIKWeight()
