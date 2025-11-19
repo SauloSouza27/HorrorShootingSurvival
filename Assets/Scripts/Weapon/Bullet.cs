@@ -47,7 +47,7 @@ public class Bullet : MonoBehaviour
     {
         bulletDisabled = false;
         cd.enabled = true;
-        meshRenderer.enabled = true;
+        //meshRenderer.enabled = true;
 
         BulletDamage = bulletDamage1;
         Owner = owner;

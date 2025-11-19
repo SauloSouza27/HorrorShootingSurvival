@@ -1,2 +1,14 @@
 fileFormatVersion: 2
 guid: 5749ffcef13583b459b8cf715c30ce43
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - mesh: {instanceID: 0}
+  - highlightMaterial: {fileID: 2100000, guid: 193c1df0f71bf25499c292a20e001ea2, type: 2}
+  - weaponData: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

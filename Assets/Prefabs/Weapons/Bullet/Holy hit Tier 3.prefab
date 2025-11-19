@@ -4903,7 +4903,7 @@ GameObject:
   - component: {fileID: 3891973445508218817}
   - component: {fileID: 4708752827492353578}
   m_Layer: 0
-  m_Name: Holy hit
+  m_Name: Holy hit Tier 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -88,10 +88,12 @@ public class DoorPurchase : Interactable
         opened = true;
         HighlightActive(false);
         this.gameObject.GetComponent<Renderer>().enabled = false;
+
         foreach (Transform t in pedras)
         {
             t.GetComponent<MeshRenderer>().enabled = true;
             t.GetComponent<Rigidbody>().isKinematic = false;
+            t.gameObject.layer = LayerMask.NameToLayer("Ignore Player Collision");
         }
 
         // inicia o fade depois de um tempo
@@ -108,10 +110,10 @@ public class DoorPurchase : Interactable
         float tempo = 0f;
         Color corAtual = corOriginal;
 
-        foreach (Transform t in pedras)
-        {
-            t.GetComponent<Rigidbody>().isKinematic = true;
-        }
+        //foreach (Transform t in pedras)
+        //{
+        //    t.GetComponent<Rigidbody>().isKinematic = true;
+        //}
 
         foreach (Transform t in pedras)
         {

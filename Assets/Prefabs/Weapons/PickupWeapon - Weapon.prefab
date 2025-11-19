@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mesh: {fileID: 0}
-  highlightMaterial: {fileID: 38168849951982358, guid: 86d50f2a91194514a88d1714dffb333b, type: 3}
+  highlightMaterial: {fileID: 2100000, guid: 193c1df0f71bf25499c292a20e001ea2, type: 2}
   weaponData: {fileID: 11400000, guid: d3c4b5a45a80716498815b5da71c3741, type: 2}
   weapon:
     weaponType: 0
@@ -88,8 +88,8 @@ MonoBehaviour:
   - {fileID: 585539851851812685}
   - {fileID: 7394663418476480704}
   - {fileID: 2469082678086920640}
-  weaponCost: 1000
   debugUI: 1
+  screenOffsetY: 1.8
 --- !u!114 &6691174590376442994
 MonoBehaviour:
   m_ObjectHideFlags: 0

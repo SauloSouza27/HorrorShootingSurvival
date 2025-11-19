@@ -18,7 +18,7 @@ public class PedrasPassagem : MonoBehaviour
 
         for (int i = 0; i < quantidadePedras; i++)
         {
-            pedras[i] = transform.GetChild(i);
+            pedras[i] = transform.GetChild(i).transform;
             render[i] = pedras[i].GetComponent<Renderer>();
         }
 
@@ -33,7 +33,10 @@ public class PedrasPassagem : MonoBehaviour
     {
         foreach (Transform t in pedras)
         {
-            t.GetComponent<Rigidbody>().isKinematic = false;
+            if (gameObject.GetComponent<Rigidbody>() != null)
+            {
+                t.GetComponent<Rigidbody>().isKinematic = false;
+            }
         }
 
         // inicia o fade depois de um tempo
@@ -52,12 +55,18 @@ public class PedrasPassagem : MonoBehaviour
 
         foreach (Transform t in pedras)
         {
-            t.GetComponent<Rigidbody>().isKinematic = true;
+            if (gameObject.GetComponent<Rigidbody>() != null)
+            {
+                t.GetComponent<Rigidbody>().isKinematic = true;
+            }
         }
 
         foreach (Transform t in pedras)
         {
-            t.GetComponent<MeshCollider>().enabled = false;
+            if (gameObject.GetComponent<MeshCollider>() != null)
+            {
+                t.GetComponent<MeshCollider>().enabled = false;
+            }
         }
 
         while (tempo < duracaoFadeOut - 0.1f)
