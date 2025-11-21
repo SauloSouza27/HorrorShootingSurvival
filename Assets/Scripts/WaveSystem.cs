@@ -43,6 +43,12 @@ public class WaveSystem : MonoBehaviour
     public bool use_time_between_summons = true;
     [Header("Change Data")]
     public List<WaveData> newWaveData = new List<WaveData>();
+    
+    [Header("Audio")] 
+    public AudioClip meleeSpawnSFX;
+    [Range(0f, 1f)] public float meleeSpawnVolume = 1f;
+    public AudioClip meteorSpawnSFX;
+    [Range(0f, 1f)] public float meteorSpawnVolume = 1f;
 
     public void Start()
     {
@@ -171,7 +177,26 @@ public class WaveSystem : MonoBehaviour
         Transform spawnpoint;
         int randomspawnint = Random.Range(0, spawnpoints.Count);
         spawnpoint = spawnpoints[randomspawnint];
-        EnemyBase NewEnemy = Instantiate(selected_enemys[summons_spawned], spawnpoint.transform.position, Quaternion.identity, EnemyHolder);
+
+        // 🔊 3D spawn sound from that spawnpoint
+        if (AudioManager.Instance != null && meleeSpawnSFX != null)
+        {
+            AudioManager.Instance.PlaySFX3D(
+                meleeSpawnSFX,
+                spawnpoint.position,
+                meleeSpawnVolume,
+                spatialBlend: 1f,  // fully 3D
+                minDistance: 5f,
+                maxDistance: 80f
+            );
+        }
+
+        EnemyBase NewEnemy = Instantiate(
+            selected_enemys[summons_spawned],
+            spawnpoint.transform.position,
+            Quaternion.identity,
+            EnemyHolder);
+
         NewEnemy.multiplier = current_strength;
         NewEnemy.AdjustEnemyToWave();
         current_summons_alive++;
@@ -179,6 +204,7 @@ public class WaveSystem : MonoBehaviour
 
         time_last_summon = Time.time;
     }
+
 
     public void SkipPause()
     {

@@ -35,6 +35,8 @@ public class EnemyBase : LivingEntity
     private float cooldownTimer = 0f;
 
     private Animator animator;
+    
+    
 
     public override void SetLivingEntity()
     {

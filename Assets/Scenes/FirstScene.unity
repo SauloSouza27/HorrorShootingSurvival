@@ -40561,6 +40561,7 @@ MonoBehaviour:
   mainMixer: {fileID: 24100000, guid: 37458dc6e27cfdb42872fb7210c3af63, type: 2}
   musicSource: {fileID: 138335275}
   sfxSource: {fileID: 459051971}
+  sfxMixerGroup: {fileID: -4533310745328247394, guid: 37458dc6e27cfdb42872fb7210c3af63, type: 2}
   menuMusic: {fileID: 8300000, guid: bee606b9a60df4c4884969170f8fcae7, type: 3}
   gameplayMusic: {fileID: 8300000, guid: 332d06d28a52bd9408f00a8e64929ba9, type: 3}
   soundEffects:
@@ -49014,6 +49015,10 @@ MonoBehaviour:
   time_between_summons: 0.8
   use_time_between_summons: 1
   newWaveData: []
+  meleeSpawnSFX: {fileID: 8300000, guid: 374271c1642fa4241a38ad82e206e71a, type: 3}
+  meleeSpawnVolume: 0.5
+  meteorSpawnSFX: {fileID: 0}
+  meteorSpawnVolume: 1
 --- !u!114 &1359236377
 MonoBehaviour:
   m_ObjectHideFlags: 0

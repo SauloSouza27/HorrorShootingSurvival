@@ -11,6 +11,9 @@ public class MeleeAttack : MonoBehaviour, IEnemyAttack
     [SerializeField] private Bite bite;
     [SerializeField] private float biteDuration = 0.3f;
     private Animator animator;
+    
+    public AudioClip meleeSFX;
+    [Range(0f, 1f)] public float meleeVolume = 1f;
 
     public float AttackRange => attackRange;
     public float AttackCooldown => attackCooldown;
@@ -26,6 +29,7 @@ public class MeleeAttack : MonoBehaviour, IEnemyAttack
     }
     public void ExecuteAttack(GameObject target)
     {
+        AudioManager.Instance.PlaySFX(meleeSFX, meleeVolume);
         StartCoroutine(AttackCoroutine());
     }
     private IEnumerator AttackCoroutine()

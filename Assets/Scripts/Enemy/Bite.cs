@@ -31,7 +31,7 @@ public class Bite : MonoBehaviour
             IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
             damageable?.TakeDamage();
             {
-
+                
                 hitObjects.Add(other);
             }
         }

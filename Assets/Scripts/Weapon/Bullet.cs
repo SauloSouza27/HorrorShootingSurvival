@@ -25,11 +25,6 @@ public class Bullet : MonoBehaviour
     [SerializeField] private Material tier3TrailMat;
 
     private Color currentTierColor = Color.white;
-    // [Header("Bullet Emission Colors")]
-    // [SerializeField] private Color baseEmission  = Color.white;
-    // [SerializeField] private Color tier1Emission = new Color(0.3f, 0.6f, 1f);
-    // [SerializeField] private Color tier2Emission = new Color(1f, 0.4f, 0.8f);
-    // [SerializeField] private Color tier3Emission = new Color(1f, 0.9f, 0.3f);
 
     [Header("Audio")]
     public AudioClip shootSFX;

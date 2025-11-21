@@ -7,9 +7,12 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance;
 
     [Header("Mixer References")]
-    public AudioMixer mainMixer; // Assign your MainAudioMixer
+    public AudioMixer mainMixer;
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;
+
+    [Header("SFX Mixer Group (for 3D sounds)")]
+    [SerializeField] private AudioMixerGroup sfxMixerGroup;   // ⬅️ assign in Inspector
 
     [Header("Music Clips")]
     public AudioClip menuMusic;
@@ -42,7 +45,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    // 🎵 MUSIC METHODS
+    // ===== MUSIC (unchanged) =====
     public void PlayMusic(AudioClip clip, bool loop = true)
     {
         if (clip == null) return;
@@ -52,12 +55,11 @@ public class AudioManager : MonoBehaviour
     }
 
     public void StopMusic() => musicSource.Stop();
-
     public void SwitchToMenuMusic() => PlayMusic(menuMusic);
     public void SwitchToGameplayMusic() => PlayMusic(gameplayMusic);
 
-    // 🔊 SFX METHODS
-    public void PlaySFX(string clipName, float volume = 1f)
+    // ===== 2D SFX (unchanged) =====
+    public void PlaySFX(string clipName, float volume = 1f, float pitch = 1f)
     {
         if (sfxDictionary.TryGetValue(clipName, out var clip))
             sfxSource.PlayOneShot(clip, volume);
@@ -71,23 +73,33 @@ public class AudioManager : MonoBehaviour
         sfxSource.PlayOneShot(clip, volume);
     }
 
-
-    // ⚙️ MIXER VOLUME CONTROL
-    public void SetMasterVolume(float value) => SetMixerVolume("MasterVolume", value);
-    public void SetMusicVolume(float value) => SetMixerVolume("MusicVolume", value);
-    public void SetSFXVolume(float value) => SetMixerVolume("SFXVolume", value);
-
-    private void SetMixerVolume(string parameterName, float value)
+    // ===== NEW: 3D positional SFX =====
+    public void PlaySFX3D(AudioClip clip,
+                          Vector3 position,
+                          float volume = 1f,
+                          float spatialBlend = 1f,
+                          float minDistance = 5f,
+                          float maxDistance = 40f)
     {
-        // Convert slider 0–1 to mixer’s decibel scale (–80 dB to 0 dB)
-        float dB = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
-        mainMixer.SetFloat(parameterName, dB);
-    }
+        if (clip == null) return;
 
-    public float GetMixerVolume(string parameterName)
-    {
-        if (mainMixer.GetFloat(parameterName, out float value))
-            return Mathf.Pow(10f, value / 20f);
-        return 1f;
+        GameObject go = new GameObject("3D SFX - " + clip.name);
+        go.transform.position = position;
+
+        var src = go.AddComponent<AudioSource>();
+        src.clip = clip;
+        src.volume = volume;
+        src.spatialBlend = spatialBlend;              // 1 = fully 3D
+        src.minDistance = minDistance;
+        src.maxDistance = maxDistance;
+        src.rolloffMode = AudioRolloffMode.Linear;    // or Logarithmic if you prefer
+        src.playOnAwake = false;
+        src.loop = false;
+
+        if (sfxMixerGroup != null)
+            src.outputAudioMixerGroup = sfxMixerGroup;
+
+        src.Play();
+        Destroy(go, clip.length + 0.1f);
     }
 }
