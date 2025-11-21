@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 4687158811436264045}
   - component: {fileID: 7449679233253252038}
   - component: {fileID: 4906365836593033238}
-  - component: {fileID: 5706721091917057683}
   - component: {fileID: 601929184124602298}
   - component: {fileID: 187851891939893786}
   - component: {fileID: 4173064580285696468}
@@ -22,6 +21,7 @@ GameObject:
   - component: {fileID: 555803341548196543}
   - component: {fileID: 956794712110785006}
   - component: {fileID: 8650254728549323603}
+  - component: {fileID: 5706721091917057683}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -177,31 +177,6 @@ MonoBehaviour:
   weaponPickupPrefab: {fileID: 5282804390393103520, guid: e90f25430279ed841adb9689bb93e4ab, type: 3}
   ammoCount: {fileID: 0}
   weaponSprite: {fileID: 0}
---- !u!143 &5706721091917057683
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 207586770534553672}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 1.98
-  m_Radius: 0.2
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1.01, z: 0}
 --- !u!114 &601929184124602298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,6 +300,31 @@ MonoBehaviour:
   reviveRadius: 4
   debugUI: 1
   debugGizmoColor: {r: 0, g: 1, b: 0.3, a: 0.35}
+--- !u!143 &5706721091917057683
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207586770534553672}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 1.98
+  m_Radius: 0.2
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1.01, z: 0}
 --- !u!1 &360790858436498695
 GameObject:
   m_ObjectHideFlags: 0
