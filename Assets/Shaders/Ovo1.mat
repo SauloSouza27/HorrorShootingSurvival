@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Outline Armas
-  m_Shader: {fileID: -6465566751694194690, guid: 6f5fad73ec3def545b35e28c0fa80f4b, type: 3}
+  m_Name: Ovo1
+  m_Shader: {fileID: -6465566751694194690, guid: 475ed3c86c73a8341ad2d4c383f8808d, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
@@ -23,7 +23,7 @@ Material:
     RenderType: Opaque
   disabledShaderPasses:
   - MOTIONVECTORS
-  m_LockedProperties: 
+  m_LockedProperties: _FresnelControl _Metallic
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -45,11 +45,11 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
-    - _BottomLine: 0
+    - _BottomLine: 0.861
     - _CastShadows: 1
     - _Cull: 2
     - _DstBlend: 0
-    - _FresnelControl: 5
+    - _FresnelControl: 1.66
     - _Metallic: 0
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -58,16 +58,15 @@ Material:
     - _Smoothnnes: 0
     - _SrcBlend: 1
     - _Surface: 0
-    - _TopLine: 0
+    - _TopLine: 0.601
     - _WorkflowMode: 1
     - _ZTest: 4
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _BaseColor: {r: 0, g: 0, b: 0, a: 1}
-    - _BottomColor: {r: 4.9245777, g: 4.8454766, b: 0, a: 0}
-    - _EmissionColor: {r: 11.984312, g: 11.345636, b: 0, a: 1}
-    - _TopColor: {r: 62.62031, g: 68.5935, b: 0, a: 0}
+    - _BaseColor: {r: 0.3066038, g: 0.10950135, b: 0, a: 1}
+    - _BottomColor: {r: 1.9766747, g: 0.116700284, b: 0, a: 0}
+    - _TopColor: {r: 12.996038, g: 1.4887044, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &6766423712159186917
