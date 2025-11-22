@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 408316098251344337}
   - component: {fileID: 4178570500545076027}
   m_Layer: 0
-  m_Name: Spot Light (2)
+  m_Name: Point Light (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,7 +83,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 0
@@ -151,7 +151,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
   m_LocalPosition: {x: -2.221082, y: 0, z: -9.289536}
-  m_LocalScale: {x: 1.4490155, y: 1.4490156, z: 1.4490155}
+  m_LocalScale: {x: 2.318048, y: 2.3180482, z: 2.318048}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2074941628082031629}
@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 7339182526260569072}
   - component: {fileID: 7745483501589228757}
   m_Layer: 0
-  m_Name: Spot Light (1)
+  m_Name: Point Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -332,7 +332,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 0
@@ -382,7 +382,7 @@ GameObject:
   - component: {fileID: 8807714000935471445}
   - component: {fileID: 3861558903371760007}
   m_Layer: 0
-  m_Name: Spot Light
+  m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -453,7 +453,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 0
