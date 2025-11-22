@@ -711,8 +711,6 @@ MonoBehaviour:
   attackDamage: 15
   bite: {fileID: 5074358976206155798}
   biteDuration: 0.6
-  spawnSFX: {fileID: 8300000, guid: 374271c1642fa4241a38ad82e206e71a, type: 3}
-  spawnVolume: 1
   meleeSFX: {fileID: 8300000, guid: 6c4f83189ac655b44897bcae5fc55c30, type: 3}
   meleeVolume: 0.8
 --- !u!65 &5339575538574583434

@@ -23,6 +23,13 @@ public class Bullet : MonoBehaviour
     [SerializeField] private Material tier1TrailMat;
     [SerializeField] private Material tier2TrailMat;
     [SerializeField] private Material tier3TrailMat;
+    private Light _light = null;
+
+    [Header("Lights color (per tier)")]
+    [SerializeField] private Color baseLightColor;
+    [SerializeField] private Color tier1LightColor;
+    [SerializeField] private Color tier2LightColor;
+    [SerializeField] private Color tier3LightColor;
 
     private Color currentTierColor = Color.white;
 
@@ -36,6 +43,7 @@ public class Bullet : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         meshRenderer = GetComponent<MeshRenderer>();
         trailRenderer = GetComponent<TrailRenderer>();
+        _light = GetComponentInChildren<Light>();
     }
 
     public virtual void BulletSetup(int bulletDamage1, float flyDistance1, Player owner, int packTier)
@@ -82,6 +90,21 @@ public class Bullet : MonoBehaviour
         // Apply same color to bullet mesh emission
         if (meshRenderer && meshRenderer.material.HasProperty("_EmissionColor"))
             meshRenderer.material.SetColor("_EmissionColor", currentTierColor);
+
+        // Decide which color to use for the light in this tier
+        Color lightColor = Color.black;
+        switch (packTier)
+        {
+            case 1: lightColor = tier1LightColor; break;
+            case 2: lightColor = tier2LightColor; break;
+            case 3: lightColor = tier3LightColor; break;
+            default: lightColor = baseLightColor; break;
+        }
+
+        // Apply to light color
+        if (_light && lightColor != null)
+            _light.color = lightColor;
+
     }
 
 
