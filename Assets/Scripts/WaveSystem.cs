@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class WaveSystem : MonoBehaviour
 {
@@ -177,6 +178,14 @@ public class WaveSystem : MonoBehaviour
         Transform spawnpoint;
         int randomspawnint = Random.Range(0, spawnpoints.Count);
         spawnpoint = spawnpoints[randomspawnint];
+
+        // ativa efeito portal
+        VisualEffect portal = spawnpoint.GetChild(0).GetComponent<VisualEffect>();
+
+        if (portal != null)
+        {
+            portal.Play();
+        }
 
         // 🔊 3D spawn sound from that spawnpoint
         if (AudioManager.Instance != null && meleeSpawnSFX != null)
