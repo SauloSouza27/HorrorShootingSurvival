@@ -80,11 +80,15 @@ public class DoorPurchase : Interactable
 
         StartPedrasRigidBody();
         //StartCoroutine(OpenSequence());
+
+        
     }
 
     // Abrir porta modo pedras caindo
     private void StartPedrasRigidBody()
     {
+        DoorWorldUI doorWorldUI = transform.GetComponentInParent<DoorWorldUI>();
+        doorWorldUI.DestroyUI();
         opened = true;
         HighlightActive(false);
         this.gameObject.GetComponent<Renderer>().enabled = false;

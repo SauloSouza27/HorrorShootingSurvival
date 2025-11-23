@@ -63,4 +63,9 @@ public class DoorWorldUI : MonoBehaviour
         canvas.gameObject.SetActive(false);
     }
 
+    public void DestroyUI()
+    {
+        Destroy(gameObject);
+    }
+
 }
