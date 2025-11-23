@@ -58,7 +58,7 @@ public class DoorPurchase : Interactable
             render[i] = pedras[i].GetComponent<Renderer>();
         }
 
-        // guarda a cor original do primeiro material (assumindo que todos têm a mesma)
+        // guarda a cor original do primeiro material (assumindo que todos tï¿½m a mesma)
         if (render.Length > 0)
             corOriginal = render[0].material.color;
     }
@@ -124,7 +124,7 @@ public class DoorPurchase : Interactable
         {
             tempo += Time.deltaTime;
             float tQuadratico = tempo * tempo;
-            float alpha = Mathf.Lerp(1f, 0f, tQuadratico / duracaoFadeOut);// força o alpha de 1 até 0
+            float alpha = Mathf.Lerp(1f, 0f, tQuadratico / duracaoFadeOut);// forï¿½a o alpha de 1 atï¿½ 0
             corAtual.a = alpha;
 
             foreach (Renderer r in render)
@@ -132,7 +132,7 @@ public class DoorPurchase : Interactable
                 r.material.color = corAtual;
             }
 
-            yield return null; // espera o próximo frame
+            yield return null; // espera o prï¿½ximo frame
         }
 
         // garante que o alpha chega a 0
@@ -239,5 +239,10 @@ public class DoorPurchase : Interactable
 
         string line1 = canAfford ? $"Press Interact to buy  ({cost})" : $"Not enough points  ({points}/{cost})";
         GUI.Label(new Rect(rect.x + 8, rect.y + 8, rect.width - 16, 22), line1);
+    }
+
+    public int GetCost()
+    {
+        return cost;
     }
 }

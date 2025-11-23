@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class WeaponBuy : Interactable
 {
@@ -23,6 +24,21 @@ public class WeaponBuy : Interactable
 
     private readonly HashSet<Player> playersInRange = new HashSet<Player>();
     // ====================
+
+    public Canvas canvas;
+    public TextMeshProUGUI weaponName;
+    public TextMeshProUGUI weaponPrice;
+    public TextMeshProUGUI weaponBuyText;
+
+    public Camera uiCamera;
+
+    //void Start()
+    //{
+    //    if(!uiCamera) uiCamera = Camera.main;
+    //    weaponName.text = weaponType.ToString();
+    //    weaponPrice.text = "Buy Weapon - Cost " + weaponBuyCost;
+    //    perkPrice.text = "Price: " + perkMachine.GetPerkPrice();
+    //}
 
     public override void Interaction(Player player)
     {
