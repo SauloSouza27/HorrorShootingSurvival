@@ -48,11 +48,11 @@ public class DoorPurchase : Interactable
     private void Awake()
     {
         // get pedras filhas
-        quantidadePedras = transform.childCount;
+        quantidadePedras = transform.childCount - 1;
         pedras = new Transform[quantidadePedras];
         render = new Renderer[quantidadePedras];
 
-        for (int i = 0; i < quantidadePedras; i++)
+        for (int i = 0; i < render.Length; i++)
         {
             pedras[i] = transform.GetChild(i);
             render[i] = pedras[i].GetComponent<Renderer>();
@@ -87,8 +87,9 @@ public class DoorPurchase : Interactable
     // Abrir porta modo pedras caindo
     private void StartPedrasRigidBody()
     {
-        DoorWorldUI doorWorldUI = transform.GetComponentInParent<DoorWorldUI>();
+        DoorWorldUI doorWorldUI = transform.GetComponent<DoorWorldUI>();
         doorWorldUI.DestroyUI();
+
         opened = true;
         HighlightActive(false);
         this.gameObject.GetComponent<Renderer>().enabled = false;
