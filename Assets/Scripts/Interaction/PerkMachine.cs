@@ -84,7 +84,7 @@ public class PerkMachine : Interactable
         GUI.Label(new Rect(rect.x + 8, rect.y + 42, rect.width - 16, 18), costLine);
     }
 
-    private string GetPerkName(PerkType type)
+    public string GetPerkName(PerkType type)
     {
         switch (type)
         {
@@ -97,7 +97,7 @@ public class PerkMachine : Interactable
         }
     }
 
-    private string GetPerkDescription(PerkType type)
+    public string GetPerkDescription(PerkType type)
     {
         switch (type)
         {
@@ -108,5 +108,15 @@ public class PerkMachine : Interactable
             case PerkType.DoubleTap: return "DoubleTap";
             default: return "Perk effect.";
         }
+    }
+
+    public PerkType GetPerkType()
+    {
+        return perkType;
+    }
+
+    public int GetPerkPrice()
+    {
+        return cost;
     }
 }
