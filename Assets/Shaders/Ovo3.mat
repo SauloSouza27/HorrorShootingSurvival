@@ -23,7 +23,7 @@ Material:
     RenderType: Opaque
   disabledShaderPasses:
   - MOTIONVECTORS
-  m_LockedProperties: :m_LightmapFlags _BottomColor _FresnelControl _Metallic
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -65,8 +65,8 @@ Material:
     - _ZWriteControl: 0
     m_Colors:
     - _BaseColor: {r: 0, g: 0.16470589, b: 0.07051917, a: 1}
-    - _BottomColor: {r: 0, g: 0.10034741, b: 0.020230308, a: 0}
-    - _TopColor: {r: 0, g: 2.433572, b: 0.5105095, a: 0}
+    - _BottomColor: {r: 0, g: 0.10034741, b: 0.020230308, a: 1}
+    - _TopColor: {r: 0, g: 0.34943, b: 0.073302664, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &6766423712159186917

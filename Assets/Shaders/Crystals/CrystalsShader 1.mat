@@ -55,7 +55,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 0
-    - _Smoothnnes: 1
+    - _Smoothnnes: 0
     - _SrcBlend: 5
     - _Surface: 1
     - _TopLine: 0.788
@@ -66,7 +66,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 0.10806236, g: 2.1185477, b: 0, a: 1}
     - _BottomColor: {r: 7.441671, g: 23.968628, b: 0, a: 0}
-    - _TopColor: {r: 0.28014013, g: 0.5296369, b: 0, a: 0}
+    - _TopColor: {r: 1.1205605, g: 2.1185477, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &6766423712159186917

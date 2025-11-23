@@ -55,7 +55,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 0
-    - _Smoothnnes: 1
+    - _Smoothnnes: 0
     - _SrcBlend: 5
     - _Surface: 1
     - _TopLine: 1

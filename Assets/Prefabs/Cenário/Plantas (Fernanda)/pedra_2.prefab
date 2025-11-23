@@ -151,7 +151,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 358.7875, y: 358.7875, z: 358.7875}
+  m_LocalScale: {x: 358.7875, y: 358.7875, z: 358.78748}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8120418208606668062}
@@ -243,7 +243,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.008, y: 0.007, z: 0.003}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0.001, y: 0, z: 0.003}
   m_TimeToStationary: 0.5
