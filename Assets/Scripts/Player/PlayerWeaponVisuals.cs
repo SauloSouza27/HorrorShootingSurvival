@@ -71,6 +71,29 @@ public class PlayerWeaponVisuals : MonoBehaviour
         animator.SetFloat("ReloadSpeed", effectiveAnimSpeed);
         animator.SetTrigger("Reload");
         ReduceRigWeight();
+        
+        // 🔊 3D reload sound
+        var weapon = player.weapon.CurrentWeapon();
+        if (weapon != null && AudioManager.Instance != null)
+        {
+            var data = weapon.WeaponData;
+            if (data != null && data.reloadSFX != null)
+            {
+                // Prefer the gun point; fall back to player position
+                Vector3 pos = CurrentWeaponModel() != null && CurrentWeaponModel().gunPoint != null
+                    ? CurrentWeaponModel().gunPoint.position
+                    : transform.position;
+
+                AudioManager.Instance.PlaySFX3D(
+                    data.reloadSFX,
+                    pos,
+                    data.reloadSFXVolume,
+                    spatialBlend: 1f,
+                    minDistance: 3f,
+                    maxDistance: 25f
+                );
+            }
+        }
     }
     
     public void PlayWeaponEquipAnimation()

@@ -110,8 +110,7 @@ public class PlayerStats : MonoBehaviour
 
         if (!SpendPoints(cost))
             return false; // Can't afford
-
-        AudioManager.Instance.PlaySFX("PurchaseSuccess", 1.5f);
+        
         ownedPerks.Add(perkType);
         ApplyPerk(perkType);
 

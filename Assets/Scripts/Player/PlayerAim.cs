@@ -48,6 +48,9 @@ public class PlayerAim : MonoBehaviour
     // Updates the position, direction, and appearance of the aim laser.
     private void UpdateGunVisuals()
     {
+        if (!player.weapon.WeaponReady())
+            return;
+        
         WeaponModel weaponModel = player.weaponVisuals.CurrentWeaponModel();
 
         Vector3 flatAimDir = (aim.position - weaponModel.transform.position);

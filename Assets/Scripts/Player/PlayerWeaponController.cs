@@ -200,7 +200,19 @@ public class PlayerWeaponController : MonoBehaviour
         if (!WeaponReady() || !currentWeapon.CanShoot()) return;
 
         player.weaponVisuals.PlayFireAnimation();
-        AudioManager.Instance.PlaySFX(currentWeapon.WeaponData.shootSFX);
+        // 🔊 3D muzzle sound at gun point
+        var data = currentWeapon.WeaponData;
+        if (AudioManager.Instance != null && data != null && data.fireSFX != null)
+        {
+            AudioManager.Instance.PlaySFX3D(
+                data.fireSFX,
+                GunPoint().position,       // world position of muzzle
+                data.fireSFXVolume,
+                spatialBlend: 1f,          // fully 3D
+                minDistance: 4f,
+                maxDistance: 40f
+            );
+        }
 
         if (currentWeapon.shootType == ShootType.Single)
         {
@@ -222,7 +234,8 @@ public class PlayerWeaponController : MonoBehaviour
     {
         if (currentWeapon.weaponType != WeaponType.Shotgun)
             currentWeapon.bulletsInMagazine--;
-
+        
+        
         // pick bullet prefab
         GameObject prefab = bulletPrefab;
         if (currentWeapon.weaponType == WeaponType.Sniper && sniperBulletPrefab != null)
@@ -257,7 +270,6 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void Reload()
     {
-        AudioManager.Instance.PlaySFX(currentWeapon.WeaponData.reloadSFX);
         SetWeaponReady(false);
         player.weaponVisuals.PlayReloadAnimation();
     }

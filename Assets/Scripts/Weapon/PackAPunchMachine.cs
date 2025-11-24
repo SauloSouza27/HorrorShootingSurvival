@@ -23,6 +23,11 @@ public class PackAPunchMachine : Interactable
 
     [Header("Per-Weapon Materials")]
     [SerializeField] private PackAPunchMaterialSet[] weaponMaterialSets;
+    
+    [SerializeField] private AudioClip failSFX;
+    [Range(0f, 1f)] [SerializeField] private float failVolume = 1f;
+    [SerializeField] private AudioClip upgradeSFX;
+    [Range(0f, 1f)] [SerializeField] private float upgradeVolume = 1f;
 
     public override void Interaction(Player player)
     {
@@ -30,6 +35,7 @@ public class PackAPunchMachine : Interactable
         if (weaponController == null || weaponController.CurrentWeapon() == null)
         {
             Debug.Log("No weapon equipped to upgrade.");
+            Play3D(failSFX, failVolume);
             return;
         }
 
@@ -39,6 +45,7 @@ public class PackAPunchMachine : Interactable
         if (stats == null)
         {
             Debug.LogWarning("No PlayerStats found on player for Pack-a-Punch.");
+            Play3D(failSFX, failVolume);
             return;
         }
 
@@ -57,6 +64,7 @@ public class PackAPunchMachine : Interactable
                 break;
             case 3:
                 Debug.Log("Weapon already max upgraded!");
+                Play3D(failSFX, failVolume);
                 break;
         }
     }
@@ -66,6 +74,7 @@ public class PackAPunchMachine : Interactable
         if (!stats.SpendPoints(cost))
         {
             Debug.Log("Not enough points to Pack-a-Punch.");
+            Play3D(failSFX, failVolume);
             return;
         }
 
@@ -83,7 +92,22 @@ public class PackAPunchMachine : Interactable
             Debug.LogWarning($"No Pack-a-Punch material found for {weapon.weaponType} at tier {newTier}.");
         }
 
+        Play3D(upgradeSFX, upgradeVolume);
         Debug.Log($"Upgraded {weapon.weaponType} to Pack-a-Punch Tier {newTier}");
+    }
+    
+    private void Play3D(AudioClip clip, float volume)
+    {
+        if (clip == null || AudioManager.Instance == null) return;
+
+        AudioManager.Instance.PlaySFX3D(
+            clip,
+            transform.position,
+            volume,
+            spatialBlend: 1f,
+            minDistance: 4f,
+            maxDistance: 40f
+        );
     }
 
     /// <summary>

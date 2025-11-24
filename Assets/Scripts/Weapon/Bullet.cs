@@ -34,8 +34,8 @@ public class Bullet : MonoBehaviour
     private Color currentTierColor = Color.white;
 
     [Header("Audio")]
-    public AudioClip shootSFX;
-    [Range(0f, 1f)] public float shootVolume = 1f;
+    [SerializeField] private AudioClip impactSFX;
+    [Range(0f, 1f)] public float impactVolume = 1f;
 
     protected virtual void Awake()
     {
@@ -161,10 +161,21 @@ public class Bullet : MonoBehaviour
     {
         if (collision.contacts.Length > 0)
         {
-            AudioManager.Instance.PlaySFX("BulletImpact", shootVolume);
-
             ContactPoint contact = collision.contacts[0];
 
+            // 🔊 3D impact sound at contact point
+            if (AudioManager.Instance != null && impactSFX != null)
+            {
+                AudioManager.Instance.PlaySFX3D(
+                    impactSFX,
+                    contact.point,
+                    impactVolume,
+                    spatialBlend: 1f,
+                    minDistance: 3f,
+                    maxDistance: 30f
+                );
+            }
+            
             GameObject newImpactFx = ObjectPool.instance.GetObject(bulletImpactFX);
             newImpactFx.transform.position = contact.point;
 

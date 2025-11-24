@@ -28,16 +28,18 @@ public class DoorPurchase : Interactable
     private int quantidadePedras;
     private Renderer[] render;
     private Color corOriginal;
-
-    [Header("SFX (optional)")]
-    [SerializeField] private AudioSource audioSrc;
-    [SerializeField] private AudioClip buyClip;
-    [SerializeField] private AudioClip openClip;
-    [SerializeField] private AudioClip deniedClip;
+    
+    [Header("Audio")]
+    [SerializeField] private AudioClip openSFX;
+    [Range(0f, 1f)] [SerializeField] private float openVolume = 1f;
+    [SerializeField] private AudioClip failSFX;
+    [Range(0f, 1f)] [SerializeField] private float failVolume = 1f;
 
     [Header("DEBUG Prompt")]
     [SerializeField] private bool debugPriceUI = true;
     [SerializeField] private Vector3 uiWorldOffset = new Vector3(0, 2f, 0);
+    
+    
 
     private bool opened;
     public bool IsOpened => opened;
@@ -72,16 +74,15 @@ public class DoorPurchase : Interactable
 
         if (!stats.SpendPoints(cost))
         {
-            if (audioSrc && deniedClip) audioSrc.PlayOneShot(deniedClip);
+            Play3D(failSFX, failVolume);
+            Debug.Log("Not enough points to open door.");
             return;
         }
 
-        if (audioSrc && buyClip) audioSrc.PlayOneShot(buyClip);
+        Play3D(openSFX, openVolume);
 
         StartPedrasRigidBody();
         //StartCoroutine(OpenSequence());
-
-        
     }
 
     // Abrir porta modo pedras caindo
@@ -154,7 +155,6 @@ public class DoorPurchase : Interactable
     {
         opened = true;
         HighlightActive(false);
-        if (audioSrc && openClip) audioSrc.PlayOneShot(openClip);
 
         switch (openMode)
         {
@@ -211,6 +211,20 @@ public class DoorPurchase : Interactable
         base.OnTriggerExit(other);
         var p = other.GetComponent<Player>();
         if (p != null) playersInRange.Remove(p);
+    }
+    
+    private void Play3D(AudioClip clip, float volume)
+    {
+        if (clip == null || AudioManager.Instance == null) return;
+
+        AudioManager.Instance.PlaySFX3D(
+            clip,
+            transform.position,
+            volume,
+            spatialBlend: 1f,
+            minDistance: 4f,
+            maxDistance: 35f
+        );
     }
 
     private void OnGUI()

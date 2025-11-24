@@ -281,8 +281,8 @@ MonoBehaviour:
   tier1LightColor: {r: 0, g: 1, b: 0.96906257, a: 1}
   tier2LightColor: {r: 0.6333332, g: 0, b: 1, a: 1}
   tier3LightColor: {r: 1, g: 0.28333333, b: 0, a: 1}
-  shootSFX: {fileID: 0}
-  shootVolume: 1
+  impactSFX: {fileID: 8300000, guid: 4ea75cd7c8a2e7646be78d9494bd8b99, type: 3}
+  impactVolume: 1
 --- !u!96 &7836127342499303356
 TrailRenderer:
   serializedVersion: 3

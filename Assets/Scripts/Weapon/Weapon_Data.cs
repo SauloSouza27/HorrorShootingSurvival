@@ -41,8 +41,9 @@ public class Weapon_Data : ScriptableObject
     [Range(4, 24)] public float bulletDistance = 4;
     
     [Header("Audio")]
-    public AudioClip shootSFX;
+    public AudioClip fireSFX;
+    [Range(0f, 1f)] public float fireSFXVolume = 1f;
     public AudioClip reloadSFX;
-    public AudioClip emptySFX;
-
+    [Range(0f, 1f)] public float reloadSFXVolume = 1f;
+    
 }
