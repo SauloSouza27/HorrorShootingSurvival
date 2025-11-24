@@ -42,7 +42,7 @@ public class PlayerAim : MonoBehaviour
         
         GetAimPosition(); 
         aim.position = lastValidAimPosition; 
-        UpdateAimLaser(); // Refresh the aim laser visuals if the player is aiming.
+        //UpdateAimLaser(); // Refresh the aim laser visuals if the player is aiming.
         
     }
 
