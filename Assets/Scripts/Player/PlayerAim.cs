@@ -42,19 +42,12 @@ public class PlayerAim : MonoBehaviour
         
         GetAimPosition(); 
         aim.position = lastValidAimPosition; 
-        //UpdateAimLaser(); // Refresh the aim laser visuals if the player is aiming.
-        
+        UpdateGunVisuals(); // Refresh the aim laser visuals if the player is aiming.
     }
 
     // Updates the position, direction, and appearance of the aim laser.
-    private void UpdateAimLaser()
+    private void UpdateGunVisuals()
     {
-        // Enable the laser only if the weapon is ready to fire.
-        SetAimLaserEnabled(player.weapon.WeaponReady());
-
-        if (aimLaser.enabled == false)
-            return; // Skip laser rendering if it's disabled.
-
         WeaponModel weaponModel = player.weaponVisuals.CurrentWeaponModel();
 
         Vector3 flatAimDir = (aim.position - weaponModel.transform.position);
@@ -75,27 +68,6 @@ public class PlayerAim : MonoBehaviour
             Quaternion gunRot = Quaternion.LookRotation(flatGunDir);
             weaponModel.gunPoint.rotation = gunRot;
         }
-
-        
-        Transform gunPoint = player.weapon.GunPoint(); // Starting point of the laser.
-        Vector3 laserDirection = player.weapon.BulletDirection(); 
-
-        float laserTipLength = .5f; // Additional length for the laser "tip" effect.
-        float gunDistance = player.weapon.CurrentWeapon().BulletDistance; // Max range of the laser.
-
-        Vector3 endPoint = gunPoint.position + laserDirection * gunDistance; // Default end point if no obstacle is hit.
-
-        // Check if the laser hits an object within its range.
-        if (Physics.Raycast(gunPoint.position, laserDirection, out RaycastHit hit, gunDistance))
-        {
-            endPoint = hit.point; // Set laser endpoint to the hit location.
-            //laserTipLength = 0; // Optionally remove tip if it hits something.
-        }
-
-        // Configure the LineRenderer points for the laser beam and its tip.
-        aimLaser.SetPosition(0, gunPoint.position); // Laser start.
-        aimLaser.SetPosition(1, endPoint); // Laser main beam end / tip start.
-        aimLaser.SetPosition(2, endPoint + laserDirection * laserTipLength); // Laser tip end.
     }
 
     // Calculates the world space aim position based on active input (controller or mouse).
@@ -132,16 +104,6 @@ public class PlayerAim : MonoBehaviour
         lastValidAimPosition = aimPosition;
         return aimPosition;
     }
-
-
-   
-    public void SetAimLaserEnabled(bool state)
-    {
-        aimLaser.enabled = state;
-    }
-    public Transform GetAim() => aim; 
-
-    public bool IsToggleAimEnabled() => isToggleAim;
     
     private void AssignInputEvents()
     {
