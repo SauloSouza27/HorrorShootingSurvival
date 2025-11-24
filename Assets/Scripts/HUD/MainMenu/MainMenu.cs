@@ -11,6 +11,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button playButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button closeSettings;
 
 
     private void OnEnable()
@@ -24,6 +25,11 @@ public class MainMenu : MonoBehaviour
         {
             AudioManager.Instance.PlaySFX("ButtonClick");
             OpenSettingsMenu();
+        });
+        closeSettings.onClick.AddListener(() =>
+        {
+            AudioManager.Instance.PlaySFX("ButtonClick");
+            CloseSettingsMenu();
         });
         quitButton.onClick.AddListener(() =>
         {
@@ -52,6 +58,12 @@ public class MainMenu : MonoBehaviour
     {
         optionsPanel.SetActive(false);
         settingsPanel.SetActive(true);
+    }
+
+    private void CloseSettingsMenu()
+    {
+        optionsPanel.SetActive(true);
+        settingsPanel.SetActive(false);
     }
 
     private void QuitGame()
