@@ -1,8 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum DoorOpenMode { DisableBlockers, Slide, Rotate }
+public enum ZonaSpawnsQuePortaDestrava
+    {
+        Um = 1,
+        Dois = 2,
+        Três = 3,
+        Quatro = 4
+    }
 
 public class DoorPurchase : Interactable
 {
@@ -28,7 +36,11 @@ public class DoorPurchase : Interactable
     private int quantidadePedras;
     private Renderer[] render;
     private Color corOriginal;
-    
+
+    [Header ("Door ID")]
+    [SerializeField] private ZonaSpawnsQuePortaDestrava zonaSpawnsQuePortaDestrava;
+    private int doorID;
+
     [Header("Audio")]
     [SerializeField] private AudioClip openSFX;
     [Range(0f, 1f)] [SerializeField] private float openVolume = 1f;
@@ -81,7 +93,11 @@ public class DoorPurchase : Interactable
 
         Play3D(openSFX, openVolume);
 
+        doorID = (int)zonaSpawnsQuePortaDestrava;
+        UnlockNewZoneSpawn.instance.EnableZone(doorID);
+
         StartPedrasRigidBody();
+
         //StartCoroutine(OpenSequence());
     }
 
@@ -101,6 +117,11 @@ public class DoorPurchase : Interactable
             t.GetComponent<Rigidbody>().isKinematic = false;
             t.gameObject.layer = LayerMask.NameToLayer("Ignore Player Collision");
         }
+        
+        // Desliga o Navmesh Obstacle
+        NavMeshObstacle obstacle;
+        obstacle = GetComponent<NavMeshObstacle>();
+        obstacle.enabled = false;
 
         // inicia o fade depois de um tempo
         Invoke(nameof(IniciarFadeOut), duracaoKinematic);

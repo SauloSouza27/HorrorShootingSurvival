@@ -14,9 +14,11 @@ public class WaveSystem : MonoBehaviour
 
     [Header("Main Settings")]
     public int currentWave = 1;
+
     [Header("Increase Settings")]
     [SerializeField] private float spawn_multiplier = 1.2f;
     [SerializeField] private float strength_multiplier = 1.1f;
+
     [Header("Start Settings")]
     [SerializeField] private int start_summons = 10;
     public int current_summons = 10;
@@ -27,21 +29,26 @@ public class WaveSystem : MonoBehaviour
     [SerializeField] private int start_max_summons_once = 30;
     [SerializeField] private float start_strength = 1f;
     private float current_strength = 1f;
+
     [Header("Time Settings")]
     [SerializeField] private float time_between_waves = 30f;
     [SerializeField] private float time_end_last_wave = 30f;
     [SerializeField] private bool waveIsRunning = false;
+
     [Header("Spawnpoint Settings")]
     public List<Transform> spawnpoints = new List<Transform>();
     public Transform EnemyHolder;
+
     [Header("Enemy Settings")]
     public List<EnemyBase> enemy_Container = new List<EnemyBase>();
     private List<EnemyBase> avaible_enemys = new List<EnemyBase>();
     private List<EnemyBase> selected_enemys = new List<EnemyBase>();
+
     [Header("Time Between Summons")]
     public float time_between_summons = 0.1f;
     private float time_last_summon = 0f;
     public bool use_time_between_summons = true;
+
     [Header("Change Data")]
     public List<WaveData> newWaveData = new List<WaveData>();
     
@@ -65,6 +72,21 @@ public class WaveSystem : MonoBehaviour
 
         NewWave();
     }
+
+    //Add new zone spawn enemys
+
+    public void AddNewZone(List<Transform> newSpawns)
+    {
+        List<Transform> currentSpawnPoints = spawnpoints;
+        int currentListCount = currentSpawnPoints.Count;
+        int newListCount = currentListCount + newSpawns.Count;
+
+        spawnpoints = new List<Transform>(newListCount);
+
+        spawnpoints.AddRange(currentSpawnPoints);
+        spawnpoints.AddRange(newSpawns);
+    }
+
 
     public void NewWave()
     {
@@ -226,9 +248,11 @@ public class WaveData
 {
     [Header("Wave Data")]
     public int change_at_wave = 5;
+
     [Header("New Data")]
     public bool change_spawn_multiplier = false;
     public float new_spawn_multiplier = 1f;
+
     [Space]
     public bool change_strength_multiplier = false;
     public float new_strength_multiplier = 1f;
