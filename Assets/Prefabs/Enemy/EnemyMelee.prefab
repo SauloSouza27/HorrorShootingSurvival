@@ -693,6 +693,7 @@ MonoBehaviour:
   multiplier: 1.1
   avaible_from_wave: 0
   avaible_to_wave: 100
+  deadStateTimer: 5
 --- !u!114 &9035987799520751587
 MonoBehaviour:
   m_ObjectHideFlags: 0

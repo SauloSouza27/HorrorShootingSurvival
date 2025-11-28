@@ -333,11 +333,11 @@ public class EnemyBase : LivingEntity
     {
         if (isDead) return;
         isDead = true;
-        animator.enabled = false;
-        agent.isStopped = true;
-        ragdoll.RagdollActive(true);
+        //animator.enabled = false;
+        //agent.isStopped = true;
+        //ragdoll.RagdollActive(true);
         
-        if(deadStateTimer < 0)
+        //if(deadStateTimer < 0)
             base.Die();
 
         WaveSystem.instance.current_summons_dead++;

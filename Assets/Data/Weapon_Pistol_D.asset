@@ -34,6 +34,6 @@ MonoBehaviour:
   equipSpeed: 1
   bulletDistance: 12
   fireSFX: {fileID: 8300000, guid: 147f488da0a01154d841851609613eb4, type: 3}
-  fireSFXVolume: 1
+  fireSFXVolume: 0.7
   reloadSFX: {fileID: 8300000, guid: 6a6ad1596e9252e49a4fe13971519cbe, type: 3}
   reloadSFXVolume: 1
