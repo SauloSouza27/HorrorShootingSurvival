@@ -35,6 +35,8 @@ public class EnemyBase : LivingEntity
     private float cooldownTimer = 0f;
 
     private Animator animator;
+    private Ragdoll ragdoll;
+    [SerializeField] private float deadStateTimer = 5f;
     
     
 
@@ -53,8 +55,8 @@ public class EnemyBase : LivingEntity
         }
 
         attackScript = GetComponent<IEnemyAttack>();
-
         animator = GetComponent<Animator>();
+        ragdoll = GetComponent<Ragdoll>();
     }
 
     public void AdjustEnemyToWave()
@@ -75,6 +77,9 @@ public class EnemyBase : LivingEntity
 
     public void Update()
     {
+        if (isDead) 
+            deadStateTimer -= Time.deltaTime;
+        
         if (isDead || isAttacking) return; 
 
         checkTimer -= Time.deltaTime;
@@ -328,8 +333,12 @@ public class EnemyBase : LivingEntity
     {
         if (isDead) return;
         isDead = true;
-
-        base.Die();
+        animator.enabled = false;
+        agent.isStopped = true;
+        ragdoll.RagdollActive(true);
+        
+        if(deadStateTimer < 0)
+            base.Die();
 
         WaveSystem.instance.current_summons_dead++;
         WaveSystem.instance.current_summons_alive--;
@@ -343,12 +352,12 @@ public class EnemyBase : LivingEntity
             }
         }
     }
-
     
     public override void Die()
     {
         Die(null); // default if no killer info
     }
+    
 
 
     //IDamageable damageable = targetPlayer.gameObject.GetComponent<IDamageable>();
