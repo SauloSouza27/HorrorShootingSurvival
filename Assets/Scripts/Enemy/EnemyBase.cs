@@ -334,11 +334,15 @@ public class EnemyBase : LivingEntity
         if (isDead) return;
         isDead = true;
         //animator.enabled = false;
+        //agent.velocity = Vector3.zero;
         //agent.isStopped = true;
         //ragdoll.RagdollActive(true);
         
+        // Head: zerar pivot, tamanho: 0.003
+        // Forearm: copiar o da esquerda.
+        
         //if(deadStateTimer < 0)
-            base.Die();
+        base.Die();
 
         WaveSystem.instance.current_summons_dead++;
         WaveSystem.instance.current_summons_alive--;
