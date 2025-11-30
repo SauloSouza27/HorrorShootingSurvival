@@ -37,6 +37,7 @@ public class EnemyBase : LivingEntity
     private Animator animator;
     private Ragdoll ragdoll;
     [SerializeField] private float deadStateTimer = 5f;
+    [SerializeField] private float timeToDestroyAfterDissolve = 3f;
     
     
 
@@ -77,9 +78,6 @@ public class EnemyBase : LivingEntity
 
     public void Update()
     {
-        if (isDead) 
-            deadStateTimer -= Time.deltaTime;
-        
         if (isDead || isAttacking) return; 
 
         checkTimer -= Time.deltaTime;
@@ -277,7 +275,7 @@ public class EnemyBase : LivingEntity
             else
             {
                 currentHealth = 0; 
-                Die(); 
+                //Die(); 
             }
         }
         else
@@ -333,16 +331,15 @@ public class EnemyBase : LivingEntity
     {
         if (isDead) return;
         isDead = true;
-        //animator.enabled = false;
-        //agent.velocity = Vector3.zero;
-        //agent.isStopped = true;
+        animator.enabled = false;
+        agent.velocity = Vector3.zero;
+        agent.isStopped = true;
         //ragdoll.RagdollActive(true);
         
         // Head: zerar pivot, tamanho: 0.003
         // Forearm: copiar o da esquerda.
-        
-        //if(deadStateTimer < 0)
-        base.Die();
+
+        StartCoroutine(Die());
 
         WaveSystem.instance.current_summons_dead++;
         WaveSystem.instance.current_summons_alive--;
@@ -356,10 +353,31 @@ public class EnemyBase : LivingEntity
             }
         }
     }
-    
-    public override void Die()
+
+    public override IEnumerator Die()
     {
-        Die(null); // default if no killer info
+        yield return new WaitForSeconds(deadStateTimer);
+
+        DissolveFX[] dissolve;
+        Transform childComMaterias;
+
+        childComMaterias = transform.GetChild(0);
+
+        dissolve = new DissolveFX[childComMaterias.childCount - 1];
+
+        for (int i = 0; i < dissolve.Length; i++)
+        {
+            dissolve[i] = childComMaterias.GetChild(i + 1).GetComponent<DissolveFX>();
+        }
+
+        foreach (DissolveFX dFX in dissolve)
+        {
+            dFX.Dissolve();
+        }
+
+        Invoke("DestroyThisGameObject", timeToDestroyAfterDissolve);
+
+        //Die(null); // default if no killer info
     }
     
 

@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DissolveFXLava
+  m_Name: DissolveFXMelee
   m_Shader: {fileID: -6465566751694194690, guid: d861cf214e4a2564994fb8ff7f811581, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -40,11 +40,19 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _DiffuseTexture:
+        m_Texture: {fileID: 2800000, guid: 055e7873861a9734e89f620976a0b7a6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _DifuseTexture:
-        m_Texture: {fileID: 2800000, guid: 7e618147f1f9780458391e362bcdbd03, type: 3}
+        m_Texture: {fileID: 2800000, guid: 055e7873861a9734e89f620976a0b7a6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Difuse_Texture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Emission_Texture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -70,9 +78,11 @@ Material:
     - _Cull: 0
     - _CutoffHeight: 0
     - _Cutoff_Height: 4.04
+    - _DissolveAmount: 0
     - _DstBlend: 0
     - _EdgeWidfht: 0.025
     - _Edge_Widfht: 0.05
+    - _Has_Emissive_Texture: 0
     - _NoiseScale: 50.79
     - _NoiseStrenght: 1
     - _Noise_Scale: 80
@@ -87,9 +97,10 @@ Material:
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _BaseColor: {r: 1.3041189, g: 0.6303242, b: 0, a: 1}
+    - _BaseColor: {r: 0, g: 0, b: 0, a: 0}
     - _Base_Color: {r: 1, g: 0, b: 0, a: 1}
     - _EdgeColor: {r: 4.237094, g: 1.3417467, b: 0, a: 0}
     - _Edge_Color: {r: 4.237094, g: 1.3417467, b: 0, a: 1}
+    - _Emission_Color: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

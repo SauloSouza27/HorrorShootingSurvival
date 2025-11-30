@@ -680,7 +680,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0da88ffafc0c8cf44a80ef4a6ec16dd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startHealth: 100
+  startHealth: 40
   maxHealth: 200
   currentHealth: 100
   speed: 2400
@@ -693,7 +693,8 @@ MonoBehaviour:
   multiplier: 1.1
   avaible_from_wave: 0
   avaible_to_wave: 100
-  deadStateTimer: 5
+  deadStateTimer: 3
+  timeToDestroyAfterDissolve: 2
 --- !u!114 &9035987799520751587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1095,7 +1096,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: 86a905e3e32558045a7be44d2ff7e320, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7319542486501203108, guid: 86a905e3e32558045a7be44d2ff7e320, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 404651507480099834, guid: 86a905e3e32558045a7be44d2ff7e320, type: 3}
       insertIndex: -1
@@ -1137,10 +1139,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e398c73e8709084ea939d4c4169c3fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseEnemy: {fileID: 7771475063023463888}
-  vulcano: {fileID: 0}
+  skinnedMesh: {fileID: 7771475063023463888}
   dissolveRate: 0.0125
   refreshrate: 0.025
+  timeFadeOutEyes: 1
 --- !u!4 &3974376982793463161 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8304675529351269313, guid: 86a905e3e32558045a7be44d2ff7e320, type: 3}

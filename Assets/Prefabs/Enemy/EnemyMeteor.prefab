@@ -449,7 +449,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 730186121408632451}
@@ -490,8 +490,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0da88ffafc0c8cf44a80ef4a6ec16dd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startHealth: 100
-  maxHealth: 200
+  startHealth: 60
+  maxHealth: 600
   currentHealth: 100
   speed: 1500
   rotationSpeed: 2000
@@ -503,7 +503,8 @@ MonoBehaviour:
   multiplier: 1.1
   avaible_from_wave: 2
   avaible_to_wave: 100
-  deadStateTimer: 5
+  deadStateTimer: 3
+  timeToDestroyAfterDissolve: 2
 --- !u!114 &2048165912453249814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -902,7 +903,7 @@ PrefabInstance:
     - target: {fileID: -7735415350527686916, guid: 86a905e3e32558045a7be44d2ff7e320, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: 3ef4bcb1df600a64cbd8d2c953aa7785, type: 2}
+      objectReference: {fileID: 2100000, guid: 8dbf4fe6ed7645b47be9c347117f48e3, type: 2}
     - target: {fileID: 919132149155446097, guid: 86a905e3e32558045a7be44d2ff7e320, type: 3}
       propertyPath: m_Name
       value: EnemyOficial
@@ -970,11 +971,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 86a905e3e32558045a7be44d2ff7e320, type: 3}
   m_PrefabInstance: {fileID: 984209235804303720}
   m_PrefabAsset: {fileID: 0}
---- !u!137 &1805615439048849300 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7735415350527686916, guid: 86a905e3e32558045a7be44d2ff7e320, type: 3}
-  m_PrefabInstance: {fileID: 984209235804303720}
-  m_PrefabAsset: {fileID: 0}
 --- !u!137 &2456360495115923968 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 3440226536306361192, guid: 86a905e3e32558045a7be44d2ff7e320, type: 3}
@@ -997,9 +993,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e398c73e8709084ea939d4c4169c3fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseEnemy: {fileID: 1805615439048849300}
+  skinnedMesh: {fileID: 0}
   dissolveRate: 0.0125
   refreshrate: 0.025
+  timeFadeOutEyes: 1
 --- !u!1 &7786456385219848124 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7036753223064999636, guid: 86a905e3e32558045a7be44d2ff7e320, type: 3}
@@ -1017,9 +1014,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e398c73e8709084ea939d4c4169c3fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseEnemy: {fileID: 2456360495115923968}
+  skinnedMesh: {fileID: 2456360495115923968}
   dissolveRate: 0.0125
   refreshrate: 0.025
+  timeFadeOutEyes: 1
 --- !u!4 &9144769535580748457 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8304675529351269313, guid: 86a905e3e32558045a7be44d2ff7e320, type: 3}

@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class LivingEntity : MonoBehaviour
 {
     [Header("Health Settings")]
     public float startHealth = 100;
     public float maxHealth = 100;
+    [Header("Tipo Inimigo")]
+
     [HideInInspector]
     public float currentHealth = 100;
 
@@ -42,13 +45,18 @@ public class LivingEntity : MonoBehaviour
             else
             {
                 currentHealth = 0;
-                Die();
+                //Die();
             }
         }
     }
 
-    public virtual void Die()
+    public virtual IEnumerator Die()
     {
-        Destroy(this.gameObject);
+        yield return new WaitForSeconds(3f);
+    }
+
+    public void DestroyThisGameObject()
+    {
+        Destroy(gameObject);
     }
 }

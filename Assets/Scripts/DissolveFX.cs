@@ -2,26 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DissolveController : MonoBehaviour
+public class DissolveFX : MonoBehaviour
 {
-    [SerializeField] private SkinnedMeshRenderer baseEnemy;
+    [SerializeField] private SkinnedMeshRenderer skinnedMesh;
 
     private Material[] skinnedMaterials;
 
     [SerializeField] private float dissolveRate = 0.0125f;
     [SerializeField] private float refreshrate = 0.025f;
 
+    //[SerializeField] private Transform[] eyes = new Transform[2];
+    [SerializeField] private float timeFadeOutEyes = 1f;
+
     void Start()
     {
-        if (baseEnemy != null)
+        if (skinnedMesh != null)
         {
-            skinnedMaterials = baseEnemy.materials;
+            skinnedMaterials = skinnedMesh.materials;
         }
     }
 
     public void Dissolve()
     {
         StartCoroutine(DissolveCo());
+        //StartCoroutine(FadeOutEyes());
     }
 
     IEnumerator DissolveCo()
@@ -41,4 +45,26 @@ public class DissolveController : MonoBehaviour
             }
         }
     }
+
+    //private IEnumerator FadeOutEyes()
+    //{
+    //    Light light = eyes[0].transform.GetComponent<Light>();
+    //    float tempo = 0f;
+    //    float intensidadeAtual = light.intensity;
+
+    //    while (tempo < timeFadeOutEyes - 0.1f)
+    //    {
+    //        tempo += Time.deltaTime;
+    //        float tQuadratico = tempo * tempo;
+    //        float intensidade = Mathf.Lerp(1f, 0f, tQuadratico / timeFadeOutEyes);// força o alpha de 1 até 0
+    //        intensidadeAtual = intensidade;
+
+    //        foreach (Transform t in eyes)
+    //        {
+    //            t.GetComponent<Light>().intensity = intensidade;
+    //        }
+
+    //        yield return null; // espera o próximo frame
+    //    }
+    //}
 }
