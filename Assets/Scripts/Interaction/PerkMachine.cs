@@ -12,6 +12,12 @@ public class PerkMachine : Interactable
     [Header("Debug UI")]
     [SerializeField] private bool debugUI = true;
     [SerializeField] private Vector3 uiOffset = new Vector3(0, 2f, 0);
+    
+    [SerializeField] private AudioClip failSFX;
+    [Range(0f, 1f)] [SerializeField] private float failVolume = 1f;
+    [SerializeField] private AudioClip upgradeSFX;
+    [Range(0f, 1f)] [SerializeField] private float upgradeVolume = 1f;
+    
 
     private readonly HashSet<Player> playersInRange = new HashSet<Player>();
 
@@ -23,10 +29,12 @@ public class PerkMachine : Interactable
 
         if (stats.PurchasePerk(perkType, cost))
         {
+            Play3D(upgradeSFX, upgradeVolume);
             Debug.Log($"Player {player.name} bought {perkType}");
         }
         else
         {
+            Play3D(failSFX, failVolume);
             Debug.Log($"Player {player.name} failed to buy {perkType}");
         }
     }
@@ -109,6 +117,20 @@ public class PerkMachine : Interactable
             default: return "Perk effect.";
         }
     }
+    
+    private void Play3D(AudioClip clip, float volume)
+    {
+        if (clip == null || AudioManager.Instance == null) return;
+
+        AudioManager.Instance.PlaySFX3D(
+            clip,
+            transform.position,
+            volume,
+            spatialBlend: 1f,
+            minDistance: 4f,
+            maxDistance: 40f
+        );
+    }
 
     public PerkType GetPerkType()
     {
@@ -119,4 +141,6 @@ public class PerkMachine : Interactable
     {
         return cost;
     }
+    
+    
 }
