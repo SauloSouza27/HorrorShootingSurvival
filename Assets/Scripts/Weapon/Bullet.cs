@@ -3,6 +3,8 @@ using UnityEngine.PlayerLoop;
 
 public class Bullet : MonoBehaviour
 {
+    public float impactForce;
+    
     [SerializeField] protected GameObject bulletImpactFX;
 
     protected BoxCollider cd;
@@ -46,8 +48,10 @@ public class Bullet : MonoBehaviour
         _light = GetComponentInChildren<Light>();
     }
 
-    public virtual void BulletSetup(int bulletDamage1, float flyDistance1, Player owner, int packTier)
+    public virtual void BulletSetup(int bulletDamage1, float flyDistance1, Player owner, int packTier, float impactForce)
     {
+        this.impactForce = impactForce;
+        
         bulletDisabled = false;
         cd.enabled = true;
         meshRenderer.enabled = true;
@@ -147,12 +151,27 @@ public class Bullet : MonoBehaviour
         {
             EnemyBase enemy = collision.gameObject.GetComponent<EnemyBase>();
             if (enemy != null)
+            {
                 enemy.TakeDamage(BulletDamage, Owner);
+                
+                //ApplyBulletImpactToEnemy(collision);
+            }
         }
 
         trailRenderer.Clear();
         CreateImpactFx(collision);
         ObjectPool.instance.ReturnObject(0, gameObject);
+    }
+    
+    private void ApplyBulletImpactToEnemy(Collision collision)
+    {
+        EnemyBase enemy = collision.gameObject.GetComponentInParent<EnemyBase>();
+        if (enemy != null)
+        {
+            Vector3 force = rb.linearVelocity.normalized * impactForce;
+            Rigidbody hitRigidbody = collision.collider.attachedRigidbody;
+            enemy.BulletImpact(force, collision.contacts[0].point, hitRigidbody);
+        }
     }
 
     protected void ReturnBulletToPool() => ObjectPool.instance.ReturnObject(0, gameObject);

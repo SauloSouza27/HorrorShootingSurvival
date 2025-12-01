@@ -5,13 +5,14 @@ using UnityEngine;
 public class Ragdoll : MonoBehaviour
 {
     [SerializeField] private Transform ragdollParent;
-
-    private Collider[] ragdollColliders;
-    private Rigidbody[] ragdollRigidbodies;
+    public Transform hipBone;
+    [SerializeField] private Collider[] ragdollColliders;
+    [SerializeField] private Rigidbody[] ragdollRigidbodies;
+    
 
     private void Awake()
     {
-        ragdollColliders = GetComponentsInChildren<Collider>();
+        ragdollColliders = GetComponentsInParent<Collider>();
         ragdollRigidbodies = GetComponentsInChildren<Rigidbody>();
 
         RagdollActive(false);

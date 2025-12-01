@@ -40,6 +40,9 @@ public class Weapon_Data : ScriptableObject
     [Range(1, 5)] public float equipSpeed = 1;
     [Range(4, 24)] public float bulletDistance = 4;
     
+    [Header("Bullet Impact Force")] 
+    public float impactForce = 1;
+    
     [Header("Audio")]
     public AudioClip fireSFX;
     [Range(0f, 1f)] public float fireSFXVolume = 1f;

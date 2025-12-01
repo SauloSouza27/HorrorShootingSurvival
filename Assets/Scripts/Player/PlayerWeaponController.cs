@@ -255,7 +255,7 @@ public class PlayerWeaponController : MonoBehaviour
                 currentWeapon.bulletDamage,
                 currentWeapon.BulletDistance,
                 player,
-                currentWeapon.PackAPunchTier
+                currentWeapon.PackAPunchTier, currentWeapon.ImpactForce
             );
         }
         

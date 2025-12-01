@@ -50,6 +50,8 @@ public class Weapon
     public float ReloadSpeed { get; private set; }
     public float EquipSpeed { get; private set; }
     public float BulletDistance { get; private set; }
+    
+    public float ImpactForce { get; private set; }
 
     [Header("Spread")] 
     private float baseSpread;
@@ -91,6 +93,8 @@ public class Weapon
         burstActive = weaponData.burstActive;
         burstBulletPerShot = weaponData.burstBulletPerShot;
         BurstFireDelay = weaponData.burstFireDelay;
+        
+        ImpactForce = weaponData.impactForce;
 
         this.WeaponData = weaponData;
     }
