@@ -154,6 +154,7 @@ public class Bullet : MonoBehaviour
             {
                 enemy.TakeDamage(BulletDamage, Owner);
                 
+                //Debug.Log("collision check:" + collision);
                 //ApplyBulletImpactToEnemy(collision);
             }
         }
@@ -161,6 +162,8 @@ public class Bullet : MonoBehaviour
         trailRenderer.Clear();
         CreateImpactFx(collision);
         ObjectPool.instance.ReturnObject(0, gameObject);
+        
+        
     }
     
     private void ApplyBulletImpactToEnemy(Collision collision)

@@ -19,7 +19,7 @@ public class Ragdoll : MonoBehaviour
 
         foreach (Rigidbody rb in ragdollRigidbodies)
         {
-            rb.interpolation = RigidbodyInterpolation.Interpolate;
+            //rb.interpolation = RigidbodyInterpolation.Interpolate;
         }
     }
 

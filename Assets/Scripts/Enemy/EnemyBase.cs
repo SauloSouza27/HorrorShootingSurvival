@@ -327,16 +327,18 @@ public class EnemyBase : LivingEntity
         }
     }
 
-    public virtual void BulletImpact( Vector3 force,Vector3 hitPoint,Rigidbody rb)
+    public virtual void BulletImpact(Vector3 force,Vector3 hitPoint,Rigidbody rb)
     {
         if(currentHealth <= 0)
             StartCoroutine(DeathImpactCoroutine(force,hitPoint,rb));
     }
     private IEnumerator DeathImpactCoroutine(Vector3 force, Vector3 hitPoint, Rigidbody rb)
     {
-        yield return new WaitForSeconds(0f);
-
+        yield return new WaitForSeconds(1f);
+        
+        
         rb.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
+        
     }
     
 
@@ -346,8 +348,8 @@ public class EnemyBase : LivingEntity
         isDead = true;
         animator.enabled = false;
         agent.isStopped = true;
-        //ragdoll.RagdollActive(true);
-        //ragdoll.CollidersActive(false);
+        ragdoll.RagdollActive(true);
+        ragdoll.CollidersActive(false);
         
         // Head: zerar pivot, tamanho: 0.003
         // Forearm: copiar o da esquerda.
