@@ -3107,7 +3107,7 @@ MonoBehaviour:
   avaible_from_wave: 0
   avaible_to_wave: 100
   deadStateTimer: 10
-  timeToDestroyAfterDissolve: 2
+  timeToDestroyAfterDissolve: 1.8
 --- !u!114 &9035987799520751587
 MonoBehaviour:
   m_ObjectHideFlags: 0
