@@ -308,7 +308,7 @@ Transform:
   m_GameObject: {fileID: 27819559}
   serializedVersion: 2
   m_LocalRotation: {x: -0.3587298, y: -0.13196108, z: 0.23409867, w: 0.89392227}
-  m_LocalPosition: {x: -5.04, y: 3.99, z: 15.3}
+  m_LocalPosition: {x: -5.532, y: 3.99, z: 13.964001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1149,7 +1149,7 @@ Transform:
   m_GameObject: {fileID: 395859869}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5338263, y: -0.17701282, z: 0.2021939, w: 0.80175656}
-  m_LocalPosition: {x: -3.457, y: 2.76, z: 14.688}
+  m_LocalPosition: {x: -3.949, y: 2.76, z: 13.351999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6345,7 +6345,7 @@ Transform:
   m_GameObject: {fileID: 1607267479}
   serializedVersion: 2
   m_LocalRotation: {x: -0.38978696, y: -0.14007099, z: 0.22933827, w: 0.8808236}
-  m_LocalPosition: {x: -1.03, y: 2.78, z: 14}
+  m_LocalPosition: {x: -1.522, y: 2.78, z: 12.664}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8630,7 +8630,7 @@ Transform:
   m_GameObject: {fileID: 2047260089}
   serializedVersion: 2
   m_LocalRotation: {x: -0.3587298, y: -0.13196108, z: 0.23409867, w: 0.89392227}
-  m_LocalPosition: {x: -1.0346761, y: 5.942522, z: 15.349105}
+  m_LocalPosition: {x: -1.526676, y: 5.942522, z: 14.013105}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14146,8 +14146,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3441760281867523174}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.99762934, z: -0, w: 0.06881688}
-  m_LocalPosition: {x: 1.632, y: 0, z: 3.046}
+  m_LocalRotation: {x: -0, y: 0.9352561, z: -0, w: -0.3539718}
+  m_LocalPosition: {x: 1.14, y: 0, z: 1.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14166,7 +14166,7 @@ Transform:
   - {fileID: 1121343467}
   - {fileID: 2072159004}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -187.892, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -138.539, z: 0}
 --- !u!135 &6184468931009443929
 SphereCollider:
   m_ObjectHideFlags: 0
