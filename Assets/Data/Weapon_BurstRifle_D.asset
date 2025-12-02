@@ -33,6 +33,7 @@ MonoBehaviour:
   reloadSpeed: 1
   equipSpeed: 1
   bulletDistance: 12
+  impactForce: 100
   fireSFX: {fileID: 8300000, guid: a6d65b2b199ab994e96f9ca0a28bf1ee, type: 3}
   fireSFXVolume: 1
   reloadSFX: {fileID: 8300000, guid: 7e5a6fbf769cfec4396848b5b52979b3, type: 3}

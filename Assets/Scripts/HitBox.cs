@@ -1,13 +1,18 @@
 using UnityEngine;
 
-public class HitBox : MonoBehaviour ,IDamageable
+public class HitBox : MonoBehaviour, IDamageable
 {
     protected virtual void Awake()
     {
         
     }
     
-    public virtual void TakeDamage()
+    public virtual void TakeDamage(int damage)
+    {
+        
+    }
+    
+    public virtual void TakeDamage(int damage, Player player)
     {
         
     }

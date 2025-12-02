@@ -13,9 +13,9 @@ public class HealthController : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
     }
 
-    public virtual void ReduceHealth()
+    public virtual void ReduceHealth(int damage)
     {
-        currentHealth--;
+        currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
     }
 

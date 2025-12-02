@@ -29,7 +29,7 @@ public class Bite : MonoBehaviour
         if ((damageLayerMask.value & (1 << other.gameObject.layer)) > 0)
         {
             IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
-            damageable?.TakeDamage();
+            damageable?.TakeDamage(currentDamage);
             {
                 
                 hitObjects.Add(other);

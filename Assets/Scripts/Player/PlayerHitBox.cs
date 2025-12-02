@@ -11,11 +11,12 @@ public class PlayerHitBox : HitBox
         player = GetComponentInParent<Player>();
     }
 
-    public override void TakeDamage()
+    public override void TakeDamage(int damage)
     {
-        base.TakeDamage();
+        Debug.Log("PlayerHitBox TakeDamage" + damage);
+        base.TakeDamage(damage);
         
-        player.health.ReduceHealth();
+        player.health.ReduceHealth(damage);
     }
     
     

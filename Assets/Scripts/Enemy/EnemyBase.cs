@@ -334,7 +334,7 @@ public class EnemyBase : LivingEntity
     }
     private IEnumerator DeathImpactCoroutine(Vector3 force, Vector3 hitPoint, Rigidbody rb)
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0f);
         
         
         rb.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);

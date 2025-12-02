@@ -5,7 +5,6 @@ using UnityEngine;
 public class Ragdoll : MonoBehaviour
 {
     [SerializeField] private Transform ragdollParent;
-    public Transform hipBone;
     [SerializeField] private Collider[] ragdollColliders;
     [SerializeField] private Rigidbody[] ragdollRigidbodies;
     

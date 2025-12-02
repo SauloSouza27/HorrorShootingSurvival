@@ -64,12 +64,12 @@ public class PlayerHealth : HealthController
         healthBar.SetHealth(currentHealth);
     }
 
-    public override void ReduceHealth()
+    public override void ReduceHealth(int damage)
     {
         // ignore damage when already dead/downed bleeding out is handled by timer
         if (isDead) return;
 
-        base.ReduceHealth();
+        base.ReduceHealth(damage);
 
         if (ShouldDie())
         {

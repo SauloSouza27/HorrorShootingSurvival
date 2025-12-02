@@ -147,23 +147,25 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            EnemyBase enemy = collision.gameObject.GetComponent<EnemyBase>();
-            if (enemy != null)
-            {
-                enemy.TakeDamage(BulletDamage, Owner);
-                
-                //Debug.Log("collision check:" + collision);
-                //ApplyBulletImpactToEnemy(collision);
-            }
-        }
-
+        // if (collision.gameObject.CompareTag("Enemy"))
+        // {
+        //     EnemyBase enemy = collision.gameObject.GetComponent<EnemyBase>();
+        //     if (enemy != null)
+        //     {
+        //         enemy.TakeDamage(BulletDamage, Owner);
+        //         
+        //         Debug.Log("collision check:" + collision);
+        //         ApplyBulletImpactToEnemy(collision);
+        //     }
+        // }
         trailRenderer.Clear();
         CreateImpactFx(collision);
         ObjectPool.instance.ReturnObject(0, gameObject);
         
+        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+        damageable?.TakeDamage(BulletDamage, Owner);
         
+        ApplyBulletImpactToEnemy(collision);
     }
     
     private void ApplyBulletImpactToEnemy(Collision collision)

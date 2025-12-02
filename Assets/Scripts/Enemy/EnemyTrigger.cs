@@ -7,7 +7,7 @@ public class EnemyTrigger : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
-        damageable?.TakeDamage();
+        //IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
+        //damageable?.TakeDamage();
     }
 }
