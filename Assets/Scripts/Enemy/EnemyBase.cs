@@ -2,9 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro; 
-using UnityEngine.UI; 
-using UnityEngine.AI; 
+using UnityEngine.AI;
 
 public class EnemyBase : LivingEntity
 {
@@ -26,8 +24,9 @@ public class EnemyBase : LivingEntity
 
     private bool isDead = false;
 
-    private GameObject targetPlayer;
-    private float checkInterval = 0.5f;
+    // 🔹 Now store Player instead of GameObject
+    private Player targetPlayer;
+    private float checkInterval = 0.4f;
     private float checkTimer = 0f;
 
     private IEnemyAttack attackScript; 
@@ -39,12 +38,7 @@ public class EnemyBase : LivingEntity
     [SerializeField] private float deadStateTimer = 5f;
     [SerializeField] private float timeToDestroyAfterDissolve = 3f;
     
-    
-
-    public override void SetLivingEntity()
-    {
-     
-    }
+    public override void SetLivingEntity() { }
 
     private void Awake()
     {
@@ -76,14 +70,25 @@ public class EnemyBase : LivingEntity
         }
     }
 
-    public void Update()
+    private void Update()
     {
         if (isDead || isAttacking) return; 
 
-        checkTimer -= Time.deltaTime;
-        if (checkTimer <= 0f)
+        // 🔹 If current target becomes invalid (downed/dead/missing), drop it
+        if (targetPlayer != null)
         {
-            targetPlayer = GetClosestPlayer();
+            var ph = targetPlayer.health;
+            if (ph == null || !ph.CanBeTargeted)
+            {
+                targetPlayer = null;
+            }
+        }
+
+        // 🔹 Periodically retarget to closest valid player
+        checkTimer -= Time.deltaTime;
+        if (checkTimer <= 0f || targetPlayer == null)
+        {
+            targetPlayer = GetClosestTargetablePlayer();
             checkTimer = checkInterval;
         }
 
@@ -116,7 +121,7 @@ public class EnemyBase : LivingEntity
 
     private void MoveTowardsPlayer()
     {
-        if (agent != null && agent.enabled)
+        if (agent != null && agent.enabled && targetPlayer != null)
         {
             agent.isStopped = false;
             agent.SetDestination(targetPlayer.transform.position);
@@ -133,10 +138,15 @@ public class EnemyBase : LivingEntity
 
     private IEnumerator AttackSequence()
     {
+        if (targetPlayer == null)
+            yield break;
+
         isAttacking = true;
         StopMoving();
 
-        Quaternion lookRotation = Quaternion.LookRotation(targetPlayer.transform.position - transform.position);
+        // Turn toward current target
+        Quaternion lookRotation = Quaternion.LookRotation(
+            targetPlayer.transform.position - transform.position);
         float time = 0;
         while (time < 0.2f)
         {
@@ -145,40 +155,41 @@ public class EnemyBase : LivingEntity
             yield return null;
         }
 
-        attackScript.ExecuteAttack(targetPlayer);
+        // Execute attack on target's GameObject
+        attackScript.ExecuteAttack(targetPlayer.gameObject);
 
         yield return new WaitForSeconds(attackScript.AttackDuration);
 
         cooldownTimer = attackScript.AttackCooldown;
-
         isAttacking = false;
     }
-    private GameObject GetClosestPlayer()
+
+    // 🔹 New: use PlayerHealth.AllPlayers instead of FindGameObjectsWithTag
+    private Player GetClosestTargetablePlayer()
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        if (players.Length == 0) return null;
+        Player closest = null;
+        float minSqrDist = Mathf.Infinity;
 
-        GameObject closest = null;
-        float minDistance = Mathf.Infinity;
-
-        foreach (GameObject player in players)
+        foreach (var ph in PlayerHealth.AllPlayers)
         {
-            float distance = Vector3.Distance(transform.position, player.transform.position);
-            if (distance < minDistance)
+            if (ph == null) continue;
+            if (!ph.CanBeTargeted) continue;  // skip dead / downed
+
+            float sqr = (ph.transform.position - transform.position).sqrMagnitude;
+            if (sqr < minSqrDist)
             {
-                minDistance = distance;
-                closest = player;
+                minSqrDist = sqr;
+                closest = ph.GetComponent<Player>();
             }
         }
 
         return closest;
     }
-    
+
     private void OnCollisionEnter(Collision collision)
     {
-        
+        // left empty intentionally
     }
-
 
     public void TakeDamage(float damage, Player owner)
     {
@@ -203,8 +214,6 @@ public class EnemyBase : LivingEntity
             Die(owner); // credit kill
         }
     }
-
-
 
     public void Adjust_Attack(float ammount)
     {
@@ -263,7 +272,6 @@ public class EnemyBase : LivingEntity
         }
     }
 
-    
     public void Set_Health(float count)
     {
         if (count <= maxHealth)
@@ -275,7 +283,7 @@ public class EnemyBase : LivingEntity
             else
             {
                 currentHealth = 0; 
-                //Die(); 
+                // we already handle death elsewhere
             }
         }
         else
@@ -327,32 +335,32 @@ public class EnemyBase : LivingEntity
         }
     }
 
-    public virtual void BulletImpact(Vector3 force,Vector3 hitPoint,Rigidbody rb)
+    public virtual void BulletImpact(Vector3 force, Vector3 hitPoint, Rigidbody rb)
     {
-        if(currentHealth <= 0)
-            StartCoroutine(DeathImpactCoroutine(force,hitPoint,rb));
+        if (currentHealth <= 0)
+            StartCoroutine(DeathImpactCoroutine(force, hitPoint, rb));
     }
+
     private IEnumerator DeathImpactCoroutine(Vector3 force, Vector3 hitPoint, Rigidbody rb)
     {
         yield return new WaitForSeconds(0f);
-        
-        
         rb.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
-        
     }
-    
 
     public void Die(Player killer)
     {
         if (isDead) return;
         isDead = true;
         animator.enabled = false;
-        agent.isStopped = true;
-        ragdoll.RagdollActive(true);
-        ragdoll.CollidersActive(false);
-        
-        // Head: zerar pivot, tamanho: 0.003
-        // Forearm: copiar o da esquerda.
+
+        if (agent != null)
+            agent.isStopped = true;
+
+        if (ragdoll != null)
+        {
+            ragdoll.RagdollActive(true);
+            ragdoll.CollidersActive(false);
+        }
 
         StartCoroutine(Die());
 
@@ -374,9 +382,7 @@ public class EnemyBase : LivingEntity
         yield return new WaitForSeconds(deadStateTimer);
 
         DissolveFX[] dissolve;
-        Transform childComMaterias;
-
-        childComMaterias = transform.GetChild(0);
+        Transform childComMaterias = transform.GetChild(0);
 
         dissolve = new DissolveFX[childComMaterias.childCount - 1];
 
@@ -390,13 +396,11 @@ public class EnemyBase : LivingEntity
             dFX.Dissolve();
         }
 
-        Invoke("DestroyThisGameObject", timeToDestroyAfterDissolve);
-
-        //Die(null); // default if no killer info
+        Invoke(nameof(DestroyThisGameObject), timeToDestroyAfterDissolve);
     }
-    
 
-
-    //IDamageable damageable = targetPlayer.gameObject.GetComponent<IDamageable>();
-    //damageable?.TakeDamage();
+    private void DestroyThisGameObject()
+    {
+        Destroy(gameObject);
+    }
 }

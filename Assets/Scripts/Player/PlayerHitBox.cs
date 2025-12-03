@@ -13,7 +13,6 @@ public class PlayerHitBox : HitBox
 
     public override void TakeDamage(int damage)
     {
-        Debug.Log("PlayerHitBox TakeDamage" + damage);
         base.TakeDamage(damage);
         
         player.health.ReduceHealth(damage);
