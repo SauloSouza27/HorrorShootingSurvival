@@ -21,6 +21,11 @@ public class PlayerHealth : HealthController
     private static readonly List<PlayerHealth> allPlayers = new List<PlayerHealth>();
     private static bool matchOver = false;
     // =====================================
+    
+    public static readonly System.Collections.Generic.List<PlayerHealth> AllPlayers 
+        = new System.Collections.Generic.List<PlayerHealth>();
+
+    public bool CanBeTargeted => !isDead && !isDowned;
 
     protected override void Awake()
     {
@@ -173,6 +178,12 @@ public class PlayerHealth : HealthController
         player.ragdoll.RagdollActive(true);
 
         CheckForTeamWipe();
+        
+        // 🔹 NEW: remove this player from camera target group
+        if (CameraManager.Instance != null)
+        {
+            CameraManager.Instance.RemoveTarget(transform);
+        }
     }
 
     // ================== TEAM WIPE LOGIC ==================
@@ -280,6 +291,24 @@ public class PlayerHealth : HealthController
             }
         }
 
+        // 🔹 NEW: add back to camera target group
+        if (CameraManager.Instance != null)
+        {
+            CameraManager.Instance.AddTarget(transform, 1f, 0f);
+        }
+
         Debug.Log($"{name} respawned for wave {WaveSystem.instance.currentWave} with at least {minPoints} points.");
     }
+    
+    private void OnEnable()
+    {
+        if (!AllPlayers.Contains(this))
+            AllPlayers.Add(this);
+    }
+
+    private void OnDisable()
+    {
+        AllPlayers.Remove(this);
+    }
+
 }
