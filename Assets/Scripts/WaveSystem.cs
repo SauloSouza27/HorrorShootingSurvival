@@ -48,15 +48,20 @@ public class WaveSystem : MonoBehaviour
     public float time_between_summons = 0.1f;
     private float time_last_summon = 0f;
     public bool use_time_between_summons = true;
-
-    [Header("Change Data")]
-    public List<WaveData> newWaveData = new List<WaveData>();
+    
+    [Header("Player Respawn Settings")]
+    [SerializeField] private bool respawnDeadPlayersAtNewWave = true;
+    [SerializeField] private int baseRespawnPoints = 500; // points at wave 1
+    [SerializeField] private int pointsPerWave = 250;     // extra per wave
     
     [Header("Audio")] 
     public AudioClip meleeSpawnSFX;
     [Range(0f, 1f)] public float meleeSpawnVolume = 1f;
     public AudioClip meteorSpawnSFX;
     [Range(0f, 1f)] public float meteorSpawnVolume = 1f;
+    
+    [Header("Change Data")]
+    public List<WaveData> newWaveData = new List<WaveData>();
 
     public void Start()
     {
@@ -93,7 +98,7 @@ public class WaveSystem : MonoBehaviour
         waveIsRunning = false;
         currentWave++;
         time_end_last_wave = Time.time;
-        // Upgrade Enemys
+        // Upgrade Enemies
         if (currentWave > 1)
         {
             current_summons = (int)((float)current_summons * spawn_multiplier);
@@ -103,7 +108,7 @@ public class WaveSystem : MonoBehaviour
         current_summons_alive = 0;
         summons_spawned = 0;
         current_summons_dead = 0;
-        // Generate Aviable Enemy List
+        // Generate Available Enemy List
         avaible_enemys.Clear();
         for (int i = 0; i < enemy_Container.Count; i++)
         {
@@ -120,7 +125,22 @@ public class WaveSystem : MonoBehaviour
         }
 
         CheckNewWaveData();
+        
+        HandlePlayerRespawns();
     }
+    
+    private void HandlePlayerRespawns()
+    {
+        if (!respawnDeadPlayersAtNewWave)
+            return;
+
+        // Simple formula: base + (wave-1)*pointsPerWave
+        int minPoints = Mathf.Max(0, baseRespawnPoints + (currentWave - 1) * pointsPerWave);
+
+        // Ask PlayerHealth to respawn dead / downed players and top up their points
+        PlayerHealth.RespawnAllForNewWave(minPoints);
+    }
+
 
     public void CheckNewWaveData()
     {
