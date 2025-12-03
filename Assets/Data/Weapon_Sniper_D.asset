@@ -35,6 +35,6 @@ MonoBehaviour:
   bulletDistance: 24
   impactForce: 200
   fireSFX: {fileID: 8300000, guid: 790de5bc503e5ba459790722e6917666, type: 3}
-  fireSFXVolume: 1
+  fireSFXVolume: 0.569
   reloadSFX: {fileID: 8300000, guid: 745ec25fcdf44704f84dfaef1043ff2a, type: 3}
   reloadSFXVolume: 1

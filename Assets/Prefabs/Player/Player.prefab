@@ -224,7 +224,7 @@ MonoBehaviour:
   currentHealth: 100
   healthBar: {fileID: 0}
   defeatScreen: {fileID: 0}
-  bleedoutTime: 5
+  bleedoutTime: 25
   reviveRestoreHealth: 50
 --- !u!114 &5493188303582629410
 MonoBehaviour:
@@ -239,6 +239,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdollParent: {fileID: 6247328514430080577}
+  ragdollColliders: []
+  ragdollRigidbodies: []
 --- !u!114 &555803341548196543
 MonoBehaviour:
   m_ObjectHideFlags: 0
