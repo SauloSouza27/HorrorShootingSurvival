@@ -52,6 +52,7 @@ public class PlayerStats : MonoBehaviour
     public ScoreCount scoreCount;
     public Transform perkSlots;
     public GameObject perkIconSlot;
+    private int perkCount;
 
     private void Awake()
     {
@@ -76,6 +77,7 @@ public class PlayerStats : MonoBehaviour
         ReloadSpeedMultiplier = baseReloadSpeedMultiplier;
         RunSpeedMultiplier = baseRunSpeedMultiplier;
         ReviveSpeedMultiplier = baseReviveSpeedMultiplier;
+        perkCount = 0;
 
         OnStatsChanged?.Invoke();
     }
@@ -123,7 +125,17 @@ public class PlayerStats : MonoBehaviour
     // 🔹 Apply perk effects
     private void ApplyPerk(PerkType perkType)
     {
-        GameObject newPerkIcon = Instantiate(perkIconSlot, perkSlots, false);
+        GameObject newPerkIcon;
+        if (perkCount < 2)
+        {
+            newPerkIcon = Instantiate(perkIconSlot, perkSlots.GetChild(0), false);
+            perkCount++;
+        }
+        else
+        {
+            newPerkIcon = Instantiate(perkIconSlot, perkSlots.GetChild(1), false);
+            perkCount++;
+        }
         switch (perkType)
         {
             case PerkType.Juggernog:

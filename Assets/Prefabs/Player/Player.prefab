@@ -277,10 +277,10 @@ MonoBehaviour:
   baseReloadSpeedMultiplier: 1
   baseRunSpeedMultiplier: 1
   baseReviveSpeedMultiplier: 1
-  juggernogSprite: {fileID: 21300000, guid: eed7f6fd46fc50640b829011a02ffae4, type: 3}
-  speedColaSprite: {fileID: 21300000, guid: 8f59d1dad1a357342950d1df954f67d6, type: 3}
-  staminUpSprite: {fileID: 21300000, guid: d0a61853fb018c448b641efe14e55241, type: 3}
-  quickReviveSprite: {fileID: 21300000, guid: 4f9caed7836a20644a5704ce0f5f04ed, type: 3}
+  juggernogSprite: {fileID: 21300000, guid: c05ee3ca2348c2543ad4040c5f05ca5f, type: 3}
+  speedColaSprite: {fileID: 21300000, guid: caf0871a79ae5ac40bdd14960142f2d6, type: 3}
+  staminUpSprite: {fileID: 21300000, guid: 5971dbc340221044a96e2a5d7b898c90, type: 3}
+  quickReviveSprite: {fileID: 21300000, guid: 033e124651595cf42977d550d167ab26, type: 3}
   scoreCount: {fileID: 0}
   perkSlots: {fileID: 0}
   perkIconSlot: {fileID: 2725645534536041309, guid: 8769d47bb8e829a4f8823d46c3577b1d, type: 3}
