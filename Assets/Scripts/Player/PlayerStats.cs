@@ -42,6 +42,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private Sprite speedColaSprite;
     [SerializeField] private Sprite staminUpSprite;
     [SerializeField] private Sprite quickReviveSprite;
+    [SerializeField] private Sprite doubleTapSprite;
 
     // 🔹 Events
     public event Action OnStatsChanged;
