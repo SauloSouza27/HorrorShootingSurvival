@@ -19,7 +19,7 @@ MonoBehaviour:
   weaponType: 0
   shootType: 0
   bulletsPerShot: 0
-  fireRate: 8
+  fireRate: 6
   burstAvailable: 0
   burstActive: 0
   burstBulletPerShot: 0

@@ -33,6 +33,9 @@ public class PlayerStats : MonoBehaviour
     public float ReloadSpeedMultiplier { get; private set; }
     public float RunSpeedMultiplier { get; private set; }
     public float ReviveSpeedMultiplier { get; private set; }
+    // 🔹 Perk state
+    public bool DoubleTapActive { get; private set; }
+
 
     // 🔹 Perks owned
     private readonly HashSet<PerkType> ownedPerks = new HashSet<PerkType>();
@@ -79,9 +82,11 @@ public class PlayerStats : MonoBehaviour
         RunSpeedMultiplier = baseRunSpeedMultiplier;
         ReviveSpeedMultiplier = baseReviveSpeedMultiplier;
         perkCount = 0;
+        DoubleTapActive = false;
 
         OnStatsChanged?.Invoke();
     }
+
 
     // 🔹 Currency methods
     public int GetPoints() => currentPoints;
@@ -161,11 +166,25 @@ public class PlayerStats : MonoBehaviour
                 break;
 
             case PerkType.DoubleTap:
-                ReviveSpeedMultiplier = 0.5f; // 50% faster revive
-                newPerkIcon.GetComponent<Image>().sprite = quickReviveSprite;
+                DoubleTapActive = true;
+                newPerkIcon.GetComponent<Image>().sprite = doubleTapSprite;
+
+                // Apply Double Tap bonuses to all weapons this player already has
+                ApplyDoubleTapToWeapons();
                 break;
+
         }
     }
+    private void ApplyDoubleTapToWeapons()
+    {
+        var weaponController = player.GetComponent<PlayerWeaponController>();
+        if (weaponController == null) return;
+
+        weaponController.ApplyDoubleTapToAllWeapons();
+    }
+
+    public bool HasDoubleTap() => DoubleTapActive;
+
 
     public bool HasPerk(PerkType perkType) => ownedPerks.Contains(perkType);
 

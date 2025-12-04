@@ -65,6 +65,9 @@ public class Weapon
     
     public int PackAPunchTier { get; private set; } = 0; // 0 = base, 1–3 = upgraded
     public Weapon_Data WeaponData {get; private set;} // serves as default weapon data
+    
+    private bool doubleTapApplied = false;
+    
 
     public Weapon(Weapon_Data weaponData)
     {
@@ -219,6 +222,21 @@ public class Weapon
     
     
     #endregion
+    
+    public void ApplyDoubleTap()
+    {
+        if (doubleTapApplied) return;   // avoid stacking if called twice
+
+        // 🔧 Tweak these multipliers to taste
+        const float fireRateMult = 1.33f;   // ~33% faster fire rate
+        const float damageMult   = 1.33f;   // ~33% more damage per bullet
+
+        fireRate *= fireRateMult;
+        bulletDamage = Mathf.RoundToInt(bulletDamage * damageMult);
+
+        doubleTapApplied = true;
+    }
+
     
     
     public void Upgrade(int tier)

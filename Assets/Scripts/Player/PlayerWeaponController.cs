@@ -125,6 +125,8 @@ public class PlayerWeaponController : MonoBehaviour
             WeaponInSlots(newWeapon.weaponType).totalReserveAmmo += newWeapon.bulletsInMagazine;
             return;
         }
+        
+        MaybeApplyDoubleTap(newWeapon);
 
         if (weaponSlots.Count >= MaxSlots)
         {
@@ -306,6 +308,30 @@ public class PlayerWeaponController : MonoBehaviour
     }
 
     public Transform GunPoint() => player.weaponVisuals.CurrentWeaponModel().gunPoint;
+    
+    public void ApplyDoubleTapToAllWeapons()
+    {
+        if (weaponSlots == null) return;
+
+        foreach (var w in weaponSlots)
+        {
+            if (w != null)
+                w.ApplyDoubleTap();
+        }
+    }
+    
+    private void MaybeApplyDoubleTap(Weapon w)
+    {
+        if (w == null) return;
+
+        var stats = GetComponent<PlayerStats>();
+        if (stats != null && stats.HasPerk(PerkType.DoubleTap))
+        {
+            w.ApplyDoubleTap();
+        }
+    }
+
+
 
 
     #region Input Events
