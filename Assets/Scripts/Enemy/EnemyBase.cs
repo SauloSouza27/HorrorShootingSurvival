@@ -399,7 +399,7 @@ public class EnemyBase : LivingEntity
         Invoke(nameof(DestroyThisGameObject), timeToDestroyAfterDissolve);
     }
 
-    private void DestroyThisGameObject()
+    public void DestroyThisGameObject()
     {
         Destroy(gameObject);
     }
