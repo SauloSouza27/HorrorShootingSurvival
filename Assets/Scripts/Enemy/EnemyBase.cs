@@ -4,6 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+
+// 4 discrete movement speeds for zombies
+public enum ZombieSpeedTier
+{
+    Tier1 = 0, // slowest
+    Tier2 = 1,
+    Tier3 = 2,
+    Tier4 = 3  // fastest
+}
+
+
 public class EnemyBase : LivingEntity
 {
     [Header("Enemy Settings")]
@@ -14,11 +30,23 @@ public class EnemyBase : LivingEntity
     [SerializeField] private float startSpeed = 1;
     [SerializeField] private float maxattack = 3;
     [SerializeField] private float startAttack = 1;
-    public float multiplier = 1;
+    public float multiplier = 1;   // still used for health scaling if you want
 
     [Header("Wave Data")]
     public int avaible_from_wave = 0;
     public int avaible_to_wave = 100;
+
+    [Header("Speed Tiers (round-based)")]
+    [Tooltip("Slow shamblers (round 1 baseline).")]
+    [SerializeField] private float tier1Speed = 1.0f;
+    [Tooltip("Fast walk / light run.")]
+    [SerializeField] private float tier2Speed = 2.0f;
+    [Tooltip("Very fast.")]
+    [SerializeField] private float tier3Speed = 3.0f;
+    [Tooltip("Sprint / super sprinter.")]
+    [SerializeField] private float tier4Speed = 4.0f;
+
+    [SerializeField] private ZombieSpeedTier currentSpeedTier = ZombieSpeedTier.Tier1;
 
     private NavMeshAgent agent;
 
@@ -45,29 +73,76 @@ public class EnemyBase : LivingEntity
         agent = GetComponent<NavMeshAgent>();
         if (agent != null)
         {
-            agent.speed = speed;
             agent.angularSpeed = rotationSpeed;
         }
 
         attackScript = GetComponent<IEnemyAttack>();
         animator = GetComponent<Animator>();
         ragdoll = GetComponent<Ragdoll>();
+
+        // Ensure we start with Tier1 speed
+        ApplySpeedForCurrentTier();
     }
 
+    /// <summary>
+    /// Called from WaveSystem after multiplier has been set.
+    /// Health may scale with multiplier, damage does NOT scale with round.
+    /// Speed is handled separately via speed tiers.
+    /// </summary>
     public void AdjustEnemyToWave()
     {
-        currentHealth = startHealth;
+        // What round are we on?
+        int round = (WaveSystem.instance != null) 
+            ? WaveSystem.instance.currentWave 
+            : 1;
+
+        // --- HEALTH (BO2 style) ---
+        // Base BO2 formula gives 150 HP at round 1 for a "normal" zombie.
+        // We use startHealth as a type-multiplier, so:
+        //   startHealth = 150 → exactly the BO2 curve
+        //   startHealth = 300 → exactly 2x the BO2 curve, etc.
+        float baseFormulaHp = WaveSystem.GetZombieHealthForRound(round);
+        float typeFactor     = startHealth / 150f;
+        float finalHp        = baseFormulaHp * typeFactor;
+
+        maxHealth     = finalHp;
+        currentHealth = finalHp;
+        
         attack = startAttack;
-        speed = startSpeed;
-
-        Set_Health(startHealth * multiplier);
-        Set_Attack(startAttack * multiplier);
-        Set_Speed(startSpeed * multiplier);
-
+        Set_Attack(startAttack);
+        
         if (agent != null)
         {
-            agent.speed = speed;
+            agent.speed = speed;   
         }
+    }
+
+
+    /// <summary>
+    /// Called by WaveSystem for each spawned enemy to give it a speed tier.
+    /// </summary>
+    public void SetSpeedTier(ZombieSpeedTier tier)
+    {
+        currentSpeedTier = tier;
+        ApplySpeedForCurrentTier();
+    }
+
+    private void ApplySpeedForCurrentTier()
+    {
+        float targetSpeed = tier1Speed;
+
+        switch (currentSpeedTier)
+        {
+            case ZombieSpeedTier.Tier2: targetSpeed = tier2Speed; break;
+            case ZombieSpeedTier.Tier3: targetSpeed = tier3Speed; break;
+            case ZombieSpeedTier.Tier4: targetSpeed = tier4Speed; break;
+        }
+
+        // clamp to maxspeed just in case
+        speed = Mathf.Clamp(targetSpeed, 0f, maxspeed);
+
+        if (agent != null)
+            agent.speed = speed;
     }
 
     private void Update()
@@ -144,7 +219,6 @@ public class EnemyBase : LivingEntity
         isAttacking = true;
         StopMoving();
 
-        // Turn toward current target
         Quaternion lookRotation = Quaternion.LookRotation(
             targetPlayer.transform.position - transform.position);
         float time = 0;
@@ -155,7 +229,6 @@ public class EnemyBase : LivingEntity
             yield return null;
         }
 
-        // Execute attack on target's GameObject
         attackScript.ExecuteAttack(targetPlayer.gameObject);
 
         yield return new WaitForSeconds(attackScript.AttackDuration);
@@ -164,7 +237,7 @@ public class EnemyBase : LivingEntity
         isAttacking = false;
     }
 
-    // 🔹 New: use PlayerHealth.AllPlayers instead of FindGameObjectsWithTag
+    // 🔹 Uses PlayerHealth.AllPlayers for better performance than FindGameObjectsWithTag
     private Player GetClosestTargetablePlayer()
     {
         Player closest = null;

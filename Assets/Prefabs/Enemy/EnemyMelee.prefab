@@ -3104,10 +3104,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0da88ffafc0c8cf44a80ef4a6ec16dd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startHealth: 40
+  startHealth: 150
   maxHealth: 200
   currentHealth: 100
-  speed: 2400
+  speed: 1
   rotationSpeed: 2000
   attack: 1
   maxspeed: 14
@@ -3117,6 +3117,11 @@ MonoBehaviour:
   multiplier: 1.1
   avaible_from_wave: 0
   avaible_to_wave: 100
+  tier1Speed: 4
+  tier2Speed: 6
+  tier3Speed: 8
+  tier4Speed: 10
+  currentSpeedTier: 0
   deadStateTimer: 10
   timeToDestroyAfterDissolve: 1.8
 --- !u!114 &9035987799520751587
