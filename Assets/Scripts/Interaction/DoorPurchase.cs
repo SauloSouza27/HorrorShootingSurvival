@@ -248,38 +248,38 @@ public class DoorPurchase : Interactable
         );
     }
 
-    private void OnGUI()
-    {
-        if (!debugPriceUI || IsOpened) return;
-        if (playersInRange.Count == 0) return;
-        var cam = Camera.main; if (!cam) return;
+    //private void OnGUI()
+    //{
+    //    if (!debugPriceUI || IsOpened) return;
+    //    if (playersInRange.Count == 0) return;
+    //    var cam = Camera.main; if (!cam) return;
 
-        // choose the nearest player (so text reflects *their* points)
-        Player nearest = null; float minD = float.MaxValue;
-        foreach (var p in playersInRange)
-        {
-            if (!p) continue;
-            float d = Vector3.Distance(p.transform.position, transform.position);
-            if (d < minD) { minD = d; nearest = p; }
-        }
-        if (!nearest) return;
+    //    // choose the nearest player (so text reflects *their* points)
+    //    Player nearest = null; float minD = float.MaxValue;
+    //    foreach (var p in playersInRange)
+    //    {
+    //        if (!p) continue;
+    //        float d = Vector3.Distance(p.transform.position, transform.position);
+    //        if (d < minD) { minD = d; nearest = p; }
+    //    }
+    //    if (!nearest) return;
 
-        var stats = nearest.GetComponent<PlayerStats>();
-        int points = stats ? stats.GetPoints() : 0;
-        bool canAfford = stats && stats.CanAfford(cost);
+    //    var stats = nearest.GetComponent<PlayerStats>();
+    //    int points = stats ? stats.GetPoints() : 0;
+    //    bool canAfford = stats && stats.CanAfford(cost);
 
-        Vector3 screen = cam.WorldToScreenPoint(transform.position + uiWorldOffset);
-        if (screen.z < 0) return;
-        screen.y = Screen.height - screen.y;
+    //    Vector3 screen = cam.WorldToScreenPoint(transform.position + uiWorldOffset);
+    //    if (screen.z < 0) return;
+    //    screen.y = Screen.height - screen.y;
 
-        var rect = new Rect(screen.x - 120, screen.y - 40, 240, 38);
-        GUI.color = new Color(0,0,0,0.7f);
-        GUI.Box(rect, GUIContent.none);
-        GUI.color = Color.white;
+    //    var rect = new Rect(screen.x - 120, screen.y - 40, 240, 38);
+    //    GUI.color = new Color(0,0,0,0.7f);
+    //    GUI.Box(rect, GUIContent.none);
+    //    GUI.color = Color.white;
 
-        string line1 = canAfford ? $"Press Interact to buy  ({cost})" : $"Not enough points  ({points}/{cost})";
-        GUI.Label(new Rect(rect.x + 8, rect.y + 8, rect.width - 16, 22), line1);
-    }
+    //    string line1 = canAfford ? $"Press Interact to buy  ({cost})" : $"Not enough points  ({points}/{cost})";
+    //    GUI.Label(new Rect(rect.x + 8, rect.y + 8, rect.width - 16, 22), line1);
+    //}
 
     public int GetCost()
     {

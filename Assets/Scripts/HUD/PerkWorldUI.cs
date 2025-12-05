@@ -24,7 +24,7 @@ public class PerkWorldUI : MonoBehaviour
         PerkType perkType = perkMachine.GetPerkType();
         perkName.text = perkMachine.GetPerkName(perkType);
         perkDescription.text = perkMachine.GetPerkDescription(perkType);
-        perkPrice.text = "Price: " + perkMachine.GetPerkPrice();
+        perkPrice.text = "$ " + perkMachine.GetPerkPrice();
         
     }
 

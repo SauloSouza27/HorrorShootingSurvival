@@ -96,11 +96,11 @@ public class PerkMachine : Interactable
     {
         switch (type)
         {
-            case PerkType.Juggernog: return "Juggernog";
-            case PerkType.SpeedCola: return "Speed Cola";
-            case PerkType.StaminUp: return "Stamin-Up";
-            case PerkType.QuickRevive: return "Quick Revive";
-            case PerkType.DoubleTap: return "DoubleTap";
+            case PerkType.Juggernog: return "Stone Blood";
+            case PerkType.SpeedCola: return "Quick Hands";
+            case PerkType.StaminUp: return "Endless Sprint";
+            case PerkType.QuickRevive: return "Clutch Saver";
+            case PerkType.DoubleTap: return "Overclock";
             default: return type.ToString();
         }
     }
@@ -109,11 +109,11 @@ public class PerkMachine : Interactable
     {
         switch (type)
         {
-            case PerkType.Juggernog: return "Increases max health.";
-            case PerkType.SpeedCola: return "Reloads 50% faster.";
-            case PerkType.StaminUp: return "Run speed increased by 50%.";
-            case PerkType.QuickRevive: return "Revive allies 50% faster.";                
-            case PerkType.DoubleTap: return "DoubleTap";
+            case PerkType.Juggernog: return "Increases max health";
+            case PerkType.SpeedCola: return "Reloads faster";
+            case PerkType.StaminUp: return "Increases run speed";
+            case PerkType.QuickRevive: return "Revive allies faster";                
+            case PerkType.DoubleTap: return "Increases fire rate";
             default: return "Perk effect.";
         }
     }
