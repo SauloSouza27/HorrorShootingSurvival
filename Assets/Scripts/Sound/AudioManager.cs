@@ -17,6 +17,7 @@ public class AudioManager : MonoBehaviour
     [Header("Music Clips")]
     public AudioClip menuMusic;
     public AudioClip gameplayMusic;
+    public AudioClip creditsMusic;
 
     [Header("SFX Clips")]
     public List<AudioClip> soundEffects = new List<AudioClip>();
@@ -57,6 +58,7 @@ public class AudioManager : MonoBehaviour
     public void StopMusic() => musicSource.Stop();
     public void SwitchToMenuMusic() => PlayMusic(menuMusic);
     public void SwitchToGameplayMusic() => PlayMusic(gameplayMusic);
+    public void SwitchToCreditsMusic() => PlayMusic(creditsMusic);
 
     // ===== 2D SFX (unchanged) =====
     public void PlaySFX(string clipName, float volume = 1f, float pitch = 1f)

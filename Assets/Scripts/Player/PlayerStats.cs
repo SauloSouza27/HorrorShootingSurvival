@@ -132,7 +132,7 @@ public class PlayerStats : MonoBehaviour
     private void ApplyPerk(PerkType perkType)
     {
         GameObject newPerkIcon;
-        if (perkCount < 2)
+        if (perkCount < 3)
         {
             newPerkIcon = Instantiate(perkIconSlot, perkSlots.GetChild(0), false);
             perkCount++;

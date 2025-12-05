@@ -12,6 +12,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private Button closeSettings;
+    [SerializeField] private Button creditsButton;
 
 
     private void OnEnable()
@@ -36,6 +37,17 @@ public class MainMenu : MonoBehaviour
             AudioManager.Instance.PlaySFX("ButtonClick");
             QuitGame();
         });
+        creditsButton.onClick.AddListener(() =>
+        {
+            AudioManager.Instance.PlaySFX("ButtonClick");
+            OpenCredits();
+        });
+    }
+
+    private void OpenCredits()
+    {
+        AudioManager.Instance.SwitchToCreditsMusic();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
     }
 
     private void StartGame()

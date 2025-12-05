@@ -347,7 +347,7 @@ MonoBehaviour:
   speedColaSprite: {fileID: 21300000, guid: caf0871a79ae5ac40bdd14960142f2d6, type: 3}
   staminUpSprite: {fileID: 21300000, guid: 5971dbc340221044a96e2a5d7b898c90, type: 3}
   quickReviveSprite: {fileID: 21300000, guid: 033e124651595cf42977d550d167ab26, type: 3}
-  doubleTapSprite: {fileID: 0}
+  doubleTapSprite: {fileID: 21300000, guid: fad2ae1f571f2b3449fb13d30e72ba3b, type: 3}
   scoreCount: {fileID: 0}
   perkSlots: {fileID: 0}
   perkIconSlot: {fileID: 2725645534536041309, guid: 8769d47bb8e829a4f8823d46c3577b1d, type: 3}
