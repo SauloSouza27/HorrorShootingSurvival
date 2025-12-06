@@ -4,7 +4,9 @@ using UnityEngine.InputSystem;
 
 public class CreditsRollUp : MonoBehaviour
 {
-    [SerializeField] private float rollSpeed = 2f;
+    [SerializeField] private float rollSpeed1 = 2f, rollSpeed2 = 1f;
+    [SerializeField] private RectTransform controlerRoll;
+    [SerializeField] private Transform assetsCenario;
 
     private void Update()
     {
@@ -18,9 +20,11 @@ public class CreditsRollUp : MonoBehaviour
 
     private void RollUP()
     {
-        if(gameObject.transform.position.y < gameObject.GetComponent<RectTransform>().rect.height)
+        if(controlerRoll != null & controlerRoll.position.y < controlerRoll.rect.height)
         {
-            gameObject.transform.Translate(0, 10 * rollSpeed * Time.deltaTime, 0);
+            controlerRoll.Translate(0, 10 * rollSpeed1 * Time.deltaTime, 0);
+
+            assetsCenario.Translate(0, 0.1f * rollSpeed2 * Time.deltaTime, 0);
         }
         else
         {
