@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponName: Sniper
   weaponPrice: 5000
   weaponIcon: {fileID: 21300000, guid: 6c4ca72d1bd5baf49a5db922b3d3a4c3, type: 3}
-  bulletDamage: 100
+  bulletDamage: 500
   weaponType: 4
   shootType: 0
   bulletsPerShot: 1
