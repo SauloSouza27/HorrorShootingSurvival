@@ -25,20 +25,6 @@ public class WeaponBuy : Interactable
     private readonly HashSet<Player> playersInRange = new HashSet<Player>();
     // ====================
 
-    public Canvas canvas;
-    public TextMeshProUGUI weaponName;
-    public TextMeshProUGUI weaponPrice;
-    public TextMeshProUGUI weaponBuyText;
-
-    public Camera uiCamera;
-
-    //void Start()
-    //{
-    //    if(!uiCamera) uiCamera = Camera.main;
-    //    weaponName.text = weaponType.ToString();
-    //    weaponPrice.text = "Buy Weapon - Cost " + weaponBuyCost;
-    //    perkPrice.text = "Price: " + perkMachine.GetPerkPrice();
-    //}
 
     public override void Interaction(Player player)
     {
@@ -102,7 +88,10 @@ public class WeaponBuy : Interactable
 
         var player = other.GetComponent<Player>();
         if (player != null)
+        {
             playersInRange.Add(player);
+            showBuyCanvas(player);
+        }
     }
 
     protected override void OnTriggerExit(Collider other)
@@ -111,7 +100,10 @@ public class WeaponBuy : Interactable
 
         var player = other.GetComponent<Player>();
         if (player != null)
+        {
             playersInRange.Remove(player);
+            hideBuyCanvas(player);
+        }
     }
     // =====================================================================
 
@@ -217,4 +209,40 @@ public class WeaponBuy : Interactable
         return closest;
     }
     // =====================================================================
+
+    void showBuyCanvas(Player player)
+    {
+        var weaponController = player.GetComponent<PlayerWeaponController>();
+        
+
+        if (weaponController == null)
+            return;
+        
+        BuyWeaponWorldUI buyWeaponWorldUI = transform.GetComponent<BuyWeaponWorldUI>();
+        
+
+        // --- Does this player already own this weapon? 
+        Weapon ownedWeapon = weaponController.WeaponInSlots(weaponType);
+        if (ownedWeapon != null)
+        {
+            buyWeaponWorldUI.SetupBuyAmmoCanvas(weaponType.ToString(), ammoBuyCost);
+        } 
+        else
+        {
+            buyWeaponWorldUI.SetupBuyWeaponCanvas(weaponType.ToString(), weaponBuyCost);
+        }
+        buyWeaponWorldUI.ShowUI();
+    }
+
+    void hideBuyCanvas(Player player)
+    {
+        var weaponController = player.GetComponent<PlayerWeaponController>();
+        
+
+        if (weaponController == null)
+            return;
+        
+        BuyWeaponWorldUI buyWeaponWorldUI = transform.GetComponent<BuyWeaponWorldUI>();
+        buyWeaponWorldUI.HideUI();
+    }
 }
