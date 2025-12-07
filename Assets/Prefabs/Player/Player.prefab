@@ -449,7 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ca378f0cb4b85142bd4a3e0d8467e2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingPoints: 100000
+  startingPoints: 0
   baseMaxHealth: 100
   baseReloadSpeedMultiplier: 1
   baseRunSpeedMultiplier: 1

@@ -10,10 +10,10 @@ public class ScoreManager : MonoBehaviour
     public static ScoreManager Instance { get; private set; }
     
     [SerializeField] private int currentScore = 0;
-    
-    private const int BULLET_HIT_POINTS = 10;
-    
-    private const int KILL_POINTS = 80;
+
+    [SerializeField] private const int BULLET_HIT_POINTS = 10;
+
+    [SerializeField] private const int KILL_POINTS = 80;
     
     private Dictionary<int, int> playerScores = new Dictionary<int, int>(); // ✏️ replace currentScore
 
