@@ -431,7 +431,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerColors:
   - {r: 0, g: 2.9960787, b: 0.65893805, a: 1}
-  - {r: 5.7358494, g: 0, b: 0.5126963, a: 1}
+  - {r: 2.6082375, g: 0, b: 1.4419162, a: 1}
   - {r: 0.08801288, g: 0, b: 2.9960785, a: 1}
   - {r: 2.9960785, g: 0.38775045, b: 0, a: 1}
   material: {fileID: 0}
