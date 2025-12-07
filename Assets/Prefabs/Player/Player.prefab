@@ -431,10 +431,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerColors:
   - {r: 0, g: 2.9960787, b: 0.65893805, a: 1}
-  - {r: 2.9960787, g: 0.0627451, b: 0, a: 1}
+  - {r: 5.7358494, g: 0, b: 0.5126963, a: 1}
   - {r: 0.08801288, g: 0, b: 2.9960785, a: 1}
-  - {r: 2.9960785, g: 0, b: 0.23236425, a: 1}
-  targetMaterialIndex: 0
+  - {r: 2.9960785, g: 0.38775045, b: 0, a: 1}
   material: {fileID: 0}
   playerIndex: 0
 --- !u!114 &956794712110785006
