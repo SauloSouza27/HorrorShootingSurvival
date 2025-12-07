@@ -3107,7 +3107,7 @@ MonoBehaviour:
   startHealth: 150
   maxHealth: 3000
   currentHealth: 100
-  speed: 1
+  speed: 6
   rotationSpeed: 2000
   attack: 1
   maxspeed: 14
@@ -3117,10 +3117,10 @@ MonoBehaviour:
   multiplier: 1.1
   avaible_from_wave: 0
   avaible_to_wave: 100
-  tier1Speed: 4
-  tier2Speed: 6
-  tier3Speed: 8
-  tier4Speed: 10
+  tier1Speed: 6
+  tier2Speed: 8.5
+  tier3Speed: 11
+  tier4Speed: 13.5
   currentSpeedTier: 0
   deadStateTimer: 10
   timeToDestroyAfterDissolve: 1.8
