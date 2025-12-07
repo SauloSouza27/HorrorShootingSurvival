@@ -154,7 +154,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 101881590196145209}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.19080894, y: 0, z: 0, w: 0.9816273}
   m_LocalPosition: {x: 0, y: -0.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -163,7 +163,7 @@ Transform:
   - {fileID: 9160522142640907610}
   - {fileID: 1282178922693653745}
   m_Father: {fileID: 723322126913934077}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 22, y: 0, z: 0}
 --- !u!95 &6683914401172851961
 Animator:
   serializedVersion: 7
@@ -1692,7 +1692,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3547473667916037893}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071067, y: -0.000000030908616, z: 0.000000030908623, w: 0.7071068}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
@@ -1700,7 +1700,7 @@ Transform:
   - {fileID: 7883944820930340529}
   - {fileID: 5161710336843287717}
   m_Father: {fileID: 730186121408632451}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &3548967396992065256
 GameObject:
   m_ObjectHideFlags: 0
@@ -3466,8 +3466,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0da88ffafc0c8cf44a80ef4a6ec16dd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startHealth: 150
-  maxHealth: 600
+  startHealth: 600
+  maxHealth: 12000
   currentHealth: 100
   speed: 4
   rotationSpeed: 2000
@@ -3477,7 +3477,7 @@ MonoBehaviour:
   maxattack: 3
   startAttack: 1
   multiplier: 1.1
-  avaible_from_wave: 10
+  avaible_from_wave: 1
   avaible_to_wave: 100
   tier1Speed: 4
   tier2Speed: 6
@@ -3787,7 +3787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e398c73e8709084ea939d4c4169c3fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skinnedMesh: {fileID: 0}
+  skinnedMesh: {fileID: 1805615439048849300}
   dissolveRate: 0.0125
   refreshrate: 0.025
   timeFadeOutEyes: 1
