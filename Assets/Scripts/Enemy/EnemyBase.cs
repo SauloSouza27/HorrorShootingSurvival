@@ -21,7 +21,7 @@ public class EnemyBase : LivingEntity
     [SerializeField] private float rotationSpeed = 1200;
     [SerializeField] private float attack = 1;
     [SerializeField] private float maxspeed = 5;
-    [SerializeField] private float startSpeed = 1;
+    //[SerializeField] private float startSpeed = 1;
     [SerializeField] private float maxattack = 3;
     [SerializeField] private float startAttack = 1;
     public float multiplier = 1;   // still used for health scaling if you want
@@ -466,7 +466,7 @@ public class EnemyBase : LivingEntity
         Invoke(nameof(DestroyThisGameObject), timeToDestroyAfterDissolve);
     }
 
-    public void DestroyThisGameObject()
+    public override void DestroyThisGameObject()
     {
         Destroy(gameObject);
     }
