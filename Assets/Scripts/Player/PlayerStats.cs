@@ -40,19 +40,19 @@ public class PlayerStats : MonoBehaviour
     //  Perks owned
     private readonly HashSet<PerkType> ownedPerks = new HashSet<PerkType>();
 
-    // Perks Icons
+    //  Perks Icons
     [SerializeField] private Sprite juggernogSprite;
     [SerializeField] private Sprite speedColaSprite;
     [SerializeField] private Sprite staminUpSprite;
     [SerializeField] private Sprite quickReviveSprite;
     [SerializeField] private Sprite doubleTapSprite;
 
-    // 🔹 Events
+    //  Events
     public event Action OnStatsChanged;
     public event Action<int> OnPointsChanged;
     public event Action<PerkType> OnPerkPurchased;
 
-    // HUD reference
+    //  HUD reference
     public ScoreCount scoreCount;
     public Transform perkSlots;
     public GameObject perkIconSlot;

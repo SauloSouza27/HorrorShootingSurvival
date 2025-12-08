@@ -402,6 +402,8 @@ MonoBehaviour:
   defeatScreen: {fileID: 0}
   bleedoutTime: 1000
   reviveRestoreHealth: 50
+  baseRegenDelay: 6
+  regenFullTime: 3
   hitSFX: {fileID: 8300000, guid: a66b8e6dff5953a4f94dd175b5fa1d00, type: 3}
   hitVolume: 1
   hitSFXMinDistance: 4
@@ -435,10 +437,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerColors:
-  - {r: 0, g: 2.9960787, b: 0.65893805, a: 1}
-  - {r: 2.6082375, g: 0, b: 1.4419162, a: 1}
-  - {r: 0.08801288, g: 0, b: 2.9960785, a: 1}
-  - {r: 2.9960785, g: 0.38775045, b: 0, a: 1}
+  - {r: 0, g: 1.4980391, b: 0.65906227, a: 1}
+  - {r: 1.0592737, g: 0.082623355, b: 0.6246385, a: 1}
+  - {r: 0.119607784, g: 0.07490198, b: 1.4980392, a: 1}
+  - {r: 1.4980392, g: 0.2520628, b: 0.06441575, a: 1}
   material: {fileID: 0}
   playerIndex: 0
 --- !u!114 &956794712110785006
@@ -453,7 +455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ca378f0cb4b85142bd4a3e0d8467e2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingPoints: 0
+  startingPoints: 10000
   baseMaxHealth: 100
   baseReloadSpeedMultiplier: 1
   baseRunSpeedMultiplier: 1

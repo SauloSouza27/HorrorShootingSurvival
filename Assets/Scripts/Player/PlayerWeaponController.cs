@@ -173,7 +173,7 @@ public class PlayerWeaponController : MonoBehaviour
     private void CreateWeaponOnTheGround()
     {
         GameObject droppedWeapon = ObjectPool.instance.GetObject(weaponPickupPrefab);
-        droppedWeapon.transform.position = transform.position + transform.forward * 1.5f; // Place slightly in front of player
+        droppedWeapon.transform.position = transform.localPosition + transform.forward * 1.5f; // Place slightly in front of player
         droppedWeapon.GetComponent<PickupWeapon>()?.SetupPickupWeapon(currentWeapon, transform);
     }
 

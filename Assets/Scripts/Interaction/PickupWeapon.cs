@@ -44,7 +44,7 @@ public class PickupWeapon : Interactable
         weaponData = weapon.WeaponData;
 
         // Position slightly above the ground at drop point
-        transform.position = fromTransform.position + new Vector3(0f, 0.75f, 0f);
+        transform.position = fromTransform.position + new Vector3(0f, 0.75f, -2f);
 
         UpdateGameObject();
     }

@@ -14,6 +14,9 @@ public class CameraManager : MonoBehaviour
     public GameObject defeatMenu;
     public Transform perkSlots;
 
+    // set players hud colors
+    [SerializeField] private Color p1Color, p2Color, p3Color, p4Color;
+
     private void Awake()   //  NEW
     {
         if (Instance == null) Instance = this;
@@ -77,5 +80,36 @@ public class CameraManager : MonoBehaviour
 
         // Conecta a tela de morte para cada jogador
         playerHp.defeatScreen = defeatMenu;
+
+        // Set HUD color for multiplayer
+        PlayerHUDItens phi = newHUD.GetComponent<PlayerHUDItens>();
+        SetPlayerHUDColor(phi, playerInput);
+    }
+
+    public void SetPlayerHUDColor(PlayerHUDItens phi, PlayerInput playerInput)
+    {
+        int playerIndex = playerInput.playerIndex;
+        
+        if (playerIndex == 0)
+        {
+            phi.healthBar.color = p1Color;
+            phi.pointsIcon.color = p1Color;
+        }
+        if (playerIndex == 1)
+        {
+            phi.healthBar.color = p2Color;
+            phi.pointsIcon.color = p2Color;
+        }
+        if (playerIndex == 2)
+        {
+            phi.healthBar.color = p3Color;
+            phi.pointsIcon.color = p3Color;
+        }
+        if (playerIndex == 3)
+        {
+            phi.healthBar.color = p4Color;
+            phi.pointsIcon.color = p4Color;
+        }
+
     }
 }
