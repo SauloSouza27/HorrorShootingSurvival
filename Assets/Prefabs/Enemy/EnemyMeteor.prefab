@@ -3477,7 +3477,7 @@ MonoBehaviour:
   startAttack: 1
   multiplier: 1.1
   isRange: 1
-  avaible_from_wave: 5
+  avaible_from_wave: 1
   avaible_to_wave: 100
   tier1Speed: 6
   tier2Speed: 8
@@ -3499,11 +3499,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRange: 10
-  attackCooldown: 6.633
-  attackDuration: 1.5
+  attackCooldown: 5.5
+  attackDuration: 1.2
   attackDamage: 1
   damageRadius: 3
-  damageDelay: 1
+  damageDelay: 1.1
   damageLayerMask:
     serializedVersion: 2
     m_Bits: 256
@@ -3559,7 +3559,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7392712746615057215}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 3
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}

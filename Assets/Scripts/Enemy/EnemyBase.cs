@@ -52,8 +52,8 @@ public class EnemyBase : LivingEntity
     private float checkInterval = 0.4f;
     private float checkTimer = 0f;
 
-    private IEnemyAttack attackScript; 
-    private bool isAttacking = false;
+    private IEnemyAttack attackScript;
+    public bool isAttacking { get; set; }
     private float cooldownTimer = 0f;
 
     private Animator animator;
@@ -74,6 +74,8 @@ public class EnemyBase : LivingEntity
         attackScript = GetComponent<IEnemyAttack>();
         animator = GetComponent<Animator>();
         ragdoll = GetComponent<Ragdoll>();
+
+        isAttacking = false;
 
         // Ensure we start with Tier1 speed
         ApplySpeedForCurrentTier();
@@ -173,10 +175,6 @@ public class EnemyBase : LivingEntity
         {
             cooldownTimer -= Time.deltaTime;
         }
-        if (isRange == true)
-        {
-            cooldownTimer = 0f;
-        }
 
         float distanceToPlayer = Vector3.Distance(transform.position, targetPlayer.transform.position);
 
@@ -219,9 +217,9 @@ public class EnemyBase : LivingEntity
         isAttacking = true;
         StopMoving();
 
-        Quaternion lookRotation = Quaternion.LookRotation(
-            targetPlayer.transform.position - transform.position);
+        Quaternion lookRotation = Quaternion.LookRotation(targetPlayer.transform.position - transform.position);
         float time = 0;
+
         while (time < 0.2f)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, time * 5f);
@@ -231,12 +229,16 @@ public class EnemyBase : LivingEntity
 
         attackScript.ExecuteAttack(targetPlayer.gameObject);
 
-        yield return new WaitForSeconds(attackScript.AttackDuration);
-
-        cooldownTimer = attackScript.AttackCooldown;
-        isAttacking = false;
-
-        yield return null;
+        if (isRange)
+        {
+            yield return null;
+        }
+        else
+        {
+            yield return new WaitForSeconds(attackScript.AttackDuration);
+            cooldownTimer = attackScript.AttackCooldown;
+            isAttacking = false;
+        }        
     }
 
     // Uses PlayerHealth.AllPlayers for better performance than FindGameObjectsWithTag

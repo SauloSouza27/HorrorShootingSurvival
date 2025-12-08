@@ -24,11 +24,13 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
 
     private Animator animator;
     private NavMeshAgent agent;
+    private EnemyBase enemy;
 
     private void Awake()
     {
         animator = GetComponentInParent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        enemy = GetComponent<EnemyBase>();
     }
 
     public void ExecuteAttack(GameObject target)
@@ -48,7 +50,7 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
             Destroy(Instantiate(groundIndicatorVFX, targetPosition, Quaternion.identity), damageDelay);
         }
 
-        yield return new WaitForSeconds(attackDuration);
+        yield return new WaitForSeconds(attackDuration - 0.2f);
         animator.SetBool("isCooldown", true);
         animator.SetBool("isAttacking", false);
         StartCoroutine(CooldownTimerAnimation());
@@ -68,6 +70,8 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
                 //Debug.Log($"Hit {hit.name} for {attackDamage} damage!");
             }
         }
+
+        yield return null;
     }
 
     private IEnumerator CooldownTimerAnimation()
@@ -78,5 +82,6 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
 
         animator.SetBool("isCooldown", false);
         agent.isStopped = false;
+        enemy.isAttacking = false;
     }
 }
