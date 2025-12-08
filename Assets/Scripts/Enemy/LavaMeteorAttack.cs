@@ -65,7 +65,7 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
             Destroy(Instantiate(impactVFX, targetPosition, Quaternion.identity), 4f);
         }
 
-        // 🔹 Single-hit-per-character logic
+        //  Single-hit-per-character logic
         Collider[] hits = Physics.OverlapSphere(targetPosition, damageRadius, damageLayerMask);
         var damagedRoots = new HashSet<Transform>();
 

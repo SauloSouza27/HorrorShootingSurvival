@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CameraManager : MonoBehaviour
 {
-    public static CameraManager Instance { get; private set; }   // 🔹 NEW
+    public static CameraManager Instance { get; private set; }   //  NEW
 
     [SerializeField] private CinemachineTargetGroup targetGroup;
     private PlayerInputManager playerInputManager;
@@ -14,7 +14,7 @@ public class CameraManager : MonoBehaviour
     public GameObject defeatMenu;
     public Transform perkSlots;
 
-    private void Awake()   // 🔹 NEW
+    private void Awake()   //  NEW
     {
         if (Instance == null) Instance = this;
         else if (Instance != this) Destroy(gameObject);
@@ -26,7 +26,7 @@ public class CameraManager : MonoBehaviour
         playerInputManager.onPlayerJoined += OnPlayerJoined;
     }
 
-    // 🔹 Small helper so we can reuse logic
+    //  Small helper so we can reuse logic
     public void AddTarget(Transform target, float weight = 1f, float radius = 0f)
     {
         if (targetGroup == null || target == null) return;

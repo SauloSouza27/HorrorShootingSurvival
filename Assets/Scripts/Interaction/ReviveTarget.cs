@@ -144,7 +144,7 @@ public class ReviveTarget : Interactable
         CleanupReviveState();
     }
 
-    // 🔹 Helper: toggle rescuer's "isReviving" bool
+    //  Helper: toggle rescuer's "isReviving" bool
     private void SetRescuerReviveAnim(bool isReviving)
     {
         if (currentRescuer == null) return;
@@ -174,7 +174,7 @@ public class ReviveTarget : Interactable
 
     private void CleanupReviveState()
     {
-        // 🔹 Stop the revive animation when revive ends/cancels
+        //  Stop the revive animation when revive ends/cancels
         SetRescuerReviveAnim(false);
 
         currentRescuer = null;

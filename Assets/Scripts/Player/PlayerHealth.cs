@@ -14,6 +14,14 @@ public class PlayerHealth : HealthController
     [SerializeField] private float bleedoutTime = 25f;
     [SerializeField] private int reviveRestoreHealth = 50;
     private Coroutine bleedoutRoutine;
+    
+    [Header("Hit Feedback")]
+    [SerializeField] private AudioClip hitSFX;
+    [Range(0f, 1f)] [SerializeField] private float hitVolume = 1f;
+    [SerializeField] private float hitSFXMinDistance = 4f;
+    [SerializeField] private float hitSFXMaxDistance = 40f;
+    [SerializeField] private string hitAnimTrigger = "Hit";
+
 
     private ReviveTarget reviveTarget;
 
@@ -28,6 +36,8 @@ public class PlayerHealth : HealthController
     public bool CanBeTargeted => !isDead && !isDowned;
     
     private PlayerWeaponVisuals visualController;
+    
+    
 
     protected override void Awake()
     {
@@ -88,19 +98,54 @@ public class PlayerHealth : HealthController
         healthBar.SetHealth(currentHealth);
     }
 
+    //  Called whenever the player takes a valid hit (still alive / not downed)
+    private void PlayHitFeedback()
+    {
+        // Animator hit reaction
+        if (player != null && player.animator != null && !string.IsNullOrEmpty(hitAnimTrigger))
+        {
+            player.animator.SetTrigger(hitAnimTrigger);
+        }
+
+        // 3D audio from player position
+        if (AudioManager.Instance != null && hitSFX != null)
+        {
+            Vector3 pos = transform.position + Vector3.up * 1.5f; // chest-ish height
+            AudioManager.Instance.PlaySFX3D(
+                hitSFX,
+                pos,
+                hitVolume,
+                spatialBlend: 1f,          // fully 3D
+                minDistance: hitSFXMinDistance,
+                maxDistance: hitSFXMaxDistance
+            );
+        }
+    }
+
+    
     public override void ReduceHealth(int damage)
     {
         if (isDead || matchOver) return;
+        if (damage <= 0) return;
 
+        // Apply damage using base logic (updates currentHealth, UI, etc.)
         base.ReduceHealth(damage);
 
-        if (ShouldDie())
+        bool shouldDie = ShouldDie();
+        
+        if (!shouldDie && !isDowned)
+        {
+            PlayHitFeedback();
+        }
+        
+        if (shouldDie)
         {
             if (!isDowned)
                 EnterDownedState();
-            // else: you could call BleedOut() here if you want re-hits to finish them
+            // else: you could BleedOut() immediately if you wanted re-hits to finish them
         }
     }
+
 
     private void EnterDownedState()
     {
@@ -184,7 +229,7 @@ public class PlayerHealth : HealthController
 
         CheckForTeamWipe();
         
-        // 🔹 NEW: remove this player from camera target group
+        //  NEW: remove this player from camera target group
         if (CameraManager.Instance != null)
         {
             CameraManager.Instance.RemoveTarget(transform);
@@ -296,7 +341,7 @@ public class PlayerHealth : HealthController
             }
         }
 
-        // 🔹 NEW: add back to camera target group
+        //  NEW: add back to camera target group
         if (CameraManager.Instance != null)
         {
             CameraManager.Instance.AddTarget(transform, 1f, 0f);

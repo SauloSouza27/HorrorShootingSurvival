@@ -396,12 +396,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9e0a60d0922c7e46a9e80f1c0e14c9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 10000
   currentHealth: 100
   healthBar: {fileID: 0}
   defeatScreen: {fileID: 0}
   bleedoutTime: 1000
   reviveRestoreHealth: 50
+  hitSFX: {fileID: 8300000, guid: a66b8e6dff5953a4f94dd175b5fa1d00, type: 3}
+  hitVolume: 1
+  hitSFXMinDistance: 4
+  hitSFXMaxDistance: 40
+  hitAnimTrigger: Hit
 --- !u!114 &5493188303582629410
 MonoBehaviour:
   m_ObjectHideFlags: 0

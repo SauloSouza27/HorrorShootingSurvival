@@ -17,27 +17,27 @@ public class PlayerStats : MonoBehaviour
 {
     private Player player;
 
-    // 🔹 Currency
+    //  Currency
     [SerializeField] private int startingPoints = 500;
     private int currentPoints;
 
-    // 🔹 Base stats
+    //  Base stats
     [Header("Base Stats")]
     [SerializeField] private int baseMaxHealth = 100;
     [SerializeField] private float baseReloadSpeedMultiplier = 1f;
     [SerializeField] private float baseRunSpeedMultiplier = 1f;
     [SerializeField] private float baseReviveSpeedMultiplier = 1f;
 
-    // 🔹 Active multipliers (affected by perks)
+    //  Active multipliers (affected by perks)
     public int MaxHealth { get; private set; }
     public float ReloadSpeedMultiplier { get; private set; }
     public float RunSpeedMultiplier { get; private set; }
     public float ReviveSpeedMultiplier { get; private set; }
-    // 🔹 Perk state
+    //  Perk state
     public bool DoubleTapActive { get; private set; }
 
 
-    // 🔹 Perks owned
+    //  Perks owned
     private readonly HashSet<PerkType> ownedPerks = new HashSet<PerkType>();
 
     // Perks Icons
@@ -74,7 +74,7 @@ public class PlayerStats : MonoBehaviour
             ScoreManager.Instance.RegisterPlayer(pi.playerIndex, currentPoints);
     }
 
-    // 🔹 Reset stats to base values (called at start or on reset)
+    //  Reset stats to base values (called at start or on reset)
     private void ResetStats()
     {
         MaxHealth = baseMaxHealth;
@@ -88,7 +88,7 @@ public class PlayerStats : MonoBehaviour
     }
 
 
-    // 🔹 Currency methods
+    //  Currency methods
     public int GetPoints() => currentPoints;
 
     public bool CanAfford(int cost) => currentPoints >= cost;
@@ -110,7 +110,7 @@ public class PlayerStats : MonoBehaviour
         return true;
     }
 
-    // 🔹 Perk purchase logic
+    //  Perk purchase logic
     public bool PurchasePerk(PerkType perkType, int cost)
     {
         if (ownedPerks.Contains(perkType))
