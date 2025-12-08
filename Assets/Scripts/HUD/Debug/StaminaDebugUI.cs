@@ -5,7 +5,7 @@ public class StaminaDebugUI : MonoBehaviour
     private PlayerMovement movement;
     private Camera cam;
 
-    [SerializeField] private Vector3 offset = new Vector3(0f, 2.2f, 0f);
+    [SerializeField] private Vector3 offset = new(0f, -1f, 0f);
 
     private void Awake()
     {
@@ -30,7 +30,7 @@ public class StaminaDebugUI : MonoBehaviour
         float normalized = movement.StaminaNormalized;
 
         float x = screenPos.x - barWidth / 2f;
-        float y = Screen.height - screenPos.y - 15f;
+        float y = Screen.height - screenPos.y;
 
         // Background (semi-transparent black)
         GUI.color = new Color(0f, 0f, 0f, 0.65f);
@@ -47,8 +47,8 @@ public class StaminaDebugUI : MonoBehaviour
         GUI.DrawTexture(new Rect(x, y, barWidth * normalized, barHeight), Texture2D.whiteTexture);
 
         // Label
-        GUI.color = Color.white;
-        GUI.Label(new Rect(x, y - 16f, barWidth, 20f), "Stamina");
+        //GUI.color = Color.white;
+        //GUI.Label(new Rect(x, y - 16f, barWidth, 20f), "Stamina");
     }
 
 }
