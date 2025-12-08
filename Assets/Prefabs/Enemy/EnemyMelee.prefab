@@ -1582,8 +1582,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.0061170044
-  m_Center: {x: -0.00090226263, y: 4.7610618e-12, z: -5.356453e-12}
+  m_Radius: 0.004
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1988718676726477598
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3106,21 +3106,22 @@ MonoBehaviour:
   startHealth: 150
   maxHealth: 5000
   currentHealth: 100
-  speed: 6
-  rotationSpeed: 2000
-  attack: 1
-  maxspeed: 14
-  maxattack: 3
-  startAttack: 1
-  multiplier: 1.1
   isRange: 0
   avaible_from_wave: 0
   avaible_to_wave: 100
+  speed: 6
+  maxspeed: 14
+  rotationSpeed: 2000
   tier1Speed: 6
   tier2Speed: 8.5
   tier3Speed: 11
   tier4Speed: 13.5
   currentSpeedTier: 0
+  attack: 1
+  maxattack: 3
+  startAttack: 1
+  multiplier: 1.1
+  checkInterval: 0.4
   deadStateTimer: 10
   timeToDestroyAfterDissolve: 1.8
 --- !u!114 &9035987799520751587
@@ -3138,7 +3139,7 @@ MonoBehaviour:
   attackRange: 2.1
   attackCooldown: 2
   attackDuration: 0.6
-  attackDamage: 1
+  attackDamage: 30
   bite: {fileID: 5074358976206155798}
   biteDuration: 0.6
   meleeSFX: {fileID: 8300000, guid: 6c4f83189ac655b44897bcae5fc55c30, type: 3}
@@ -3925,8 +3926,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.008364127, y: 0.0065279654, z: 0.0060721147}
-  m_Center: {x: -0.0002455985, y: 0.00263292, z: 0.0023583078}
+  m_Size: {x: 0.008364127, y: 0.008424568, z: 0.0057838275}
+  m_Center: {x: -0.00024559852, y: 0.0035812138, z: 0.0022141659}
 --- !u!54 &6607522867128036272
 Rigidbody:
   m_ObjectHideFlags: 0

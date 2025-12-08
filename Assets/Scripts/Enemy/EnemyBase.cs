@@ -13,54 +13,93 @@ public enum ZombieSpeedTier
     Tier4 = 3  // fastest
 }
 
-
 public class EnemyBase : LivingEntity
 {
-    [Header("Enemy Settings")]
-    [SerializeField] private float speed = 1;
-    [SerializeField] private float rotationSpeed = 1200;
-    [SerializeField] private float attack = 1;
-    [SerializeField] private float maxspeed = 5;
-    //[SerializeField] private float startSpeed = 1;
-    [SerializeField] private float maxattack = 3;
-    [SerializeField] private float startAttack = 1;
-    public float multiplier = 1;   // still used for health scaling if you want
+    // ─────────────────────────────
+    //  BASIC TYPE / WAVE AVAILABILITY
+    // ─────────────────────────────
+    [Header("Type & Wave")]
+    [Tooltip("If true, this enemy uses ranged-attack behaviour (cooldown handled by animator bool 'isCooldown').")]
     [SerializeField] private bool isRange = false;
 
-    [Header("Wave Data")]
+    [Tooltip("First wave this enemy type can spawn (inclusive).")]
     public int avaible_from_wave = 0;
+
+    [Tooltip("Last wave this enemy type can spawn (inclusive).")]
     public int avaible_to_wave = 100;
 
+    // ─────────────────────────────
+    //  MOVEMENT / ROTATION
+    // ─────────────────────────────
+    [Header("Movement & Rotation")]
+    [Tooltip("Current movement speed (set automatically from speed tier).")]
+    [SerializeField] private float speed = 1f;
+
+    [Tooltip("Maximum allowed speed for this enemy (tier speeds are clamped to this).")]
+    [SerializeField] private float maxspeed = 5f;
+
+    [Tooltip("How fast the NavMeshAgent can rotate.")]
+    [SerializeField] private float rotationSpeed = 1200f;
+
+    // ─────────────────────────────
+    //  SPEED TIERS (BO2-STYLE)
+    // ─────────────────────────────
     [Header("Speed Tiers (round-based)")]
     [Tooltip("Slow shamblers (round 1 baseline).")]
     [SerializeField] private float tier1Speed = 1.0f;
+
     [Tooltip("Fast walk / light run.")]
     [SerializeField] private float tier2Speed = 2.0f;
+
     [Tooltip("Very fast.")]
     [SerializeField] private float tier3Speed = 3.0f;
+
     [Tooltip("Sprint / super sprinter.")]
     [SerializeField] private float tier4Speed = 4.0f;
 
+    [Tooltip("Current tier assigned by WaveSystem when spawned.")]
     [SerializeField] private ZombieSpeedTier currentSpeedTier = ZombieSpeedTier.Tier1;
 
-    private NavMeshAgent agent;
+    // ─────────────────────────────
+    //  LEGACY COMBAT STATS (NOT USED ANYMORE)
+    //  Kept to avoid breaking old prefabs / code, but hidden from Inspector.
+    // ─────────────────────────────
+    [HideInInspector, SerializeField] private float attack = 1f;
+    [HideInInspector, SerializeField] private float maxattack = 3f;
+    [HideInInspector, SerializeField] private float startAttack = 1f;
+    [HideInInspector] public float multiplier = 1f;   // WaveSystem still assigns this, but health now uses BO2 formula.
 
-    private bool isDead = false;
+    // ─────────────────────────────
+    //  AI / TARGETING
+    // ─────────────────────────────
+    [Header("AI Targeting")]
+    [Tooltip("How often (seconds) this enemy re-evaluates the closest valid player.")]
+    [SerializeField] private float checkInterval = 0.4f;
 
-    // 🔹 Now store Player instead of GameObject
-    private Player targetPlayer;
-    private float checkInterval = 0.4f;
     private float checkTimer = 0f;
-
+    private Player targetPlayer;
     private IEnemyAttack attackScript;
     public bool isAttacking { get; set; }
     private float cooldownTimer = 0f;
 
+    // ─────────────────────────────
+    //  DEATH / FX
+    // ─────────────────────────────
+    [Header("Death / FX")]
+    [Tooltip("Delay before starting dissolve after death.")]
+    [SerializeField] private float deadStateTimer = 5f;
+
+    [Tooltip("Delay after dissolve before destroying the GameObject.")]
+    [SerializeField] private float timeToDestroyAfterDissolve = 3f;
+
+    // ─────────────────────────────
+    //  RUNTIME COMPONENTS / STATE
+    // ─────────────────────────────
+    private NavMeshAgent agent;
+    private bool isDead = false;
     private Animator animator;
     private Ragdoll ragdoll;
-    [SerializeField] private float deadStateTimer = 5f;
-    [SerializeField] private float timeToDestroyAfterDissolve = 3f;
-    
+
     public override void SetLivingEntity() { }
 
     private void Awake()
@@ -83,37 +122,32 @@ public class EnemyBase : LivingEntity
 
     /// <summary>
     /// Called from WaveSystem after multiplier has been set.
-    /// Health may scale with multiplier, damage does NOT scale with round.
+    /// Health uses BO2-style curve; damage does NOT scale per round.
     /// Speed is handled separately via speed tiers.
     /// </summary>
     public void AdjustEnemyToWave()
     {
-        // What round are we on?
-        int round = (WaveSystem.instance != null) 
-            ? WaveSystem.instance.currentWave 
+        int round = (WaveSystem.instance != null)
+            ? WaveSystem.instance.currentWave
             : 1;
 
-        // --- HEALTH (BO2 style) ---
-        // Base BO2 formula gives 150 HP at round 1 for a "normal" zombie.
-        // We use startHealth as a type-multiplier, so:
-        //   startHealth = 150 → exactly the BO2 curve
-        //   startHealth = 300 → exactly 2x the BO2 curve, etc.
+        // HEALTH (BO2 style)
         float baseFormulaHp = WaveSystem.GetZombieHealthForRound(round);
-        float typeFactor     = startHealth / 150f;
-        float finalHp        = baseFormulaHp * typeFactor;
+        float typeFactor = startHealth / 150f;   // 150 => exactly BO2 curve
+        float finalHp = baseFormulaHp * typeFactor;
 
-        maxHealth     = finalHp;
+        maxHealth = finalHp;
         currentHealth = finalHp;
-        
+
+        // Legacy attack value is kept in sync but not actually used by MeleeAttack
         attack = startAttack;
         Set_Attack(startAttack);
-        
+
         if (agent != null)
         {
-            agent.speed = speed;   
+            agent.speed = speed;
         }
     }
-
 
     /// <summary>
     /// Called by WaveSystem for each spawned enemy to give it a speed tier.
@@ -144,8 +178,9 @@ public class EnemyBase : LivingEntity
 
     private void Update()
     {
-        if (isRange == true && animator.GetBool("isCooldown")) return;
-        if (isDead || isAttacking) return; 
+        // Ranged enemies use animator "isCooldown" gate
+        if (isRange && animator != null && animator.GetBool("isCooldown")) return;
+        if (isDead || isAttacking) return;
 
         // If current target becomes invalid (downed/dead/missing), drop it
         if (targetPlayer != null)
@@ -171,7 +206,7 @@ public class EnemyBase : LivingEntity
             return;
         }
 
-        if (cooldownTimer > 0 && isRange == false)
+        if (cooldownTimer > 0 && !isRange)
         {
             cooldownTimer -= Time.deltaTime;
         }
@@ -231,6 +266,7 @@ public class EnemyBase : LivingEntity
 
         if (isRange)
         {
+            // Ranged enemies manage their own cooldown via animator "isCooldown"
             yield return null;
         }
         else
@@ -238,7 +274,7 @@ public class EnemyBase : LivingEntity
             yield return new WaitForSeconds(attackScript.AttackDuration);
             cooldownTimer = attackScript.AttackCooldown;
             isAttacking = false;
-        }        
+        }
     }
 
     // Uses PlayerHealth.AllPlayers for better performance than FindGameObjectsWithTag
@@ -292,6 +328,7 @@ public class EnemyBase : LivingEntity
         }
     }
 
+    // These "Adjust" / "Set" methods are mostly legacy now, but still used by BO2 HP logic.
     public void Adjust_Attack(float ammount)
     {
         if (ammount >= 0)
@@ -359,7 +396,7 @@ public class EnemyBase : LivingEntity
             }
             else
             {
-                currentHealth = 0; 
+                currentHealth = 0;
                 // we already handle death elsewhere
             }
         }
@@ -483,10 +520,6 @@ public class EnemyBase : LivingEntity
 
     public Player GetTargetPlayer()
     {
-        if (targetPlayer != null)
-        {
-            return targetPlayer;
-        }
-        else return null;
+        return targetPlayer;
     }
 }

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 
 public class Bite : MonoBehaviour
 {
-    [SerializeField] private LayerMask damageLayerMask; 
+    [SerializeField] private LayerMask damageLayerMask;
 
     private int currentDamage;
-    private List<Collider> hitObjects = new List<Collider>(); 
+
+    // We track ROOT transforms here so multiple colliders on the same character
+    // only count as ONE hit per bite.
+    private readonly HashSet<Transform> hitRoots = new HashSet<Transform>();
 
     public void SetAttack(int damage)
     {
@@ -15,25 +18,32 @@ public class Bite : MonoBehaviour
 
     private void OnEnable()
     {
-        hitObjects.Clear();
+        // New bite window -> reset list of things we already damaged
+        hitRoots.Clear();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (hitObjects.Contains(other))
-        {
+        if ((damageLayerMask.value & (1 << other.gameObject.layer)) == 0)
             return;
-        }
+        
+        Transform root = other.transform.root != null
+            ? other.transform.root
+            : other.transform;
 
+        // If we've already hit this root this bite, ignore
+        if (hitRoots.Contains(root))
+            return;
 
-        if ((damageLayerMask.value & (1 << other.gameObject.layer)) > 0)
-        {
-            IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
-            damageable?.TakeDamage(currentDamage);
-            {
-                
-                hitObjects.Add(other);
-            }
-        }
+        // Find IDamageable somewhere in this root hierarchy
+        IDamageable damageable = root.GetComponentInChildren<IDamageable>();
+        if (damageable == null)
+            return;
+
+        // Apply damage ONCE for this character
+        damageable.TakeDamage(currentDamage);
+
+        // Remember that we already hit this root this bite
+        hitRoots.Add(root);
     }
 }

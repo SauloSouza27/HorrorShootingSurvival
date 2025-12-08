@@ -3469,21 +3469,22 @@ MonoBehaviour:
   startHealth: 600
   maxHealth: 15000
   currentHealth: 100
-  speed: 6
-  rotationSpeed: 2000
-  attack: 1
-  maxspeed: 11
-  maxattack: 3
-  startAttack: 1
-  multiplier: 1.1
   isRange: 1
-  avaible_from_wave: 1
+  avaible_from_wave: 10
   avaible_to_wave: 100
+  speed: 6
+  maxspeed: 11
+  rotationSpeed: 2000
   tier1Speed: 6
   tier2Speed: 8
   tier3Speed: 10
   tier4Speed: 12
   currentSpeedTier: 0
+  attack: 1
+  maxattack: 3
+  startAttack: 1
+  multiplier: 1.1
+  checkInterval: 0.4
   deadStateTimer: 3
   timeToDestroyAfterDissolve: 2
 --- !u!114 &2048165912453249814
