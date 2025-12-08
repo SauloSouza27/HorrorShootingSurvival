@@ -1843,7 +1843,6 @@ MonoBehaviour:
   skinnedMesh: {fileID: 7771475063023463888}
   dissolveRate: 0.0125
   refreshrate: 0.025
-  timeFadeOutEyes: 1
 --- !u!1 &2757709542285526584
 GameObject:
   m_ObjectHideFlags: 0
@@ -3105,16 +3104,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startHealth: 150
-  maxHealth: 3000
+  maxHealth: 5000
   currentHealth: 100
   speed: 6
   rotationSpeed: 2000
   attack: 1
   maxspeed: 14
-  startSpeed: 10
   maxattack: 3
   startAttack: 1
   multiplier: 1.1
+  isRange: 0
   avaible_from_wave: 0
   avaible_to_wave: 100
   tier1Speed: 6

@@ -3467,7 +3467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startHealth: 600
-  maxHealth: 12000
+  maxHealth: 15000
   currentHealth: 100
   speed: 6
   rotationSpeed: 2000
