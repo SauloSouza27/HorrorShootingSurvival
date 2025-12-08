@@ -12,59 +12,137 @@ public class WaveSystem : MonoBehaviour
         instance = this;
     }
 
-    [Header("Main Settings")]
+    // ─────────────────────────────────────────
+    //  WAVE PROGRESS (RUNTIME)
+    // ─────────────────────────────────────────
+    [Header("Wave Progress (Runtime)")]
+    [Tooltip("Current wave/round index (starts at 1).")]
     public int currentWave = 1;
 
-    [Header("Increase Settings (only for speed/attack etc.)")]
-    [SerializeField] private float spawn_multiplier = 1.2f;   // still used for max-on-map if you want
-    [SerializeField] private float strength_multiplier = 1.1f; // still used as a generic “difficulty” for speed/attack
-
-    [Header("Start Settings")]
-    [SerializeField] private int start_summons = 10;
+    [Tooltip("Total zombies that should spawn this wave (BO2 formula).")]
     public int current_summons = 10;
+
+    [Tooltip("How many zombies have been spawned so far this wave.")]
     public int summons_spawned = 0;
+
+    [Tooltip("How many zombies are currently alive on the map.")]
     public int current_summons_alive = 0;
+
+    [Tooltip("How many zombies from this wave have died.")]
     public int current_summons_dead = 0;
 
+    // Max zombies alive on the map at once
     private int current_max_summons_once = 30;
+
+    // ─────────────────────────────────────────
+    //  DIFFICULTY / SCALING
+    // ─────────────────────────────────────────
+    [Header("Difficulty Scaling")]
+    [Tooltip("Legacy spawn multiplier (no longer used with BO2 count formula).")]
+    [HideInInspector]
+    [SerializeField] private float spawn_multiplier = 1.2f;
+
+    [Tooltip("Multiplicative strength factor applied each new wave, used by enemies as a generic difficulty multiplier (e.g. speed/attack if you want).")]
+    [SerializeField] private float strength_multiplier = 1.1f;
+
+    [Tooltip("Base strength multiplier for wave 1.")]
+    [SerializeField] private float start_strength = 1f;
+
+    [Tooltip("Current strength multiplier for this wave (used by EnemyBase.multiplier).")]
+    [HideInInspector] public float current_strength = 1f;
+
+    // ─────────────────────────────────────────
+    //  STARTING VALUES (LEGACY / INIT)
+    // ─────────────────────────────────────────
+    [Header("Legacy Start Settings")]
+    [Tooltip("Legacy initial summons (overridden by BO2 formula after NewWave).")]
+    [HideInInspector]
+    [SerializeField] private int start_summons = 10;
+
+    [Tooltip("Maximum number of zombies allowed on the map at once (per wave).")]
     [SerializeField] private int start_max_summons_once = 30;
 
-    [SerializeField] private float start_strength = 1f;
-    [HideInInspector] public float current_strength = 1f;   // used by EnemyBase.multiplier
-
+    // ─────────────────────────────────────────
+    //  TIME SETTINGS
+    // ─────────────────────────────────────────
     [Header("Time Settings")]
+    [Tooltip("Delay between the end of a wave and the start of the next one.")]
     [SerializeField] private float time_between_waves = 30f;
+
+    [Tooltip("Internal timestamp of when the last wave ended.")]
     [SerializeField] private float time_end_last_wave = 30f;
+
+    [Tooltip("Whether the wave is currently spawning/active.")]
     [SerializeField] private bool waveIsRunning = false;
 
+    [Header("Time Between Summons")]
+    [Tooltip("Delay between individual zombie spawns (if use_time_between_summons is true).")]
+    public float time_between_summons = 0.1f;
+
+    private float time_last_summon = 0f;
+
+    [Tooltip("If true, zombies spawn with a delay between each summon. If false, they spawn as fast as allowed by the cap.")]
+    public bool use_time_between_summons = true;
+
+    // ─────────────────────────────────────────
+    //  SPAWNPOINTS / ENEMY PREFABS
+    // ─────────────────────────────────────────
     [Header("Spawnpoint Settings")]
+    [Tooltip("All enemy spawnpoints (with portal VFX as first child).")]
     public List<Transform> spawnpoints = new List<Transform>();
+
+    [Tooltip("Parent transform under which all enemies will be instantiated.")]
     public Transform EnemyHolder;
 
     [Header("Enemy Settings")]
+    [Tooltip("All potential enemy types (prefabs) this WaveSystem can use.")]
     public List<EnemyBase> enemy_Container = new List<EnemyBase>();
+
+    // internal lists
     private readonly List<EnemyBase> avaible_enemys = new List<EnemyBase>();
     private readonly List<EnemyBase> selected_enemys = new List<EnemyBase>();
 
-    [Header("Time Between Summons")]
-    public float time_between_summons = 0.1f;
-    private float time_last_summon = 0f;
-    public bool use_time_between_summons = true;
-
+    // ─────────────────────────────────────────
+    //  PLAYER RESPAWN
+    // ─────────────────────────────────────────
     [Header("Player Respawn Settings")]
+    [Tooltip("If true, dead/downed players are respawned at the start of a new wave with some minimum points.")]
     [SerializeField] private bool respawnDeadPlayersAtNewWave = true;
-    [SerializeField] private int baseRespawnPoints = 500; // points at wave 1
-    [SerializeField] private int pointsPerWave = 250;     // extra per wave
 
+    [Tooltip("Points a respawned player should have at wave 1.")]
+    [SerializeField] private int baseRespawnPoints = 500;
+
+    [Tooltip("Extra points granted per wave when respawning (base + waveIndex * pointsPerWave).")]
+    [SerializeField] private int pointsPerWave = 250;
+
+    // ─────────────────────────────────────────
+    //  AUDIO
+    // ─────────────────────────────────────────
     [Header("Audio")]
+    [Tooltip("Spawn SFX for standard melee enemies (played in 3D from the spawn point).")]
     public AudioClip meleeSpawnSFX;
-    [Range(0f, 1f)] public float meleeSpawnVolume = 1f;
-    public AudioClip meteorSpawnSFX;
-    [Range(0f, 1f)] public float meteorSpawnVolume = 1f;
 
-    [Header("Change Data")]
+    [Range(0f, 1f)]
+    public float meleeSpawnVolume = 1f;
+
+    [Tooltip("Legacy meteor spawn sound (not used yet).")]
+    [HideInInspector]
+    public AudioClip meteorSpawnSFX;
+
+    [HideInInspector]
+    [Range(0f, 1f)]
+    public float meteorSpawnVolume = 1f;
+
+    // ─────────────────────────────────────────
+    //  DATA-DRIVEN TUNING (OPTIONAL)
+    // ─────────────────────────────────────────
+    [Header("Wave Tuning Data (Optional)")]
+    [Tooltip("Optional controlled changes at certain waves (mostly legacy; spawn multiplier is not used with BO2 wave formula).")]
     public List<WaveData> newWaveData = new List<WaveData>();
 
+    // ─────────────────────────────────────────
+    //  UNITY LIFECYCLE
+    // ─────────────────────────────────────────
     private void Start()
     {
         currentWave = 0;
@@ -72,7 +150,7 @@ public class WaveSystem : MonoBehaviour
         current_summons_dead = 0;
         summons_spawned = 0;
 
-        current_summons = start_summons;
+        current_summons = start_summons; // immediately overridden by NewWave with BO2 formula
         current_max_summons_once = start_max_summons_once;
         current_strength = start_strength;
 
@@ -82,41 +160,53 @@ public class WaveSystem : MonoBehaviour
         NewWave();
     }
 
-    // ---------- PUBLIC HELPERS FOR OTHER SYSTEMS ----------
+    private void Update()
+    {
+        WaveLoop();
+    }
+
+    // ─────────────────────────────────────────
+    //  BO2 HEALTH / COUNT HELPERS (STATIC)
+    // ─────────────────────────────────────────
 
     /// <summary>
-    /// BO2 zombies health curve, returned as a **multiplier relative to round 1**.
-    /// Round 1 reference HP is 150.
+    /// BO2 zombies health curve for a given round.
+    /// Uses the wiki rule:
+    /// - Round 1–9: 150 base, +100 per round (r1=150, r9=950)
+    /// - From round 10: +10% per round starting from 950 at round 9.
+    /// </summary>
+    public static int GetZombieHealthForRound(int round)
+    {
+        if (round < 1) round = 1;
+
+        // Before round 10: start at 150 and add 100 per round
+        if (round <= 9)
+        {
+            return 150 + 100 * (round - 1);
+        }
+
+        // From round 10 and on: +10% multiplicatively from round-9 health (950)
+        const float healthAtNine = 950f;
+        int roundsAfterNine = round - 9;
+        float health = healthAtNine * Mathf.Pow(1.1f, roundsAfterNine);
+
+        return Mathf.RoundToInt(health);
+    }
+
+    /// <summary>
+    /// Health factor relative to round-1 HP (150).
     /// </summary>
     public static float GetHealthFactorForWave(int wave)
     {
         if (wave < 1) wave = 1;
-
-        const float hpRound1 = 150f;       // BO2 base
-        float hp;
-
-        if (wave <= 9)
-        {
-            // 150 base, +100 each round until 9
-            hp = 150f + 100f * (wave - 1);
-        }
-        else
-        {
-            // From round 10: +10% per round, starting from round 9 value (950 HP)
-            float hpAt9 = 150f + 100f * (9 - 1); // = 950
-            int extraRounds = wave - 9;
-            hp = hpAt9 * Mathf.Pow(1.10f, extraRounds);
-        }
-
-        // Factor relative to round-1 HP
+        const float hpRound1 = 150f;
+        float hp = GetZombieHealthForRound(wave);
         return hp / hpRound1;
     }
 
     /// <summary>
     /// BO2 zombies-per-round formula (approximation of the wiki maths).
-    /// Uses:
-    /// - special early-round factors for round 1–9
-    /// - cubic growth for 10+ as in the wiki formula.
+    /// Uses special early factors for rounds 1–9, then cubic growth from 10+.
     /// </summary>
     public static int GetZombieCountForWave(int wave, int playerCount)
     {
@@ -184,9 +274,11 @@ public class WaveSystem : MonoBehaviour
         return Mathf.FloorToInt(baseValue);
     }
 
-    // ---------- WAVE FLOW ----------
+    // ─────────────────────────────────────────
+    //  SPAWNING & WAVE FLOW
+    // ─────────────────────────────────────────
 
-    //Add new zone spawn enemies
+    // Add new zone spawn enemies
     public void AddNewZone(List<Transform> newSpawns)
     {
         List<Transform> currentSpawnPoints = spawnpoints;
@@ -194,7 +286,6 @@ public class WaveSystem : MonoBehaviour
         int newListCount = currentListCount + newSpawns.Count;
 
         spawnpoints = new List<Transform>(newListCount);
-
         spawnpoints.AddRange(currentSpawnPoints);
         spawnpoints.AddRange(newSpawns);
     }
@@ -205,13 +296,13 @@ public class WaveSystem : MonoBehaviour
         currentWave++;
         time_end_last_wave = Time.time;
 
-        // ▼ Difficulty multiplier (kept only for things like speed/attack)
+        // Difficulty multiplier (kept only for things like speed/attack)
         if (currentWave > 1)
         {
             current_strength *= strength_multiplier;
         }
 
-        // ▼ BO2-style zombie count per wave
+        // BO2-style zombie count per wave
         int playerCount = Mathf.Max(1, PlayerHealth.AllPlayers.Count);
         current_summons = GetZombieCountForWave(currentWave, playerCount);
 
@@ -219,7 +310,7 @@ public class WaveSystem : MonoBehaviour
         current_summons_alive = 0;
         summons_spawned = 0;
         current_summons_dead = 0;
-        current_max_summons_once = start_max_summons_once; // you can tune this, e.g. 24
+        current_max_summons_once = start_max_summons_once;
 
         // Generate Available Enemy List
         avaible_enemys.Clear();
@@ -258,6 +349,8 @@ public class WaveSystem : MonoBehaviour
         {
             if (currentWave == newWaveData[0].change_at_wave)
             {
+                // NOTE: spawn_multiplier is legacy with BO2 formula,
+                // but kept so old data doesn't break.
                 if (newWaveData[0].change_spawn_multiplier)
                 {
                     spawn_multiplier = newWaveData[0].new_spawn_multiplier;
@@ -280,11 +373,6 @@ public class WaveSystem : MonoBehaviour
             return avaible_enemys[randomint];
         }
         return null;
-    }
-
-    private void Update()
-    {
-        WaveLoop();
     }
 
     public void WaveLoop()
@@ -331,22 +419,21 @@ public class WaveSystem : MonoBehaviour
         int randomspawnint = Random.Range(0, spawnpoints.Count);
         spawnpoint = spawnpoints[randomspawnint];
 
-        // ativa efeito portal
+        // portal VFX as first child
         VisualEffect portal = spawnpoint.GetChild(0).GetComponent<VisualEffect>();
-
         if (portal != null)
         {
             portal.Play();
         }
 
-        // 🔊 3D spawn sound from that spawnpoint
+        // 3D spawn sound from that spawnpoint
         if (AudioManager.Instance != null && meleeSpawnSFX != null)
         {
             AudioManager.Instance.PlaySFX3D(
                 meleeSpawnSFX,
                 spawnpoint.position,
                 meleeSpawnVolume,
-                spatialBlend: 1f,  // fully 3D
+                spatialBlend: 1f,
                 minDistance: 5f,
                 maxDistance: 80f
             );
@@ -361,7 +448,7 @@ public class WaveSystem : MonoBehaviour
         newEnemy.multiplier = current_strength;
         newEnemy.AdjustEnemyToWave();
 
-        // 🔹 Assign a speed tier based on current round
+        // Assign a speed tier based on current round
         newEnemy.SetSpeedTier(GetSpeedTierForCurrentWave());
 
         current_summons_alive++;
@@ -369,31 +456,14 @@ public class WaveSystem : MonoBehaviour
 
         time_last_summon = Time.time;
     }
-    
-    public static int GetZombieHealthForRound(int round)
+
+    public void SkipPause()
     {
-        if (round < 1) round = 1;
-
-        // Before round 10: start at 150 and add 100 per round
-        if (round <= 9)
-        {
-            // r1 = 150, r2 = 250, ..., r9 = 950
-            return 150 + 100 * (round - 1);
-        }
-
-        // From round 10 and on: +10% multiplicatively from round-9 health (950)
-        const float healthAtNine = 950f;
-        int roundsAfterNine = round - 9;
-        float health = healthAtNine * Mathf.Pow(1.1f, roundsAfterNine);
-
-        // Examples (to match the wiki):
-        // r15 ≈ 1683, r30 ≈ 7030, r50 ≈ 47296, r100 ≈ 5.5M
-        return Mathf.RoundToInt(health);
+        waveIsRunning = true;
     }
 
-    
     /// <summary>
-    /// BO2-style speed distribution:
+    /// BO2-style speed distribution for a single zombie:
     /// - Round 1–2: 100% Tier1.
     /// - From round 3 onwards: +10% of zombies become "fast" per round,
     ///   capped at 90% fast. Remaining are Tier1.
@@ -409,7 +479,6 @@ public class WaveSystem : MonoBehaviour
             return ZombieSpeedTier.Tier1;
 
         // Total fraction of zombies in this round that should be faster than Tier1
-        // Example: round 3 -> 10%, round 4 -> 20%, ... round 11+ -> 90% (capped).
         float fastFrac = Mathf.Clamp01(0.1f * (wave - 2));   // 0..0.9
 
         // Split fast zombies across tiers as rounds go up:
@@ -449,21 +518,22 @@ public class WaveSystem : MonoBehaviour
 
         return ZombieSpeedTier.Tier4;
     }
-
-
 }
 
 [System.Serializable]
 public class WaveData
 {
     [Header("Wave Data")]
+    [Tooltip("At which wave this data change takes effect.")]
     public int change_at_wave = 5;
 
     [Header("New Data")]
+    [Tooltip("Legacy: changes spawn multiplier (not used when using BO2 wave count formula).")]
     public bool change_spawn_multiplier = false;
     public float new_spawn_multiplier = 1f;
 
     [Space]
+    [Tooltip("Whether to change strength multiplier at this wave.")]
     public bool change_strength_multiplier = false;
     public float new_strength_multiplier = 1f;
 }
