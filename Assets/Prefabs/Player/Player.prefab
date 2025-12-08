@@ -396,7 +396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9e0a60d0922c7e46a9e80f1c0e14c9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10000
+  maxHealth: 100
   currentHealth: 100
   healthBar: {fileID: 0}
   defeatScreen: {fileID: 0}

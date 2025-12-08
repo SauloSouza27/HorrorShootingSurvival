@@ -305,7 +305,7 @@ public class PlayerHealth : HealthController
             if (ph == null) continue;
 
             // Only respawn those who are out
-            if (!ph.isDead && !ph.isDowned) 
+            if (!ph.isDead) 
                 continue;
 
             ph.RespawnInternal(minPoints);
