@@ -128,7 +128,7 @@ public class PlayerStats : MonoBehaviour
         return true;
     }
 
-    // 🔹 Apply perk effects
+    // Apply perk effects
     private void ApplyPerk(PerkType perkType)
     {
         GameObject newPerkIcon;

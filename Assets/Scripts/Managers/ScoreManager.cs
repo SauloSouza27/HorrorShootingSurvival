@@ -15,7 +15,7 @@ public class ScoreManager : MonoBehaviour
 
     [SerializeField] private const int KILL_POINTS = 80;
     
-    private Dictionary<int, int> playerScores = new Dictionary<int, int>(); // ✏️ replace currentScore
+    private Dictionary<int, int> playerScores = new Dictionary<int, int>(); // replace currentScore
 
     public event Action<int,int> OnPlayerScoreChanged; // (playerIndex, newScore)
 
@@ -34,13 +34,13 @@ public class ScoreManager : MonoBehaviour
         }
     }
     
-    public void RegisterPlayer(int playerIndex, int initialScore = 0) // ⬆️ new
+    public void RegisterPlayer(int playerIndex, int initialScore = 0) // new
     {
         playerScores[playerIndex] = initialScore;
         OnPlayerScoreChanged?.Invoke(playerIndex, initialScore);
     }
 
-    public void AddScoreForPlayer(int playerIndex, int amount) // ⬆️ new
+    public void AddScoreForPlayer(int playerIndex, int amount) // new
     {
         if (!playerScores.ContainsKey(playerIndex)) playerScores[playerIndex] = 0;
         playerScores[playerIndex] += amount;
