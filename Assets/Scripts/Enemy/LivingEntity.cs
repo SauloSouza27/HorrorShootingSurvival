@@ -55,7 +55,7 @@ public class LivingEntity : MonoBehaviour
         yield return new WaitForSeconds(3f);
     }
 
-    public void DestroyThisGameObject()
+    public virtual void DestroyThisGameObject()
     {
         Destroy(gameObject);
     }

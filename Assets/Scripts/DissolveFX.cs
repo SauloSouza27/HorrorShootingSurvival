@@ -12,7 +12,7 @@ public class DissolveFX : MonoBehaviour
     [SerializeField] private float refreshrate = 0.025f;
 
     //[SerializeField] private Transform[] eyes = new Transform[2];
-    [SerializeField] private float timeFadeOutEyes = 1f;
+    //[SerializeField] private float timeFadeOutEyes = 1f;
 
     void Start()
     {

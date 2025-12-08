@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerColorSetter : MonoBehaviour
 {
     [ColorUsage(true, true)] [SerializeField] private Color[] playerColors;
-    [SerializeField] private int targetMaterialIndex = 0; // Set this per part in the Inspector
+    //[SerializeField] private int targetMaterialIndex = 0; // Set this per part in the Inspector
     [SerializeField] private Material material;
     public int playerIndex;
     private void Start()

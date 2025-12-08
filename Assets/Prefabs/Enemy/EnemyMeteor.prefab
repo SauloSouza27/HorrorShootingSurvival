@@ -3473,11 +3473,10 @@ MonoBehaviour:
   rotationSpeed: 2000
   attack: 1
   maxspeed: 11
-  startSpeed: 7
   maxattack: 3
   startAttack: 1
   multiplier: 1.1
-  avaible_from_wave: 1
+  avaible_from_wave: 5
   avaible_to_wave: 100
   tier1Speed: 6
   tier2Speed: 8
@@ -3790,7 +3789,6 @@ MonoBehaviour:
   skinnedMesh: {fileID: 1805615439048849300}
   dissolveRate: 0.0125
   refreshrate: 0.025
-  timeFadeOutEyes: 1
 --- !u!1 &7678236368127252687
 GameObject:
   m_ObjectHideFlags: 0
@@ -4140,7 +4138,6 @@ MonoBehaviour:
   skinnedMesh: {fileID: 2456360495115923968}
   dissolveRate: 0.0125
   refreshrate: 0.025
-  timeFadeOutEyes: 1
 --- !u!1 &7841466939389174122
 GameObject:
   m_ObjectHideFlags: 0
