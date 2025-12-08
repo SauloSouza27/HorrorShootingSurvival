@@ -5,12 +5,12 @@ using System;
 public class BuyWeaponWorldUI : MonoBehaviour
 {
 
-    public Canvas canvas;
-    public TextMeshProUGUI weaponName;
-    public TextMeshProUGUI weaponPrice;
-    public TextMeshProUGUI interactDescription;
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private TextMeshProUGUI weaponName;
+    [SerializeField] private TextMeshProUGUI weaponPrice;
+    [SerializeField] private TextMeshProUGUI interactDescription;
 
-    public Camera uiCamera;
+    [SerializeField] private Camera uiCamera;
 
 
 
@@ -18,7 +18,7 @@ public class BuyWeaponWorldUI : MonoBehaviour
     void Start()
     {
         if(!uiCamera) uiCamera = Camera.main;
-        interactDescription.text = "Press interaction to purchase";
+        interactDescription.text = "";
     }
 
     void Update()
@@ -62,13 +62,13 @@ public class BuyWeaponWorldUI : MonoBehaviour
     public void SetupBuyWeaponCanvas(String weaponNameInput, float weaponPriceInput)
     {
         weaponName.text = weaponNameInput;
-        weaponPrice.text = "Buy weapon - Cost: " + weaponPriceInput;
+        weaponPrice.text = "$ " + weaponPriceInput;
     }
 
     public void SetupBuyAmmoCanvas(String weaponNameInput, float ammoPrice)
     {
         weaponName.text = weaponNameInput;
-        weaponPrice.text = "Buy ammo - Cost: " + ammoPrice;
+        weaponPrice.text = "Ammo $ " + ammoPrice;
     }
 
 
