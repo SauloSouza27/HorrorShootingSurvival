@@ -362,7 +362,7 @@
                 {
                     "name": "",
                     "id": "e00fce64-7bbb-4b15-af5c-e62b1480ab0e",
-                    "path": "<Gamepad>/dpad/down",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Controller",
@@ -470,7 +470,18 @@
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Keyboard1",
+                    "action": "OpenClosePauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9ff9905e-92c2-40e4-8cf8-95786c6de259",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Controller",
                     "action": "OpenClosePauseMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
