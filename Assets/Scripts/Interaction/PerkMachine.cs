@@ -9,9 +9,9 @@ public class PerkMachine : Interactable
     [SerializeField] private PerkType perkType;
     [SerializeField] private int cost = 2000;
 
-    [Header("Debug UI")]
-    [SerializeField] private bool debugUI = true;
-    [SerializeField] private Vector3 uiOffset = new Vector3(0, 2f, 0);
+    //[Header("Debug UI")]
+    //[SerializeField] private bool debugUI = true;
+    //[SerializeField] private Vector3 uiOffset = new Vector3(0, 2f, 0);
     
     [SerializeField] private AudioClip failSFX;
     [Range(0f, 1f)] [SerializeField] private float failVolume = 1f;
@@ -53,44 +53,44 @@ public class PerkMachine : Interactable
         if (p != null) playersInRange.Remove(p);
     }
 
-    private void OnGUI()
-    {
-        if (!debugUI) return;
-        if (playersInRange.Count == 0) return;
+    //private void OnGUI()
+    //{
+    //    if (!debugUI) return;
+    //    if (playersInRange.Count == 0) return;
 
-        var cam = Camera.main; if (!cam) return;
+    //    var cam = Camera.main; if (!cam) return;
 
-        // pick nearest player
-        Player nearest = null; float minD = float.MaxValue;
-        foreach (var p in playersInRange)
-        {
-            if (!p) continue;
-            float d = Vector3.Distance(p.transform.position, transform.position);
-            if (d < minD) { minD = d; nearest = p; }
-        }
-        if (!nearest) return;
+    //    // pick nearest player
+    //    Player nearest = null; float minD = float.MaxValue;
+    //    foreach (var p in playersInRange)
+    //    {
+    //        if (!p) continue;
+    //        float d = Vector3.Distance(p.transform.position, transform.position);
+    //        if (d < minD) { minD = d; nearest = p; }
+    //    }
+    //    if (!nearest) return;
 
-        var stats = nearest.GetComponent<PlayerStats>();
-        int points = stats ? stats.GetPoints() : 0;
-        bool canAfford = stats && stats.CanAfford(cost);
+    //    var stats = nearest.GetComponent<PlayerStats>();
+    //    int points = stats ? stats.GetPoints() : 0;
+    //    bool canAfford = stats && stats.CanAfford(cost);
 
-        Vector3 screen = cam.WorldToScreenPoint(transform.position + uiOffset);
-        if (screen.z < 0) return;
-        screen.y = Screen.height - screen.y;
+    //    Vector3 screen = cam.WorldToScreenPoint(transform.position + uiOffset);
+    //    if (screen.z < 0) return;
+    //    screen.y = Screen.height - screen.y;
 
-        var rect = new Rect(screen.x - 140, screen.y - 60, 280, 54);
-        GUI.color = new Color(0,0,0,0.75f);
-        GUI.Box(rect, GUIContent.none);
-        GUI.color = Color.white;
+    //    var rect = new Rect(screen.x - 140, screen.y - 60, 280, 54);
+    //    GUI.color = new Color(0,0,0,0.75f);
+    //    GUI.Box(rect, GUIContent.none);
+    //    GUI.color = Color.white;
 
-        string name = GetPerkName(perkType);
-        string desc = GetPerkDescription(perkType);
-        string costLine = canAfford ? $"Cost: {cost}" : $"Not enough ({points}/{cost})";
+    //    string name = GetPerkName(perkType);
+    //    string desc = GetPerkDescription(perkType);
+    //    string costLine = canAfford ? $"Cost: {cost}" : $"Not enough ({points}/{cost})";
 
-        GUI.Label(new Rect(rect.x + 8, rect.y + 6, rect.width - 16, 18), $"{name}");
-        GUI.Label(new Rect(rect.x + 8, rect.y + 24, rect.width - 16, 18), desc);
-        GUI.Label(new Rect(rect.x + 8, rect.y + 42, rect.width - 16, 18), costLine);
-    }
+    //    GUI.Label(new Rect(rect.x + 8, rect.y + 6, rect.width - 16, 18), $"{name}");
+    //    GUI.Label(new Rect(rect.x + 8, rect.y + 24, rect.width - 16, 18), desc);
+    //    GUI.Label(new Rect(rect.x + 8, rect.y + 42, rect.width - 16, 18), costLine);
+    //}
 
     public string GetPerkName(PerkType type)
     {

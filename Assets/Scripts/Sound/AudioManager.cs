@@ -12,12 +12,15 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource sfxSource;
 
     [Header("SFX Mixer Group (for 3D sounds)")]
-    [SerializeField] private AudioMixerGroup sfxMixerGroup;   // ⬅️ assign in Inspector
+    [SerializeField] private AudioMixerGroup sfxMixerGroup;   // assign in Inspector
 
-    [Header("Music Clips")]
+    [Header("Music Clips / volume fixer")]
     public AudioClip menuMusic;
+    [SerializeField] [Range(0, 1)] private float menuVolume = 1f;
     public AudioClip gameplayMusic;
+    [SerializeField] [Range(0, 1)] private float gamePlayVolume = 1f;
     public AudioClip creditsMusic;
+    [SerializeField] [Range(0, 1)] private float creditVolume = 1f;
 
     [Header("SFX Clips")]
     public List<AudioClip> soundEffects = new List<AudioClip>();
