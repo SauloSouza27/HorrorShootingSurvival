@@ -19,6 +19,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] [Range(0, 1)] private float menuVolume = 1f;
     public AudioClip gameplayMusic;
     [SerializeField] [Range(0, 1)] private float gamePlayVolume = 1f;
+    public AudioClip ambientMusic;
+    [SerializeField] [Range(0, 1)] private float ambientMusicVolume = 1f;
     public AudioClip creditsMusic;
     [SerializeField] [Range(0, 1)] private float creditVolume = 1f;
 
@@ -50,18 +52,19 @@ public class AudioManager : MonoBehaviour
     }
 
     // ===== MUSIC (unchanged) =====
-    public void PlayMusic(AudioClip clip, bool loop = true)
+    public void PlayMusic(AudioClip clip, float volumeFixer, bool loop = true)
     {
         if (clip == null) return;
         musicSource.clip = clip;
         musicSource.loop = loop;
+        musicSource.volume = volumeFixer;
         musicSource.Play();
     }
 
     public void StopMusic() => musicSource.Stop();
-    public void SwitchToMenuMusic() => PlayMusic(menuMusic);
-    public void SwitchToGameplayMusic() => PlayMusic(gameplayMusic);
-    public void SwitchToCreditsMusic() => PlayMusic(creditsMusic);
+    public void SwitchToMenuMusic() => PlayMusic(menuMusic, menuVolume);
+    public void SwitchToGameplayMusic() => PlayMusic(gameplayMusic, gamePlayVolume);
+    public void SwitchToCreditsMusic() => PlayMusic(creditsMusic, creditVolume);
 
     // ===== 2D SFX (unchanged) =====
     public void PlaySFX(string clipName, float volume = 1f, float pitch = 1f)

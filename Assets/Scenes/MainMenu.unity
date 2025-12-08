@@ -5865,8 +5865,13 @@ MonoBehaviour:
   sfxSource: {fileID: 1891331599}
   sfxMixerGroup: {fileID: -4533310745328247394, guid: 37458dc6e27cfdb42872fb7210c3af63, type: 2}
   menuMusic: {fileID: 8300000, guid: bee606b9a60df4c4884969170f8fcae7, type: 3}
+  menuVolume: 1
   gameplayMusic: {fileID: 8300000, guid: 332d06d28a52bd9408f00a8e64929ba9, type: 3}
+  gamePlayVolume: 1
+  ambientMusic: {fileID: 0}
+  ambientMusicVolume: 1
   creditsMusic: {fileID: 8300000, guid: cf1408003ac46e842a1621afa34f94c0, type: 3}
+  creditVolume: 0.61
   soundEffects:
   - {fileID: 8300000, guid: f64caa2e2e6627b4db781b926abf53ab, type: 3}
   - {fileID: 8300000, guid: 4ea75cd7c8a2e7646be78d9494bd8b99, type: 3}
