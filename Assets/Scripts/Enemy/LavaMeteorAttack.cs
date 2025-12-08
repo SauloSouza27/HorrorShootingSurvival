@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
 {
@@ -17,16 +18,18 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
     [SerializeField] private GameObject groundIndicatorVFX;
     [SerializeField] private GameObject impactVFX;
 
+    public float AttackRange => attackRange;
+    public float AttackCooldown => attackCooldown;
+    public float AttackDuration => attackDuration;
+
     private Animator animator;
+    private NavMeshAgent agent;
 
     private void Awake()
     {
         animator = GetComponentInParent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
     }
-
-    public float AttackRange => attackRange;
-    public float AttackCooldown => attackCooldown;
-    public float AttackDuration => attackDuration;
 
     public void ExecuteAttack(GameObject target)
     {
@@ -35,16 +38,20 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
 
     private IEnumerator AttackCoroutine(GameObject target)
     {
+        animator.SetBool("isCooldown", false);
         animator.SetBool("isAttacking", true);
+
         Vector3 targetPosition = target.transform.position;
 
         if (groundIndicatorVFX != null)
         {
-            Destroy(Instantiate(groundIndicatorVFX, targetPosition, Quaternion.identity), damageDelay + 0.5f);
+            Destroy(Instantiate(groundIndicatorVFX, targetPosition, Quaternion.identity), damageDelay);
         }
 
-        yield return new WaitForSeconds(damageDelay);
+        yield return new WaitForSeconds(attackDuration);
+        animator.SetBool("isCooldown", true);
         animator.SetBool("isAttacking", false);
+        StartCoroutine(CooldownTimerAnimation());
 
         if (impactVFX != null)
         {
@@ -61,5 +68,15 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
                 //Debug.Log($"Hit {hit.name} for {attackDamage} damage!");
             }
         }
+    }
+
+    private IEnumerator CooldownTimerAnimation()
+    {
+        agent.isStopped = true;
+
+        yield return new WaitForSeconds(attackCooldown);
+
+        animator.SetBool("isCooldown", false);
+        agent.isStopped = false;
     }
 }

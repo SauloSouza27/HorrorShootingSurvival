@@ -3476,6 +3476,7 @@ MonoBehaviour:
   maxattack: 3
   startAttack: 1
   multiplier: 1.1
+  isRange: 1
   avaible_from_wave: 5
   avaible_to_wave: 100
   tier1Speed: 6
@@ -3498,7 +3499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRange: 10
-  attackCooldown: 5
+  attackCooldown: 6.633
   attackDuration: 1.5
   attackDamage: 1
   damageRadius: 3

@@ -25,6 +25,7 @@ public class EnemyBase : LivingEntity
     [SerializeField] private float maxattack = 3;
     [SerializeField] private float startAttack = 1;
     public float multiplier = 1;   // still used for health scaling if you want
+    [SerializeField] private bool isRange = false;
 
     [Header("Wave Data")]
     public int avaible_from_wave = 0;
@@ -141,9 +142,10 @@ public class EnemyBase : LivingEntity
 
     private void Update()
     {
+        if (isRange == true && animator.GetBool("isCooldown")) return;
         if (isDead || isAttacking) return; 
 
-        // 🔹 If current target becomes invalid (downed/dead/missing), drop it
+        // If current target becomes invalid (downed/dead/missing), drop it
         if (targetPlayer != null)
         {
             var ph = targetPlayer.health;
@@ -153,7 +155,7 @@ public class EnemyBase : LivingEntity
             }
         }
 
-        // 🔹 Periodically retarget to closest valid player
+        // Periodically retarget to closest valid player
         checkTimer -= Time.deltaTime;
         if (checkTimer <= 0f || targetPlayer == null)
         {
@@ -167,9 +169,13 @@ public class EnemyBase : LivingEntity
             return;
         }
 
-        if (cooldownTimer > 0)
+        if (cooldownTimer > 0 && isRange == false)
         {
             cooldownTimer -= Time.deltaTime;
+        }
+        if (isRange == true)
+        {
+            cooldownTimer = 0f;
         }
 
         float distanceToPlayer = Vector3.Distance(transform.position, targetPlayer.transform.position);
@@ -229,9 +235,11 @@ public class EnemyBase : LivingEntity
 
         cooldownTimer = attackScript.AttackCooldown;
         isAttacking = false;
+
+        yield return null;
     }
 
-    // 🔹 Uses PlayerHealth.AllPlayers for better performance than FindGameObjectsWithTag
+    // Uses PlayerHealth.AllPlayers for better performance than FindGameObjectsWithTag
     private Player GetClosestTargetablePlayer()
     {
         Player closest = null;
@@ -264,7 +272,7 @@ public class EnemyBase : LivingEntity
 
         float newHealth = currentHealth - damage;
 
-        // ✅ Award hit points to correct player
+        // Award hit points to correct player
         if (owner != null && newHealth > 0)
         {
             var stats = owner.GetComponent<PlayerStats>();
@@ -469,5 +477,14 @@ public class EnemyBase : LivingEntity
     public override void DestroyThisGameObject()
     {
         Destroy(gameObject);
+    }
+
+    public Player GetTargetPlayer()
+    {
+        if (targetPlayer != null)
+        {
+            return targetPlayer;
+        }
+        else return null;
     }
 }
