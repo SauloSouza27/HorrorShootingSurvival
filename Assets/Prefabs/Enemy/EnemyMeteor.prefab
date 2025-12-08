@@ -3470,7 +3470,7 @@ MonoBehaviour:
   maxHealth: 15000
   currentHealth: 100
   isRange: 1
-  avaible_from_wave: 10
+  avaible_from_wave: 1
   avaible_to_wave: 100
   speed: 6
   maxspeed: 11
@@ -3502,7 +3502,7 @@ MonoBehaviour:
   attackRange: 10
   attackCooldown: 5.5
   attackDuration: 1.2
-  attackDamage: 1
+  attackDamage: 30
   damageRadius: 3
   damageDelay: 1.1
   damageLayerMask:

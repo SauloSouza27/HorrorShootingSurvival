@@ -7,7 +7,7 @@ public class MeleeAttack : MonoBehaviour, IEnemyAttack
     [SerializeField] private float attackRange = 1.5f;
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private float attackDuration = 1f;
-    [SerializeField] private int attackDamage = 10;
+    [SerializeField] private int attackDamage = 1;
     [SerializeField] private Bite bite;
     [SerializeField] private float biteDuration = 0.3f;
     private Animator animator;
