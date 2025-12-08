@@ -10,10 +10,21 @@ public class PlayerHealth : HealthController
     public bool isDead { get; private set; }
     public bool isDowned { get; private set; }
 
+    private PlayerStats stats;   // ⬅️ cache stats
+
     [Header("Downed/Revive")]
     [SerializeField] private float bleedoutTime = 25f;
     [SerializeField] private int reviveRestoreHealth = 50;
     private Coroutine bleedoutRoutine;
+
+    [Header("Regeneration")]
+    [SerializeField] private float baseRegenDelay = 6f;      // time without damage before regen starts
+    [SerializeField] private float regenFullTime = 3f;       // seconds to go from 0 → full
+    private float lastDamageTime = -999f;
+    private float regenAccumulator = 0f;                     // fractional HP buffer
+
+    private ReviveTarget reviveTarget;
+    // time of last hit
     
     [Header("Hit Feedback")]
     [SerializeField] private AudioClip hitSFX;
@@ -22,8 +33,7 @@ public class PlayerHealth : HealthController
     [SerializeField] private float hitSFXMaxDistance = 40f;
     [SerializeField] private string hitAnimTrigger = "Hit";
 
-
-    private ReviveTarget reviveTarget;
+    
 
     // ========= TEAM-WIDE TRACKING =========
     private static readonly List<PlayerHealth> allPlayers = new List<PlayerHealth>();
@@ -55,7 +65,7 @@ public class PlayerHealth : HealthController
 
     protected void Start()
     {
-        var stats = GetComponent<PlayerStats>();
+        stats = GetComponent<PlayerStats>();
         if (stats != null)
         {
             maxHealth = stats.MaxHealth;
@@ -76,7 +86,6 @@ public class PlayerHealth : HealthController
 
     private void OnDestroy()
     {
-        var stats = GetComponent<PlayerStats>();
         if (stats != null)
             stats.OnStatsChanged -= OnPlayerStatsChanged;
 
@@ -85,10 +94,10 @@ public class PlayerHealth : HealthController
 
     private void OnPlayerStatsChanged()
     {
-        var stats = GetComponent<PlayerStats>();
         if (stats == null) return;
         SetMaxHealth(stats.MaxHealth, healToFull: false);
     }
+
 
     public void SetMaxHealth(int newMax, bool healToFull = false)
     {
@@ -128,23 +137,25 @@ public class PlayerHealth : HealthController
         if (isDead || matchOver) return;
         if (damage <= 0) return;
 
-        // Apply damage using base logic (updates currentHealth, UI, etc.)
+        // Apply damage through base logic (updates currentHealth, UI, etc.)
         base.ReduceHealth(damage);
+
+        // Reset regen delay
+        lastDamageTime = Time.time;
 
         bool shouldDie = ShouldDie();
         
-        if (!shouldDie && !isDowned)
-        {
-            PlayHitFeedback();
-        }
-        
+         if (!shouldDie && !isDowned)
+             PlayHitFeedback();
+
         if (shouldDie)
         {
             if (!isDowned)
                 EnterDownedState();
-            // else: you could BleedOut() immediately if you wanted re-hits to finish them
+            // else: you could force BleedOut() if you want re-hits to finish them
         }
     }
+
 
 
     private void EnterDownedState()
@@ -213,7 +224,11 @@ public class PlayerHealth : HealthController
 
         currentHealth = Mathf.Clamp(reviveRestoreHealth, 1, maxHealth);
         healthBar.SetHealth(currentHealth);
+
+        // Consider this as "recently took damage" so regen waits again
+        lastDamageTime = Time.time;
     }
+
 
     private void Die()
     {
@@ -349,6 +364,56 @@ public class PlayerHealth : HealthController
 
         Debug.Log($"{name} respawned for wave {WaveSystem.instance.currentWave} with at least {minPoints} points.");
     }
+    
+    private void Update()
+    {
+        HandleHealthRegeneration();
+    }
+
+    private void HandleHealthRegeneration()
+    {
+        if (isDead || isDowned || matchOver) return;
+        if (currentHealth >= maxHealth) return;
+
+        // Base delay before regen starts
+        float delay = baseRegenDelay;
+
+        // Quick Revive halves the delay
+        if (stats != null && stats.HasPerk(PerkType.QuickRevive))
+        {
+            delay *= 0.5f;
+        }
+
+        // Not enough time passed since last hit → no regen yet
+        if (Time.time < lastDamageTime + delay)
+        {
+            // Also reset accumulator so regen feels snappy when it DOES start
+            regenAccumulator = 0f;
+            return;
+        }
+
+        // HP per second so that we go 0 → full in "regenFullTime" seconds,
+        // scaling automatically with maxHealth (Juggernog etc.)
+        float hpPerSecond = maxHealth / Mathf.Max(0.01f, regenFullTime);
+
+        // accumulate fractional heal over time
+        regenAccumulator += hpPerSecond * Time.deltaTime;
+
+        int heal = Mathf.FloorToInt(regenAccumulator);
+        if (heal <= 0) return;
+
+        regenAccumulator -= heal;
+
+        int oldHealth = currentHealth;
+        currentHealth = Mathf.Min(maxHealth, currentHealth + heal);
+
+        if (currentHealth != oldHealth)
+        {
+            healthBar.SetHealth(currentHealth);
+        }
+    }
+
+
     
     private void OnEnable()
     {
