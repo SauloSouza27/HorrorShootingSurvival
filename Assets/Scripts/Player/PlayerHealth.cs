@@ -26,11 +26,14 @@ public class PlayerHealth : HealthController
         = new System.Collections.Generic.List<PlayerHealth>();
 
     public bool CanBeTargeted => !isDead && !isDowned;
+    
+    private PlayerWeaponVisuals visualController;
 
     protected override void Awake()
     {
         base.Awake();
         player = GetComponent<Player>();
+        visualController = GetComponentInParent<PlayerWeaponVisuals>();
 
         // register in static list
         if (!allPlayers.Contains(this))
@@ -106,6 +109,7 @@ public class PlayerHealth : HealthController
         isDowned = true;
 
         // disable active gameplay systems
+        visualController.ReduceRigWeight();
         player.animator.SetBool("isDowned", true);
         player.animator.enabled = true;          // use a downed anim instead of ragdoll
         player.ragdoll.RagdollActive(false);     // keep kinematic so we can be revived
@@ -153,7 +157,8 @@ public class PlayerHealth : HealthController
 
         var cc = GetComponent<CharacterController>();
         if (cc != null) cc.enabled = true;
-
+        
+        visualController.MaximizeRigWeight();
         player.animator.SetBool("isDowned", false);
         player.ragdoll.RagdollActive(false);
         player.weapon.SetWeaponReady(true);

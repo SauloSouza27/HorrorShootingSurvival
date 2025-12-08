@@ -400,7 +400,7 @@ MonoBehaviour:
   currentHealth: 100
   healthBar: {fileID: 0}
   defeatScreen: {fileID: 0}
-  bleedoutTime: 10
+  bleedoutTime: 1000
   reviveRestoreHealth: 50
 --- !u!114 &5493188303582629410
 MonoBehaviour:
@@ -475,7 +475,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mesh: {fileID: 0}
   highlightMaterial: {fileID: 2100000, guid: 193c1df0f71bf25499c292a20e001ea2, type: 2}
-  baseReviveTime: 3
+  baseReviveTime: 5
   reviveRadius: 4
   debugUI: 1
   debugGizmoColor: {r: 0, g: 1, b: 0.3, a: 0.35}

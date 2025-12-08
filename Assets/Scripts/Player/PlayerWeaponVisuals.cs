@@ -152,9 +152,16 @@ public class PlayerWeaponVisuals : MonoBehaviour
         }
     }
 
+    public void SwitchOffAnimationLayer()
+    {
+        for (int i = 1; i < animator.layerCount; i++)
+        {
+            animator.SetLayerWeight(i, 0);
+        }
+    }
+
     private void SwitchAnimationLayer(int layerIndex)
     {
-        
         for (int i = 1; i < animator.layerCount; i++)
         {
             animator.SetLayerWeight(i, 0);
@@ -214,9 +221,9 @@ public class PlayerWeaponVisuals : MonoBehaviour
             shouldIncrease_RigWeight = false;
     }
 
-    private void ReduceRigWeight()
+    public void ReduceRigWeight()
     {
-        rig.weight = .15f;
+        rig.weight = 0f;
     }
     
     public void MaximizeRigWeight() => shouldIncrease_RigWeight = true;

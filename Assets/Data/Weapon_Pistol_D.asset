@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponName: Deagle
   weaponPrice: 0
   weaponIcon: {fileID: 21300000, guid: 653f9b6fe18d03246ace30eed7336465, type: 3}
-  bulletDamage: 100
+  bulletDamage: 1000
   weaponType: 0
   shootType: 0
   bulletsPerShot: 0
