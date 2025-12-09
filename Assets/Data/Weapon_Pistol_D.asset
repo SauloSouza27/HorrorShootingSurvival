@@ -28,7 +28,7 @@ MonoBehaviour:
   magazineCapacity: 8
   totalReserveAmmo: 500
   baseSpread: 0
-  maxSpread: 3
+  maxSpread: 1
   spreadIncreaseRate: 0.15
   reloadSpeed: 1
   equipSpeed: 1
