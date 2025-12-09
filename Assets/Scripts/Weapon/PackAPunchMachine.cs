@@ -29,6 +29,29 @@ public class PackAPunchMachine : Interactable
     [SerializeField] private AudioClip upgradeSFX;
     [Range(0f, 1f)] [SerializeField] private float upgradeVolume = 1f;
 
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+
+        var player = other.GetComponent<Player>();
+        if (player != null)
+        {
+            ShowBuyCanvas(player);
+        }
+    }
+
+    protected override void OnTriggerExit(Collider other)
+    {
+        base.OnTriggerExit(other);
+
+        var player = other.GetComponent<Player>();
+        if (player != null)
+        {
+            HideBuyCanvas(player);
+        }
+    }
+
     public override void Interaction(Player player)
     {
         var weaponController = player.GetComponent<PlayerWeaponController>();
@@ -94,6 +117,7 @@ public class PackAPunchMachine : Interactable
 
         Play3D(upgradeSFX, upgradeVolume);
         Debug.Log($"Upgraded {weapon.weaponType} to Pack-a-Punch Tier {newTier}");
+        ShowBuyCanvas(player);
     }
     
     private void Play3D(AudioClip clip, float volume)
@@ -192,5 +216,60 @@ public class PackAPunchMachine : Interactable
             backupRenderer.sharedMaterials = mats;
         }
         
+    }
+
+    void ShowBuyCanvas(Player player)
+    {
+        var weaponController = player.GetComponent<PlayerWeaponController>();
+        
+
+        if (weaponController == null)
+            return;
+        
+        UpgradeWeaponWorldUI upgradeWeaponWorldUI = transform.GetComponent<UpgradeWeaponWorldUI>();
+        
+
+
+        
+        Weapon currentWeapon = weaponController.CurrentWeapon();
+        int tier = currentWeapon.PackAPunchTier;
+        int upgradePrice;
+        if (tier < 3 && tier >= 0)
+        {
+            
+            switch(tier)
+            {
+                case 0:
+                upgradePrice = tier1Cost;
+                break;
+                case 1:
+                upgradePrice = tier2Cost;
+                break;
+                case 2: 
+                upgradePrice = tier3Cost;
+                break;
+                default:
+                upgradePrice = 0;
+                break;
+            }
+            upgradeWeaponWorldUI.SetupUpgradeWeaponCanvas(currentWeapon.weaponType.ToString(), tier, upgradePrice);
+        } 
+        else
+        {
+            upgradeWeaponWorldUI.SetupMaxedWeaponCanvas();
+        }
+        upgradeWeaponWorldUI.ShowUI();
+    }
+
+    void HideBuyCanvas(Player player)
+    {
+        var weaponController = player.GetComponent<PlayerWeaponController>();
+        
+
+        if (weaponController == null)
+            return;
+        
+        UpgradeWeaponWorldUI upgradeWeaponWorldUI = transform.GetComponent<UpgradeWeaponWorldUI>();
+        upgradeWeaponWorldUI.HideUI();
     }
 }
