@@ -120,6 +120,58 @@ public class EnemyBase : LivingEntity
         ApplySpeedForCurrentTier();
     }
 
+    private void Update()
+    {
+        // Ranged enemies use animator "isCooldown" gate
+        if (isRange && animator != null && animator.GetBool("isCooldown")) return;
+        if (isDead || isAttacking) return;
+
+        // If current target becomes invalid (downed/dead/missing), drop it
+        if (targetPlayer != null)
+        {
+            var ph = targetPlayer.health;
+            if (ph == null || !ph.CanBeTargeted)
+            {
+                targetPlayer = null;
+            }
+        }
+
+        // Periodically retarget to closest valid player
+        checkTimer -= Time.deltaTime;
+        if (checkTimer <= 0f || targetPlayer == null)
+        {
+            targetPlayer = GetClosestTargetablePlayer();
+            SpeedUPWhenFarFromPlayer();
+            checkTimer = checkInterval;
+        }
+
+        if (targetPlayer == null)
+        {
+            StopMoving();
+            return;
+        }
+
+        if (cooldownTimer > 0 && !isRange)
+        {
+            cooldownTimer -= Time.deltaTime;
+        }
+
+        float distanceToPlayer = Vector3.Distance(transform.position, targetPlayer.transform.position);
+
+        if (distanceToPlayer <= attackScript.AttackRange && cooldownTimer <= 0)
+        {
+            StartCoroutine(AttackSequence());
+        }
+        else if (distanceToPlayer <= attackScript.AttackRange)
+        {
+            StopMoving();
+        }
+        else
+        {
+            MoveTowardsPlayer();
+        }
+    }
+
     /// <summary>
     /// Called from WaveSystem after multiplier has been set.
     /// Health uses BO2-style curve; damage does NOT scale per round.
@@ -174,57 +226,6 @@ public class EnemyBase : LivingEntity
 
         if (agent != null)
             agent.speed = speed;
-    }
-
-    private void Update()
-    {
-        // Ranged enemies use animator "isCooldown" gate
-        if (isRange && animator != null && animator.GetBool("isCooldown")) return;
-        if (isDead || isAttacking) return;
-
-        // If current target becomes invalid (downed/dead/missing), drop it
-        if (targetPlayer != null)
-        {
-            var ph = targetPlayer.health;
-            if (ph == null || !ph.CanBeTargeted)
-            {
-                targetPlayer = null;
-            }
-        }
-
-        // Periodically retarget to closest valid player
-        checkTimer -= Time.deltaTime;
-        if (checkTimer <= 0f || targetPlayer == null)
-        {
-            targetPlayer = GetClosestTargetablePlayer();
-            checkTimer = checkInterval;
-        }
-
-        if (targetPlayer == null)
-        {
-            StopMoving();
-            return;
-        }
-
-        if (cooldownTimer > 0 && !isRange)
-        {
-            cooldownTimer -= Time.deltaTime;
-        }
-
-        float distanceToPlayer = Vector3.Distance(transform.position, targetPlayer.transform.position);
-
-        if (distanceToPlayer <= attackScript.AttackRange && cooldownTimer <= 0)
-        {
-            StartCoroutine(AttackSequence());
-        }
-        else if (distanceToPlayer <= attackScript.AttackRange)
-        {
-            StopMoving();
-        }
-        else
-        {
-            MoveTowardsPlayer();
-        }
     }
 
     private void MoveTowardsPlayer()
@@ -521,5 +522,30 @@ public class EnemyBase : LivingEntity
     public Player GetTargetPlayer()
     {
         return targetPlayer;
+    }
+
+    public void SpeedUPWhenFarFromPlayer()
+    {
+        float actualSpeed = tier1Speed;
+
+        switch (currentSpeedTier)
+        {
+            case ZombieSpeedTier.Tier2: actualSpeed = tier2Speed; break;
+            case ZombieSpeedTier.Tier3: actualSpeed = tier3Speed; break;
+            case ZombieSpeedTier.Tier4: actualSpeed = tier4Speed; break;
+        }
+
+
+        float newSpeed = actualSpeed * 2f;
+
+        if (targetPlayer != null && (Vector3.Distance(transform.position, targetPlayer.transform.position) > 20f))
+        {
+            GetComponent<NavMeshAgent>().speed = newSpeed;
+        }
+        else
+        {
+            GetComponent<NavMeshAgent>().speed = actualSpeed;
+        }
+        
     }
 }
