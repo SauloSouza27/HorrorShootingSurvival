@@ -1,4 +1,4 @@
-using System.Collections;
+using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -334,14 +334,110 @@ public class WaveSystem : MonoBehaviour
         HandlePlayerRespawns();
     }
 
-    private void HandlePlayerRespawns()
-    {
-        if (!respawnDeadPlayersAtNewWave)
+       private void HandlePlayerRespawns() 
+       { 
+           if (!respawnDeadPlayersAtNewWave)
+                return;
+
+           int minPoints = Mathf.Max(0, baseRespawnPoints + (currentWave - 1) * pointsPerWave);
+
+            // Snapshot so we don't modify the list while iterating
+           var playersSnapshot = new List<PlayerHealth>(PlayerHealth.AllPlayers);
+
+            // Positions of players who are still alive (anchors for respawn)
+            List<Vector3> alivePositions = new List<Vector3>();
+
+            // Data needed to recreate dead players
+            List<(int playerIndex, InputDevice device, string scheme)> slotsToRespawn =
+            new List<(int, InputDevice, string)>();
+
+        foreach (var ph in playersSnapshot)
+        {
+            if (ph == null) continue;
+
+            var pi = ph.GetComponent<PlayerInput>();
+            if (pi == null) continue;
+
+            if (!ph.isDead)
+            {
+                // This player survived the wave → use as potential respawn anchor
+                alivePositions.Add(ph.transform.position);
+                continue;
+            }
+
+            // ── DEAD PLAYER: capture info and destroy it ──
+            InputDevice device = (pi.devices.Count > 0) ? pi.devices[0] : null;
+            string scheme = pi.currentControlScheme;
+
+            slotsToRespawn.Add((pi.playerIndex, device, scheme));
+
+            // If you have a HUD link component, clean up its HUD instance
+            var hudLink = pi.GetComponent<PlayerHUDLink>();
+            if (hudLink != null && hudLink.hudRoot != null)
+            {
+                Destroy(hudLink.hudRoot);
+                hudLink.hudRoot = null;
+            }
+
+            // Destroy the old player object – OnDestroy will unregister its PlayerHealth
+            Destroy(pi.gameObject);
+        }
+
+        if (slotsToRespawn.Count == 0)
             return;
 
-        int minPoints = Mathf.Max(0, baseRespawnPoints + (currentWave - 1) * pointsPerWave);
-        PlayerHealth.RespawnAllForNewWave(minPoints);
+        // Fallback: if somehow no one is alive, use a spawnpoint or origin
+        if (alivePositions.Count == 0)
+        {
+            if (spawnpoints.Count > 0)
+                alivePositions.Add(spawnpoints[0].position);
+            else
+                alivePositions.Add(Vector3.zero);
+        }
+
+        var pim = FindObjectOfType<PlayerInputManager>();
+        if (pim == null)
+        {
+            Debug.LogWarning("WaveSystem: no PlayerInputManager found for respawn.");
+            return;
+        }
+
+        float respawnRadius = 2.0f; // distance around the alive player
+
+        foreach (var slot in slotsToRespawn)
+        {
+            // Re-join the player
+            PlayerInput newPI = pim.JoinPlayer(
+                slot.playerIndex,
+                -1,
+                slot.scheme,
+                slot.device
+            );
+
+            if (newPI == null) continue;
+
+            // ── Place them near a random alive player ──
+            Vector3 anchor = alivePositions[Random.Range(0, alivePositions.Count)];
+            Vector2 circle = Random.insideUnitCircle * respawnRadius;
+            Vector3 spawnPos = anchor + new Vector3(circle.x, 0f, circle.y);
+
+            newPI.transform.position = spawnPos;
+
+            // Ensure they have at least minPoints
+            var stats = newPI.GetComponent<PlayerStats>();
+            if (stats != null)
+            {
+                int current = stats.GetPoints();
+                if (current < minPoints)
+                {
+                    int delta = minPoints - current;
+                    stats.AddPoints(delta);
+                }
+            }
+        }
     }
+
+
 
     public void CheckNewWaveData()
     {

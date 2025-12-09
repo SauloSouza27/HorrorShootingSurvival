@@ -57,6 +57,8 @@ public class PlayerStats : MonoBehaviour
     public Transform perkSlots;
     public GameObject perkIconSlot;
     private int perkCount;
+    
+    
 
     private void Awake()
     {
@@ -192,4 +194,12 @@ public class PlayerStats : MonoBehaviour
     {
         scoreCount.UpdateScore(currentPoints);
     }
+    
+    public void OverridePoints(int amount)
+    {
+        currentPoints = Mathf.Max(0, amount);
+        OnPointsChanged?.Invoke(currentPoints);
+        updateScoreDisplay();
+    }
+
 }

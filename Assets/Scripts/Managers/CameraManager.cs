@@ -46,9 +46,7 @@ public class CameraManager : MonoBehaviour
     {
         GameObject playerObject = playerInput.gameObject;
 
-        // OLD:
-        // targetGroup.AddMember(playerObject.transform, 1f, 0f);
-        // NEW:
+        // Add player to camera group
         AddTarget(playerObject.transform, 1f, 0f);
 
         // Instancia a HUD
@@ -84,7 +82,15 @@ public class CameraManager : MonoBehaviour
         // Set HUD color for multiplayer
         PlayerHUDItens phi = newHUD.GetComponent<PlayerHUDItens>();
         SetPlayerHUDColor(phi, playerInput);
+
+        // ⬇️ NEW: link this HUD to the player so we can destroy it on respawn
+        var hudLink = playerObject.GetComponent<PlayerHUDLink>();
+        if (hudLink == null)
+            hudLink = playerObject.AddComponent<PlayerHUDLink>();
+
+        hudLink.hudRoot = newHUD;
     }
+
 
     public void SetPlayerHUDColor(PlayerHUDItens phi, PlayerInput playerInput)
     {

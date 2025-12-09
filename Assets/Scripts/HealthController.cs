@@ -3,7 +3,8 @@ using UnityEngine;
 public class HealthController : MonoBehaviour
 {
     [Header("Health")]
-    [SerializeField] protected int maxHealth = 100;
+    [SerializeField]
+    public int maxHealth = 100;
     public int currentHealth;
 
     public HealthBar healthBar;
