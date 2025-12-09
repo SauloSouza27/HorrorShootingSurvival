@@ -9,9 +9,6 @@ public class PlayerAim : MonoBehaviour
     [Header("Aim Constraints")]
     [SerializeField] private float minAimDistance = 1f;
 
-    [Header("Aim Settings")] [SerializeField]
-    private bool isToggleAim; // If true, aim input acts as a toggle; otherwise, it must be held.
-
     [Header("Aim Visual - Laser")] [SerializeField]
     private LineRenderer aimLaser; 
 
@@ -45,6 +42,16 @@ public class PlayerAim : MonoBehaviour
         UpdateGunVisuals(); // Refresh the aim laser visuals if the player is aiming.
     }
 
+    private void UpdateAimVisuals()
+    {
+        
+        WeaponModel weaponModel = player.weaponVisuals.CurrentWeaponModel();
+
+        weaponModel.transform.LookAt(aim);
+        weaponModel.gunPoint.LookAt(aim);
+        
+    }
+    
     // Updates the position, direction, and appearance of the aim laser.
     private void UpdateGunVisuals()
     {
@@ -82,14 +89,14 @@ public class PlayerAim : MonoBehaviour
         {
             aimPosition = transform.position +
                           new Vector3(controllerAimInput.x, 0, controllerAimInput.y).normalized * 10f;
-            aimPosition.y = transform.position.y + 1.6f;
+            aimPosition.y = transform.position.y;
         }
         else if (mouseAimInput != Vector2.zero)
         {
             Ray ray = Camera.main.ScreenPointToRay(mouseAimInput);
             if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask))
             {
-                aimPosition = new Vector3(hitInfo.point.x, transform.position.y + 1.6f, hitInfo.point.z);
+                aimPosition = new Vector3(hitInfo.point.x, transform.position.y, hitInfo.point.z);
             }
         }
 
@@ -101,7 +108,7 @@ public class PlayerAim : MonoBehaviour
         {
             flatDir = flatDir.normalized * minAimDistance;
             aimPosition = transform.position + flatDir;
-            aimPosition.y = transform.position.y + 1.6f; 
+            aimPosition.y = transform.position.y; 
         }
 
         lastValidAimPosition = aimPosition;

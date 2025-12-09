@@ -279,7 +279,8 @@ public class PlayerWeaponController : MonoBehaviour
     public Vector3 BulletDirection()
     {
         Vector3 direction = (aim.position - GunPoint().position).normalized;
-        direction.y = 0; // Keep direction horizontal in a top-down shooter
+        //direction.y = 0; // Keep direction horizontal in a top-down shooter
+        direction.y = -0.03f;
         return direction;
     }
 
