@@ -1,124 +1,133 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class SniperBullet : Bullet
 {
     [Header("Base Sniper Settings")]
     [SerializeField] private int basePenetrations = 3;
     [SerializeField] private float baseFalloff = 0.85f;
-    [SerializeField] private LayerMask impactLayers; // Optional: walls, props, etc.
 
-    private int penetrationsRemaining;
-    private bool initialized;
+    [SerializeField] private LayerMask impactLayers; // optional / unused now
 
-    private int maxPenetrations;
+    private int   penetrationsRemaining;
+    private int   maxPenetrations;
     private float damageFalloff;
-    private Vector3 lastPosition;
+
+    private bool initialized;
+    private bool finished;
+
+    // Avoid damaging the same enemy twice due to multiple colliders
+    private readonly HashSet<EnemyBase> hitEnemies = new HashSet<EnemyBase>();
 
     private void OnEnable()
     {
-        initialized = true;
-        if (cd) cd.isTrigger = true;
-        lastPosition = transform.position;
+        if (cd != null)
+            cd.isTrigger = true;
+
+        finished    = false;
+        initialized = false;
+        hitEnemies.Clear();
     }
 
-    public override void BulletSetup(int bulletDamage1, float flyDistance1, Player owner, int packtier, float impactForce1)
+    public override void BulletSetup(
+        int bulletDamage1,
+        float flyDistance1,
+        Player owner,
+        int packtier,
+        float impactForce1)
     {
-        base.BulletSetup(bulletDamage1, flyDistance1, owner, packtier, impactForce);
+        base.BulletSetup(bulletDamage1, flyDistance1, owner, packtier, impactForce1);
 
-        // read shooter's weapon tier (Pack-a-Punch level)
-        Weapon weapon = owner.weapon.CurrentWeapon();
-        int tier = weapon != null ? weapon.PackAPunchTier : 0;
+        Weapon weapon = owner != null ? owner.weapon.CurrentWeapon() : null;
+        int tier      = weapon != null ? weapon.PackAPunchTier : 0;
 
         switch (tier)
         {
             case 0:
                 maxPenetrations = basePenetrations;
-                damageFalloff = baseFalloff;
+                damageFalloff   = baseFalloff;
                 break;
             case 1:
                 maxPenetrations = basePenetrations + 1;
-                damageFalloff = baseFalloff * 0.9f;
+                damageFalloff   = baseFalloff * 0.9f;
                 break;
             case 2:
                 maxPenetrations = basePenetrations + 2;
-                damageFalloff = baseFalloff * 0.8f;
+                damageFalloff   = baseFalloff * 0.8f;
                 break;
             case 3:
                 maxPenetrations = basePenetrations + 3;
-                damageFalloff = baseFalloff * 0.7f;
+                damageFalloff   = baseFalloff * 0.7f;
+                break;
+            default:
+                maxPenetrations = basePenetrations;
+                damageFalloff   = baseFalloff;
                 break;
         }
 
         penetrationsRemaining = maxPenetrations;
-        lastPosition = transform.position;
-    }
-
-    private void Update()
-    {
-        if (!initialized) return;
-
-        // 🔹 Raycast between previous and current position for surface impact
-        Vector3 direction = transform.position - lastPosition;
-        float distance = direction.magnitude;
-        if (distance > 0.001f)
-        {
-            if (Physics.Raycast(lastPosition, direction.normalized, out RaycastHit hit, distance, impactLayers))
-            {
-                // Spawn wall/floor impact FX (do not affect enemies)
-                SpawnImpactFx(hit.point, hit.normal);
-            }
-        }
-
-        lastPosition = transform.position;
+        initialized           = true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!initialized) return;
+        if (!initialized || finished) return;
 
-        if (other.CompareTag("Enemy"))
+        // Compute impact point/normal once
+        Vector3 hitPoint = other.ClosestPoint(transform.position);
+        Vector3 normal   = -rb.linearVelocity.normalized;
+
+        EnemyBase   enemy      = other.GetComponentInParent<EnemyBase>();
+        IDamageable damageable = other.GetComponent<IDamageable>();
+
+        bool hitEnemy = (enemy != null && damageable != null);
+        
+        //  ENEMY HIT
+        if (hitEnemy)
         {
-            EnemyBase enemy = other.GetComponent<EnemyBase>();
-            if (enemy)
-            {
-                enemy.TakeDamage(BulletDamage, Owner);
-                penetrationsRemaining--;
+           
+            if (!hitEnemies.Add(enemy))
+                return;
 
-                // Slight damage reduction per target
-                BulletDamage = Mathf.Max(1, Mathf.RoundToInt(BulletDamage * damageFalloff));
-            }
+            
+            damageable.TakeDamage(BulletDamage, Owner);
 
+            
+            ApplyBulletImpactToEnemy(other, hitPoint);
+
+            
+            CreateImpactFx(hitPoint, normal);
+
+            
+            penetrationsRemaining--;
+            BulletDamage = Mathf.Max(1, Mathf.RoundToInt(BulletDamage * damageFalloff));
+
+            // If no penetrations left, end the bullet here
             if (penetrationsRemaining <= 0)
             {
                 EndBullet();
-                return;
             }
+
+            return;
         }
-        else if (!other.isTrigger)
+        
+        //  NON-ENEMY
+       
+        if (!other.isTrigger)
         {
+            CreateImpactFx(hitPoint, normal);
             EndBullet();
         }
     }
 
-    private void SpawnImpactFx(Vector3 point, Vector3 normal)
-    {
-        if (!bulletImpactFX) return;
-
-        GameObject newImpactFx = ObjectPool.instance.GetObject(bulletImpactFX);
-        newImpactFx.transform.position = point;
-        newImpactFx.transform.rotation = Quaternion.LookRotation(normal);
-        var impact = newImpactFx.GetComponent<ImpactFX>();
-        if (impact != null)
-        {
-            impact.ApplyColor(GetTierColor());
-        }
-
-        ObjectPool.instance.ReturnObject(1, newImpactFx);
-    }
-
     private void EndBullet()
     {
-        if (trailRenderer) trailRenderer.Clear();
+        if (finished) return;
+        finished = true;
+
+        if (trailRenderer != null)
+            trailRenderer.Clear();
+
         ReturnBulletToPool();
     }
 }

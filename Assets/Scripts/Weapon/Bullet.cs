@@ -41,19 +41,24 @@ public class Bullet : MonoBehaviour
 
     protected virtual void Awake()
     {
-        cd = GetComponent<BoxCollider>();
-        rb = GetComponent<Rigidbody>();
+        cd           = GetComponent<BoxCollider>();
+        rb           = GetComponent<Rigidbody>();
         meshRenderer = GetComponent<MeshRenderer>();
         trailRenderer = GetComponent<TrailRenderer>();
-        _light = GetComponentInChildren<Light>();
+        _light       = GetComponentInChildren<Light>();
     }
 
-    public virtual void BulletSetup(int bulletDamage1, float flyDistance1, Player owner, int packTier, float impactForce)
+    public virtual void BulletSetup(
+        int bulletDamage1,
+        float flyDistance1,
+        Player owner,
+        int packTier,
+        float impactForce)
     {
         this.impactForce = impactForce;
         
         bulletDisabled = false;
-        cd.enabled = true;
+        cd.enabled     = true;
         meshRenderer.enabled = true;
 
         BulletDamage = bulletDamage1;
@@ -61,8 +66,8 @@ public class Bullet : MonoBehaviour
         this.packTier = packTier;
 
         trailRenderer.time = .04f;
-        startPosition = transform.position;
-        flyDistance = flyDistance1 + .5f;
+        startPosition      = transform.position;
+        flyDistance        = flyDistance1 + .5f;
 
         ApplyTierVisuals(owner);
     }
@@ -72,10 +77,9 @@ public class Bullet : MonoBehaviour
         if (owner == null || owner.weapon == null) return;
 
         Weapon weapon = owner.weapon.CurrentWeapon();
-        packTier = weapon != null ? weapon.PackAPunchTier : 0;
+        packTier      = weapon != null ? weapon.PackAPunchTier : 0;
 
-        // Decide which material to use for this tier
-        Material trailMat = null;
+        Material trailMat;
         switch (packTier)
         {
             case 1: trailMat = tier1TrailMat; break;
@@ -84,19 +88,15 @@ public class Bullet : MonoBehaviour
             default: trailMat = baseTrailMat; break;
         }
 
-        // Apply to trail
         if (trailRenderer && trailMat != null)
             trailRenderer.material = trailMat;
 
-        // Read color from that material
         currentTierColor = GetColorFromMaterial(trailMat);
 
-        // Apply same color to bullet mesh emission
         if (meshRenderer && meshRenderer.material.HasProperty("_EmissionColor"))
             meshRenderer.material.SetColor("_EmissionColor", currentTierColor);
 
-        // Decide which color to use for the light in this tier
-        Color lightColor = Color.black;
+        Color lightColor;
         switch (packTier)
         {
             case 1: lightColor = tier1LightColor; break;
@@ -105,13 +105,9 @@ public class Bullet : MonoBehaviour
             default: lightColor = baseLightColor; break;
         }
 
-        // Apply to light color
-        if (_light && lightColor != null)
+        if (_light)
             _light.color = lightColor;
-
     }
-
-
 
     private void FixedUpdate()
     {
@@ -133,9 +129,9 @@ public class Bullet : MonoBehaviour
     {
         if (Vector3.Distance(startPosition, transform.position) > flyDistance && !bulletDisabled)
         {
-            cd.enabled = false;
+            cd.enabled         = false;
             meshRenderer.enabled = false;
-            bulletDisabled = true;
+            bulletDisabled     = true;
         }
     }
 
@@ -147,17 +143,6 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // if (collision.gameObject.CompareTag("Enemy"))
-        // {
-        //     EnemyBase enemy = collision.gameObject.GetComponent<EnemyBase>();
-        //     if (enemy != null)
-        //     {
-        //         enemy.TakeDamage(BulletDamage, Owner);
-        //         
-        //         Debug.Log("collision check:" + collision);
-        //         ApplyBulletImpactToEnemy(collision);
-        //     }
-        // }
         trailRenderer.Clear();
         CreateImpactFx(collision);
         ObjectPool.instance.ReturnObject(0, gameObject);
@@ -170,12 +155,23 @@ public class Bullet : MonoBehaviour
     
     private void ApplyBulletImpactToEnemy(Collision collision)
     {
-        EnemyBase enemy = collision.gameObject.GetComponentInParent<EnemyBase>();
+        if (collision.contacts.Length == 0) return;
+
+        ContactPoint contact = collision.contacts[0];
+        ApplyBulletImpactToEnemy(collision.collider, contact.point);
+    }
+
+    
+    protected void ApplyBulletImpactToEnemy(Collider hitCollider, Vector3 hitPoint)
+    {
+        if (hitCollider == null) return;
+
+        EnemyBase enemy = hitCollider.GetComponentInParent<EnemyBase>();
         if (enemy != null)
         {
-            Vector3 force = rb.linearVelocity.normalized * impactForce;
-            Rigidbody hitRigidbody = collision.collider.attachedRigidbody;
-            enemy.BulletImpact(force, collision.contacts[0].point, hitRigidbody);
+            Vector3  force        = rb.linearVelocity.normalized * impactForce;
+            Rigidbody hitRigidbody = hitCollider.attachedRigidbody;
+            enemy.BulletImpact(force, hitPoint, hitRigidbody);
         }
     }
 
@@ -183,35 +179,38 @@ public class Bullet : MonoBehaviour
 
     private void CreateImpactFx(Collision collision)
     {
-        if (collision.contacts.Length > 0)
+        if (collision.contacts.Length == 0) return;
+
+        ContactPoint contact = collision.contacts[0];
+        CreateImpactFx(contact.point, contact.normal);
+    }
+
+   
+    protected void CreateImpactFx(Vector3 point, Vector3 normal)
+    {
+        if (AudioManager.Instance != null && impactSFX != null)
         {
-            ContactPoint contact = collision.contacts[0];
-
-            // 🔊 3D impact sound at contact point
-            if (AudioManager.Instance != null && impactSFX != null)
-            {
-                AudioManager.Instance.PlaySFX3D(
-                    impactSFX,
-                    contact.point,
-                    impactVolume,
-                    spatialBlend: 1f,
-                    minDistance: 3f,
-                    maxDistance: 30f
-                );
-            }
-            
-            GameObject newImpactFx = ObjectPool.instance.GetObject(bulletImpactFX);
-            newImpactFx.transform.position = contact.point;
-
-            // 🔥 Apply tier color to all particle systems in the impact fx
-            var impact = newImpactFx.GetComponent<ImpactFX>();
-            if (impact != null)
-            {
-                impact.ApplyColor(GetTierColor());
-            }
-
-            ObjectPool.instance.ReturnObject(1, newImpactFx);
+            AudioManager.Instance.PlaySFX3D(
+                impactSFX,
+                point,
+                impactVolume,
+                spatialBlend: 1f,
+                minDistance: 3f,
+                maxDistance: 30f
+            );
         }
+        
+        GameObject newImpactFx = ObjectPool.instance.GetObject(bulletImpactFX);
+        newImpactFx.transform.position = point;
+        newImpactFx.transform.rotation = Quaternion.LookRotation(normal);
+
+        var impact = newImpactFx.GetComponent<ImpactFX>();
+        if (impact != null)
+        {
+            impact.ApplyColor(GetTierColor());
+        }
+
+        ObjectPool.instance.ReturnObject(1, newImpactFx);
     }
 
     protected Color GetTierColor()
@@ -232,5 +231,4 @@ public class Bullet : MonoBehaviour
 
         return Color.white;
     }
-
 }

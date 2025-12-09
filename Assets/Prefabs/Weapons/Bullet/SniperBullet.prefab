@@ -231,7 +231,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.5, y: 1.5, z: 1.5}
+  m_Size: {x: 4, y: 4, z: 4}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5602899121022093336
 Rigidbody:
@@ -272,6 +272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e42f7cbd34893c34f983822ae35cbeee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  impactForce: 0
   bulletImpactFX: {fileID: 2944396702758532163, guid: 657a3d06987930b489dd0d3b0cd99902, type: 3}
   baseTrailMat: {fileID: 2100000, guid: 0d141aa926ec3e747adb074bf3c0f758, type: 2}
   tier1TrailMat: {fileID: 2100000, guid: b0c6dd0934dca7c45b6dd83a7883bcc3, type: 2}
@@ -281,10 +282,10 @@ MonoBehaviour:
   tier1LightColor: {r: 0, g: 1, b: 0.9666667, a: 1}
   tier2LightColor: {r: 0.63765717, g: 0, b: 1, a: 1}
   tier3LightColor: {r: 1, g: 0.28333333, b: 0, a: 1}
-  shootSFX: {fileID: 0}
-  shootVolume: 1
-  basePenetrations: 3
-  baseFalloff: 0.85
+  impactSFX: {fileID: 8300000, guid: 4ea75cd7c8a2e7646be78d9494bd8b99, type: 3}
+  impactVolume: 1
+  basePenetrations: 1000
+  baseFalloff: 1
   impactLayers:
     serializedVersion: 2
     m_Bits: 2241
