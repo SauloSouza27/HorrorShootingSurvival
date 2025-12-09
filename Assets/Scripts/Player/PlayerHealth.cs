@@ -17,6 +17,11 @@ public class PlayerHealth : HealthController
     [SerializeField] private int reviveRestoreHealth = 50;
     private Coroutine bleedoutRoutine;
 
+    // normalized remaining bleedout time (1 → just downed, 0 → about to bleed out)
+    private float bleedoutRemaining01 = 0f;
+    public float BleedoutRemaining01 => bleedoutRemaining01;
+
+
     [Header("Regeneration")]
     [SerializeField] private float baseRegenDelay = 6f;      // time without damage before regen starts
     [SerializeField] private float regenFullTime = 3f;       // seconds to go from 0 → full
@@ -163,6 +168,7 @@ public class PlayerHealth : HealthController
         if (isDowned || isDead || matchOver) return;
 
         isDowned = true;
+        bleedoutRemaining01 = 1f; // just started bleeding out
 
         // disable active gameplay systems
         visualController.ReduceRigWeight();
@@ -192,18 +198,25 @@ public class PlayerHealth : HealthController
         while (t > 0f && isDowned && !isDead && !matchOver)
         {
             t -= Time.deltaTime;
+            bleedoutRemaining01 = Mathf.Clamp01(t / bleedoutTime);
             yield return null;
         }
+
+        // timer finished or interrupted
+        bleedoutRemaining01 = 0f;
 
         if (isDowned && !isDead && !matchOver)
             BleedOut();
     }
 
+
     private void BleedOut()
     {
         isDowned = false;
+        bleedoutRemaining01 = 0f;
         Die();
     }
+
 
     public void CompleteRevive()
     {

@@ -14,20 +14,19 @@ public class ReviveTarget : Interactable
 
     private Collider triggerCol;
 
-    // ====== DEBUG toggles/fields ======
-    [Header("DEBUG")]
-    [SerializeField] private bool debugUI = true;
+    [Header("DEBUG (Gizmos only)")]
+    [SerializeField] private bool debugGizmos = true;
     [SerializeField] private Color debugGizmoColor = new Color(0f, 1f, 0.3f, 0.35f);
     private readonly HashSet<Player> playersInRange = new HashSet<Player>();
-    public bool AnyPlayerInRange => playersInRange.Count > 0;   // exposed for debug
 
-    private Player currentRescuer;   // who is reviving now (debug + anim)
-    private float currentProgress01; // 0..1 progress (debug)
-    // ==================================
+    // who is reviving now (drives anim + rescuer UI)
+    private Player currentRescuer;
+    private float currentProgress01;
 
     public override bool SupportsHighlight => false;
-    
-    private PlayerWeaponVisuals visualController;
+
+    // Rescuer progress UI
+    private ReviveRescuerWorldUI rescuerWorldUI;
 
     private void Awake()
     {
@@ -45,6 +44,7 @@ public class ReviveTarget : Interactable
     private void OnEnable()
     {
         if (triggerCol != null) triggerCol.enabled = true;
+
         playersInRange.Clear();
         currentRescuer = null;
         currentProgress01 = 0f;
@@ -54,12 +54,10 @@ public class ReviveTarget : Interactable
     {
         if (triggerCol != null) triggerCol.enabled = false;
 
-        // 🔹 Make sure we turn off revive anim if this gets disabled mid-revive
-        SetRescuerReviveAnim(false);
+        // stop rescuer animation & UI if this gets disabled mid-revive
+        CleanupReviveState();
 
         playersInRange.Clear();
-        currentRescuer = null;
-        currentProgress01 = 0f;
 
         if (reviveRoutine != null)
         {
@@ -74,14 +72,17 @@ public class ReviveTarget : Interactable
         enabled = false; // off until the player is downed
     }
 
-    public void BeginWaitingForRevive() { /* hook worldspace UI if you want */ }
+    public void BeginWaitingForRevive()
+    {
+        // Hook worldspace UI here if needed (downed side is handled by ReviveDownedWorldUI)
+    }
 
     public override void Interaction(Player rescuer)
     {
-        if (!enabled || downedHealth == null || downedHealth.isDead || !downedHealth.isDowned) 
+        if (!enabled || downedHealth == null || downedHealth.isDead || !downedHealth.isDowned)
             return;
 
-        if (reviveRoutine != null) 
+        if (reviveRoutine != null)
             StopCoroutine(reviveRoutine);
 
         reviveRoutine = StartCoroutine(ReviveProcess(rescuer));
@@ -92,7 +93,12 @@ public class ReviveTarget : Interactable
         currentRescuer = rescuer;
         currentProgress01 = 0f;
 
-        // 🔹 Start revive animation on rescuer
+        // Start rescuer UI (if present)
+        rescuerWorldUI = rescuer.GetComponentInChildren<ReviveRescuerWorldUI>(true);
+        if (rescuerWorldUI != null)
+            rescuerWorldUI.BeginRevive();
+
+        // Start revive animation on rescuer
         SetRescuerReviveAnim(true);
 
         var stats = rescuer.GetComponent<PlayerStats>();
@@ -128,6 +134,10 @@ public class ReviveTarget : Interactable
             {
                 t += Time.deltaTime;
                 currentProgress01 = Mathf.Clamp01(t / requiredTime);
+
+                // Update rescuer UI bar
+                if (rescuerWorldUI != null)
+                    rescuerWorldUI.SetProgress(currentProgress01);
             }
             else
             {
@@ -139,22 +149,25 @@ public class ReviveTarget : Interactable
             yield return null;
         }
 
+        // Finished revive
         downedHealth.CompleteRevive();
         currentProgress01 = 1f;
+
+        if (rescuerWorldUI != null)
+            rescuerWorldUI.SetProgress(1f);
+
         CleanupReviveState();
     }
 
-    //  Helper: toggle rescuer's "isReviving" bool
+    // Toggle rescuer's "isReviving" animation + weapon visuals
     private void SetRescuerReviveAnim(bool isReviving)
     {
         if (currentRescuer == null) return;
 
-        // assumes Player has public Animator animator;
         if (currentRescuer.animator != null)
         {
             if (isReviving)
             {
-                Debug.Log("true revive");
                 currentRescuer.weaponVisuals.ReduceRigWeight();
                 currentRescuer.weaponVisuals.SwitchOffAnimationLayer();
                 currentRescuer.weaponVisuals.SwitchOffWeaponModels();
@@ -162,27 +175,31 @@ public class ReviveTarget : Interactable
             }
             else
             {
-                Debug.Log("false revive");
                 currentRescuer.weaponVisuals.MaximizeRigWeight();
                 currentRescuer.weaponVisuals.SwitchOnCurrentWeaponModel();
                 currentRescuer.animator.SetBool("isReviving", false);
             }
-            
-            
         }
     }
 
     private void CleanupReviveState()
     {
-        //  Stop the revive animation when revive ends/cancels
+        // stop rescuer animation
         SetRescuerReviveAnim(false);
+
+        // stop rescuer UI
+        if (rescuerWorldUI != null)
+        {
+            rescuerWorldUI.EndRevive();
+            rescuerWorldUI = null;
+        }
 
         currentRescuer = null;
         reviveRoutine = null;
         currentProgress01 = 0f;
     }
 
-    // ====== Trigger tracking just for "in range" debug text ======
+    // ====== Trigger tracking (still useful if you ever want it) ======
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
@@ -196,63 +213,21 @@ public class ReviveTarget : Interactable
         var p = other.GetComponent<Player>();
         if (p != null) playersInRange.Remove(p);
     }
-    // =============================================================
 
-    // ====== DEBUG VISUALS ======
+    // ====== Scene View gizmos only (NOT UI) ======
     private void OnDrawGizmos()
     {
-        if (!debugUI) return;
+        if (!debugGizmos) return;
         if (!enabled) return;
 
         Gizmos.color = debugGizmoColor;
         Gizmos.DrawSphere(transform.position, reviveRadius);
 
-        // line to current rescuer
         if (currentRescuer != null)
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawLine(transform.position + Vector3.up * 1.2f, currentRescuer.transform.position + Vector3.up * 1.2f);
+            Gizmos.DrawLine(transform.position + Vector3.up * 1.2f,
+                            currentRescuer.transform.position + Vector3.up * 1.2f);
         }
     }
-
-    private void OnGUI()
-    {
-        if (!debugUI) return;
-        if (!enabled) return;
-
-        var cam = Camera.main;
-        if (cam == null) return;
-
-        Vector3 worldPos = transform.position + Vector3.up * 2.0f; // above downed player
-        Vector3 screen = cam.WorldToScreenPoint(worldPos);
-        if (screen.z < 0) return; // behind camera
-
-        screen.y = Screen.height - screen.y;
-
-        var size = new Vector2(220, 48);
-        var rect = new Rect(screen.x - size.x * 0.5f, screen.y - size.y, size.x, size.y);
-        var barRect = new Rect(rect.x + 8, rect.yMax - 18, rect.width - 16, 10);
-
-        GUI.color = new Color(0, 0, 0, 0.65f);
-        GUI.Box(rect, GUIContent.none);
-        GUI.color = Color.white;
-
-        string header = AnyPlayerInRange ? "Rescuer in range" : "No rescuer nearby";
-        GUI.Label(new Rect(rect.x + 8, rect.y + 6, rect.width - 16, 18), header);
-
-        string detail = currentRescuer != null
-            ? $"Holding Interact... {Mathf.RoundToInt(currentProgress01 * 100)}%"
-            : "Hold Interact to revive";
-
-        GUI.Label(new Rect(rect.x + 8, rect.y + 22, rect.width - 16, 16), detail);
-
-        GUI.color = new Color(1, 1, 1, 0.15f);
-        GUI.DrawTexture(barRect, Texture2D.whiteTexture);
-
-        GUI.color = currentRescuer != null ? Color.green : new Color(1f, 1f, 1f, 0.25f);
-        var fill = new Rect(barRect.x, barRect.y, barRect.width * Mathf.Clamp01(currentProgress01), barRect.height);
-        GUI.DrawTexture(fill, Texture2D.whiteTexture);
-        GUI.color = Color.white;
-    }
-    // ============================
 }
