@@ -19,18 +19,15 @@ public class ReviveTarget : Interactable
     [SerializeField] private Color debugGizmoColor = new Color(0f, 1f, 0.3f, 0.35f);
     private readonly HashSet<Player> playersInRange = new HashSet<Player>();
 
-    // who is reviving now (drives anim + rescuer UI)
     private Player currentRescuer;
     private float currentProgress01;
 
     public override bool SupportsHighlight => false;
 
-    // Rescuer progress UI
     private ReviveRescuerWorldUI rescuerWorldUI;
 
     private void Awake()
     {
-        // Ensure we have a dedicated trigger collider we can toggle with enable/disable
         triggerCol = GetComponent<Collider>();
         if (triggerCol == null || triggerCol is CharacterController)
             triggerCol = gameObject.AddComponent<SphereCollider>();
@@ -54,7 +51,6 @@ public class ReviveTarget : Interactable
     {
         if (triggerCol != null) triggerCol.enabled = false;
 
-        // stop rescuer animation & UI if this gets disabled mid-revive
         CleanupReviveState();
 
         playersInRange.Clear();
@@ -69,12 +65,12 @@ public class ReviveTarget : Interactable
     public void Init(PlayerHealth health)
     {
         downedHealth = health;
-        enabled = false; // off until the player is downed
+        enabled = false;
     }
 
     public void BeginWaitingForRevive()
     {
-        // Hook worldspace UI here if needed (downed side is handled by ReviveDownedWorldUI)
+        // hook UI if needed (downed side handled elsewhere)
     }
 
     public override void Interaction(Player rescuer)
@@ -93,12 +89,14 @@ public class ReviveTarget : Interactable
         currentRescuer = rescuer;
         currentProgress01 = 0f;
 
-        // Start rescuer UI (if present)
+        // 🔹 Pause bleedout while revive is in progress
+        if (downedHealth != null)
+            downedHealth.SetBeingRevived(true);
+
         rescuerWorldUI = rescuer.GetComponentInChildren<ReviveRescuerWorldUI>(true);
         if (rescuerWorldUI != null)
             rescuerWorldUI.BeginRevive();
 
-        // Start revive animation on rescuer
         SetRescuerReviveAnim(true);
 
         var stats = rescuer.GetComponent<PlayerStats>();
@@ -135,13 +133,12 @@ public class ReviveTarget : Interactable
                 t += Time.deltaTime;
                 currentProgress01 = Mathf.Clamp01(t / requiredTime);
 
-                // Update rescuer UI bar
                 if (rescuerWorldUI != null)
                     rescuerWorldUI.SetProgress(currentProgress01);
             }
             else
             {
-                // Button released -> cancel and reset so we can immediately try again
+                // Button released → cancel revive → resume bleedout
                 CleanupReviveState();
                 yield break;
             }
@@ -149,7 +146,7 @@ public class ReviveTarget : Interactable
             yield return null;
         }
 
-        // Finished revive
+        // succeed
         downedHealth.CompleteRevive();
         currentProgress01 = 1f;
 
@@ -159,15 +156,15 @@ public class ReviveTarget : Interactable
         CleanupReviveState();
     }
 
-    // Toggle rescuer's "isReviving" animation + weapon visuals
     private void SetRescuerReviveAnim(bool isReviving)
     {
         if (currentRescuer == null) return;
-
+        var cc = currentRescuer.GetComponent<CharacterController>();
         if (currentRescuer.animator != null)
         {
             if (isReviving)
             {
+                if (cc != null) cc.enabled = false;
                 currentRescuer.weaponVisuals.ReduceRigWeight();
                 currentRescuer.weaponVisuals.SwitchOffAnimationLayer();
                 currentRescuer.weaponVisuals.SwitchOffWeaponModels();
@@ -175,19 +172,22 @@ public class ReviveTarget : Interactable
             }
             else
             {
+                if (cc != null) cc.enabled = true;
+                currentRescuer.animator.SetBool("isReviving", false);
                 currentRescuer.weaponVisuals.MaximizeRigWeight();
                 currentRescuer.weaponVisuals.SwitchOnCurrentWeaponModel();
-                currentRescuer.animator.SetBool("isReviving", false);
             }
         }
     }
 
     private void CleanupReviveState()
     {
-        // stop rescuer animation
+        // resume bleedout if still downed
+        if (downedHealth != null)
+            downedHealth.SetBeingRevived(false);
+
         SetRescuerReviveAnim(false);
 
-        // stop rescuer UI
         if (rescuerWorldUI != null)
         {
             rescuerWorldUI.EndRevive();
@@ -199,7 +199,6 @@ public class ReviveTarget : Interactable
         currentProgress01 = 0f;
     }
 
-    // ====== Trigger tracking (still useful if you ever want it) ======
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
@@ -214,7 +213,6 @@ public class ReviveTarget : Interactable
         if (p != null) playersInRange.Remove(p);
     }
 
-    // ====== Scene View gizmos only (NOT UI) ======
     private void OnDrawGizmos()
     {
         if (!debugGizmos) return;

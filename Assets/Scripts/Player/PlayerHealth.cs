@@ -21,6 +21,14 @@ public class PlayerHealth : HealthController
     private float bleedoutRemaining01 = 0f;
     public float BleedoutRemaining01 => bleedoutRemaining01;
 
+    // NEW: pause bleedout while being revived
+    private bool isBeingRevived = false;
+    public bool IsBeingRevived => isBeingRevived;
+
+    public void SetBeingRevived(bool value)
+    {
+        isBeingRevived = value;
+    }
 
     [Header("Regeneration")]
     [SerializeField] private float baseRegenDelay = 6f;      // time without damage before regen starts
@@ -29,7 +37,6 @@ public class PlayerHealth : HealthController
     private float regenAccumulator = 0f;                     // fractional HP buffer
 
     private ReviveTarget reviveTarget;
-    // time of last hit
     
     [Header("Hit Feedback")]
     [SerializeField] private AudioClip hitSFX;
@@ -38,21 +45,17 @@ public class PlayerHealth : HealthController
     [SerializeField] private float hitSFXMaxDistance = 40f;
     [SerializeField] private string hitAnimTrigger = "Hit";
 
-    
-
     // ========= TEAM-WIDE TRACKING =========
     private static readonly List<PlayerHealth> allPlayers = new List<PlayerHealth>();
     private static bool matchOver = false;
     // =====================================
-    
+
     public static readonly System.Collections.Generic.List<PlayerHealth> AllPlayers 
         = new System.Collections.Generic.List<PlayerHealth>();
 
     public bool CanBeTargeted => !isDead && !isDowned;
     
     private PlayerWeaponVisuals visualController;
-    
-    
 
     protected override void Awake()
     {
@@ -60,11 +63,9 @@ public class PlayerHealth : HealthController
         player = GetComponent<Player>();
         visualController = GetComponentInParent<PlayerWeaponVisuals>();
 
-        // register in static list
         if (!allPlayers.Contains(this))
             allPlayers.Add(this);
 
-        // assume new match when first players appear
         matchOver = false;
     }
 
@@ -80,7 +81,6 @@ public class PlayerHealth : HealthController
             stats.OnStatsChanged += OnPlayerStatsChanged;
         }
 
-        // Ensure a revive target exists but is disabled by default
         reviveTarget = GetComponent<ReviveTarget>();
         if (reviveTarget == null)
             reviveTarget = gameObject.AddComponent<ReviveTarget>();
@@ -103,7 +103,6 @@ public class PlayerHealth : HealthController
         SetMaxHealth(stats.MaxHealth, healToFull: false);
     }
 
-
     public void SetMaxHealth(int newMax, bool healToFull = false)
     {
         maxHealth = newMax;
@@ -112,123 +111,124 @@ public class PlayerHealth : HealthController
         healthBar.SetHealth(currentHealth);
     }
 
-    //  Called whenever the player takes a valid hit (still alive / not downed)
     private void PlayHitFeedback()
     {
-        // Animator hit reaction
         if (player != null && player.animator != null && !string.IsNullOrEmpty(hitAnimTrigger))
         {
             player.animator.SetTrigger(hitAnimTrigger);
         }
 
-        // 3D audio from player position
         if (AudioManager.Instance != null && hitSFX != null)
         {
-            Vector3 pos = transform.position + Vector3.up * 1.5f; // chest-ish height
+            Vector3 pos = transform.position + Vector3.up * 1.5f;
             AudioManager.Instance.PlaySFX3D(
                 hitSFX,
                 pos,
                 hitVolume,
-                spatialBlend: 1f,          // fully 3D
+                spatialBlend: 1f,
                 minDistance: hitSFXMinDistance,
                 maxDistance: hitSFXMaxDistance
             );
         }
     }
 
-    
     public override void ReduceHealth(int damage)
     {
         if (isDead || matchOver) return;
         if (damage <= 0) return;
 
-        // Apply damage through base logic (updates currentHealth, UI, etc.)
         base.ReduceHealth(damage);
 
-        // Reset regen delay
         lastDamageTime = Time.time;
 
         bool shouldDie = ShouldDie();
         
-         if (!shouldDie && !isDowned)
-             PlayHitFeedback();
+        if (!shouldDie && !isDowned)
+            PlayHitFeedback();
 
         if (shouldDie)
         {
             if (!isDowned)
                 EnterDownedState();
-            // else: you could force BleedOut() if you want re-hits to finish them
         }
     }
-
-
 
     private void EnterDownedState()
     {
         if (isDowned || isDead || matchOver) return;
 
         isDowned = true;
+        isBeingRevived = false;
         bleedoutRemaining01 = 1f; // just started bleeding out
 
-        // disable active gameplay systems
         visualController.ReduceRigWeight();
+        visualController.SwitchOffAnimationLayer();
+        visualController.SwitchOffWeaponModels();
         player.animator.SetBool("isDowned", true);
-        player.animator.enabled = true;          // use a downed anim instead of ragdoll
-        player.ragdoll.RagdollActive(false);     // keep kinematic so we can be revived
+        player.animator.enabled = true;
+        player.ragdoll.RagdollActive(false);
         player.weapon.SetWeaponReady(false);
 
         var cc = GetComponent<CharacterController>();
         if (cc != null) cc.enabled = false;
 
-        // enable revive target
         reviveTarget.enabled = true;
         reviveTarget.BeginWaitingForRevive();
 
-        // start bleedout timer
         if (bleedoutRoutine != null) StopCoroutine(bleedoutRoutine);
         bleedoutRoutine = StartCoroutine(BleedoutTimer());
 
-        // check if this down caused a team wipe
         CheckForTeamWipe();
     }
 
     private IEnumerator BleedoutTimer()
     {
         float t = bleedoutTime;
+        bleedoutRemaining01 = 1f;
+
+        // While downed and not dead and match still going
         while (t > 0f && isDowned && !isDead && !matchOver)
         {
-            t -= Time.deltaTime;
-            bleedoutRemaining01 = Mathf.Clamp01(t / bleedoutTime);
+            // ⬇️ ONLY tick down while not being revived
+            if (!isBeingRevived)
+            {
+                t -= Time.deltaTime;
+                bleedoutRemaining01 = Mathf.Clamp01(t / bleedoutTime);
+            }
+
             yield return null;
         }
 
         // timer finished or interrupted
-        bleedoutRemaining01 = 0f;
+        if (t <= 0f)
+            bleedoutRemaining01 = 0f;
 
-        if (isDowned && !isDead && !matchOver)
+        // only bleed out if timer actually ran out and we’re still downed
+        if (t <= 0f && isDowned && !isDead && !matchOver)
             BleedOut();
     }
-
 
     private void BleedOut()
     {
         isDowned = false;
+        isBeingRevived = false;
         bleedoutRemaining01 = 0f;
         Die();
     }
-
 
     public void CompleteRevive()
     {
         if (isDead || matchOver) return;
 
         isDowned = false;
+        isBeingRevived = false;
 
         var cc = GetComponent<CharacterController>();
         if (cc != null) cc.enabled = true;
-        
-        visualController.MaximizeRigWeight();
         player.animator.SetBool("isDowned", false);
+        visualController.MaximizeRigWeight();
+        visualController.SwitchOnCurrentWeaponModel();
+        visualController.SwitchOnCurrentWeaponModel();
         player.ragdoll.RagdollActive(false);
         player.weapon.SetWeaponReady(true);
 
@@ -238,16 +238,15 @@ public class PlayerHealth : HealthController
         currentHealth = Mathf.Clamp(reviveRestoreHealth, 1, maxHealth);
         healthBar.SetHealth(currentHealth);
 
-        // Consider this as "recently took damage" so regen waits again
         lastDamageTime = Time.time;
     }
-
 
     private void Die()
     {
         if (isDead) return;
         isDead = true;
         isDowned = false;
+        isBeingRevived = false;
 
         if (reviveTarget != null) reviveTarget.enabled = false;
         if (bleedoutRoutine != null) StopCoroutine(bleedoutRoutine);
@@ -257,7 +256,6 @@ public class PlayerHealth : HealthController
 
         CheckForTeamWipe();
         
-        //  NEW: remove this player from camera target group
         if (CameraManager.Instance != null)
         {
             CameraManager.Instance.RemoveTarget(transform);
@@ -265,7 +263,6 @@ public class PlayerHealth : HealthController
     }
 
     // ================== TEAM WIPE LOGIC ==================
-
     private static bool AnyPlayerCanStillFight()
     {
         foreach (var ph in allPlayers)
@@ -284,10 +281,8 @@ public class PlayerHealth : HealthController
         if (AnyPlayerCanStillFight())
             return;
 
-        // No one left standing → game over
         matchOver = true;
 
-        // Show defeat screen from any player that has it
         foreach (var ph in allPlayers)
         {
             if (ph != null && ph.defeatScreen != null)
@@ -296,28 +291,16 @@ public class PlayerHealth : HealthController
                 break;
             }
         }
-
-        // Optional:
-        // Time.timeScale = 0f;
-        // GameManager.Instance.OnMatchEnded();
     }
 
-    // ================== NEW: RESPAWN FOR NEW WAVE ==================
-
-    /// <summary>
-    /// Called by WaveSystem at the start of a new wave.
-    /// Respawns any player that is dead OR downed, and ensures
-    /// they have at least minPoints points.
-    /// </summary>
+    // ================== RESPAWN FOR NEW WAVE ==================
     public static void RespawnAllForNewWave(int minPoints)
     {
-        if (matchOver) return; // don't respawn after a team wipe
+        if (matchOver) return;
 
         foreach (var ph in allPlayers)
         {
             if (ph == null) continue;
-
-            // Only respawn those who are out
             if (!ph.isDead) 
                 continue;
 
@@ -327,7 +310,6 @@ public class PlayerHealth : HealthController
 
     private void RespawnInternal(int minPoints)
     {
-        // Stop any downed logic
         if (bleedoutRoutine != null)
         {
             StopCoroutine(bleedoutRoutine);
@@ -336,28 +318,24 @@ public class PlayerHealth : HealthController
 
         isDead = false;
         isDowned = false;
+        isBeingRevived = false;
+        bleedoutRemaining01 = 0f;
 
-        // restore movement
         var cc = GetComponent<CharacterController>();
         if (cc != null) cc.enabled = true;
 
-        // restore visuals
         player.ragdoll.RagdollActive(false);
         player.animator.enabled = true;
         player.animator.SetBool("isDowned", false);
 
-        // disable revive target
         if (reviveTarget != null)
             reviveTarget.enabled = false;
 
-        // full heal
         currentHealth = maxHealth;
         healthBar.SetHealth(currentHealth);
 
-        // allow shooting again
         player.weapon.SetWeaponReady(true);
 
-        // ensure minimum points
         var stats = GetComponent<PlayerStats>();
         if (stats != null)
         {
@@ -369,7 +347,6 @@ public class PlayerHealth : HealthController
             }
         }
 
-        //  NEW: add back to camera target group
         if (CameraManager.Instance != null)
         {
             CameraManager.Instance.AddTarget(transform, 1f, 0f);
@@ -388,28 +365,21 @@ public class PlayerHealth : HealthController
         if (isDead || isDowned || matchOver) return;
         if (currentHealth >= maxHealth) return;
 
-        // Base delay before regen starts
         float delay = baseRegenDelay;
 
-        // Quick Revive halves the delay
         if (stats != null && stats.HasPerk(PerkType.QuickRevive))
         {
             delay *= 0.5f;
         }
 
-        // Not enough time passed since last hit → no regen yet
         if (Time.time < lastDamageTime + delay)
         {
-            // Also reset accumulator so regen feels snappy when it DOES start
             regenAccumulator = 0f;
             return;
         }
 
-        // HP per second so that we go 0 → full in "regenFullTime" seconds,
-        // scaling automatically with maxHealth (Juggernog etc.)
         float hpPerSecond = maxHealth / Mathf.Max(0.01f, regenFullTime);
 
-        // accumulate fractional heal over time
         regenAccumulator += hpPerSecond * Time.deltaTime;
 
         int heal = Mathf.FloorToInt(regenAccumulator);
@@ -426,8 +396,6 @@ public class PlayerHealth : HealthController
         }
     }
 
-
-    
     private void OnEnable()
     {
         if (!AllPlayers.Contains(this))
@@ -438,5 +406,4 @@ public class PlayerHealth : HealthController
     {
         AllPlayers.Remove(this);
     }
-
 }

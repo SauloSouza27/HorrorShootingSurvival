@@ -5,7 +5,7 @@ public class ReviveRescuerWorldUI : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Canvas canvas;
-    [SerializeField] private Image fillImage;
+    [SerializeField] private Slider progressSlider;
     [SerializeField] private Camera uiCamera;
 
     [Header("Position")]
@@ -20,6 +20,9 @@ public class ReviveRescuerWorldUI : MonoBehaviour
 
         if (canvas == null)
             canvas = GetComponentInChildren<Canvas>(true);
+
+        if (progressSlider == null && canvas != null)
+            progressSlider = canvas.GetComponentInChildren<Slider>(true);
     }
 
     private void OnEnable()
@@ -34,8 +37,12 @@ public class ReviveRescuerWorldUI : MonoBehaviour
         canvas.worldCamera = uiCamera != null ? uiCamera : Camera.main;
         canvas.gameObject.SetActive(false);
 
-        if (fillImage != null)
-            fillImage.fillAmount = 0f;
+        if (progressSlider != null)
+        {
+            progressSlider.minValue = 0f;
+            progressSlider.maxValue = 1f;
+            progressSlider.value = 0f;
+        }
     }
 
     private void LateUpdate()
@@ -43,11 +50,14 @@ public class ReviveRescuerWorldUI : MonoBehaviour
         if (canvas == null || !isActive)
             return;
 
-        // The canvas object itself should already be positioned over the player in the prefab,
-        // we only need to face the camera.
         if (uiCamera == null)
             uiCamera = Camera.main;
 
+        // ⬇️ Position the canvas above the rescuer using worldOffset
+        Vector3 targetPos = transform.position + worldOffset;
+        canvas.transform.position = targetPos;
+
+        // Face the camera
         if (uiCamera != null)
         {
             var toCam = canvas.transform.position - uiCamera.transform.position;
@@ -62,25 +72,22 @@ public class ReviveRescuerWorldUI : MonoBehaviour
         if (canvas != null)
             canvas.gameObject.SetActive(true);
 
-        if (fillImage != null)
-            fillImage.fillAmount = 0f;
+        if (progressSlider != null)
+            progressSlider.value = 0f;
     }
 
     public void SetProgress(float value01)
     {
-        if (fillImage != null)
-        {
-            //Debug.Log("fill ammount" + Mathf.Clamp01(value01));
-            fillImage.fillAmount = Mathf.Clamp01(value01);
-        }
+        if (progressSlider != null)
+            progressSlider.value = Mathf.Clamp01(value01);
     }
 
     public void EndRevive()
     {
         isActive = false;
 
-        if (fillImage != null)
-            fillImage.fillAmount = 0f;
+        if (progressSlider != null)
+            progressSlider.value = 0f;
 
         if (canvas != null)
             canvas.gameObject.SetActive(false);
