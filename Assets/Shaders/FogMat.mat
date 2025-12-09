@@ -57,7 +57,7 @@ Material:
     m_Floats:
     - _Depth_Fade_Distance: 0
     - _Fog_Power: 0.3
-    - _Luminosity_Intensity: 1.8
+    - _Luminosity_Intensity: 1.5
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:

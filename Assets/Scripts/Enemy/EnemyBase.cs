@@ -538,7 +538,7 @@ public class EnemyBase : LivingEntity
 
         float newSpeed = actualSpeed * 2f;
 
-        if (targetPlayer != null && (Vector3.Distance(transform.position, targetPlayer.transform.position) > 13f))
+        if (targetPlayer != null && (Vector3.Distance(transform.position, targetPlayer.transform.position) > 20f))
         {
             GetComponent<NavMeshAgent>().speed = newSpeed;
         }
