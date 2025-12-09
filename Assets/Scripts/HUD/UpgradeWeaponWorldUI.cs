@@ -59,9 +59,9 @@ public class UpgradeWeaponWorldUI : MonoBehaviour
         canvas.transform.rotation = Quaternion.LookRotation(toCam, Vector3.up);
     }
 
-    public void SetupUpgradeWeaponCanvas(String weaponNameInput, float upgradeCost, int tier)
+    public void SetupUpgradeWeaponCanvas(String weaponNameInput, int tier, int upgradeCost)
     {
-        upgradeName.text = weaponNameInput + " +" + tier;
+        upgradeName.text = weaponNameInput + " +" + (tier + 1);
         priceDescription.text = "Upgrade $ " + upgradeCost;
         interactDescription.text = "Press interact to upgrade weapon";
     }
