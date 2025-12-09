@@ -23,31 +23,49 @@ public class PlayerHUDItens : MonoBehaviour
     private float previousValue;
     private float shakeTime;
     private Vector3 originalPos;
+    private float rateToCheckPosition = 2f, timer;
+    private bool isShaking = false;
+
 
     private void Awake()
     {
         healthBar = _healthBar;
         pointsIcon = _pointsIcon;
     }
-
     private void Start()
     {
         playerStats = transform.GetComponent<RectTransform>();
         horizontalLayout = transform.GetComponentInParent<HorizontalLayoutGroup>();
+        originalPos = new Vector3(playerStats.position.x, playerStats.position.y, 0f);
 
         if (originalColor != null) originalColor = _healthBar.color;
 
         if (playerStats != null) originalPos = new Vector3 (playerStats.position.x, playerStats.position.y, 0f);
 
         previousValue = sliderHealth.value;
+
+        timer = rateToCheckPosition;
     }
 
+    
     private void Update()
     {
         EfeitoBarraVidaLow();
 
         EfeitoTomaDano(sliderHealth.value);
+
         ShakeHudPlayer();
+
+        if (timer > 0f)
+        {
+            timer -= Time.deltaTime;
+            return;
+        }
+        if(timer <= 0f)
+        {
+            UpdateOriginalPosition();
+            timer = rateToCheckPosition;
+        }
     }
 
     private void EfeitoBarraVidaLow()
@@ -82,6 +100,7 @@ public class PlayerHUDItens : MonoBehaviour
         if (newValue < previousValue)
         {
             shakeTime = shakeDuration;
+            isShaking = true;
         }
 
         previousValue = newValue;
@@ -108,7 +127,13 @@ public class PlayerHUDItens : MonoBehaviour
             {
                 playerStats.position = originalPos;
                 horizontalLayout.enabled = true;
+                isShaking = true;
             }
         }
+    }
+
+    private void UpdateOriginalPosition()
+    {
+        originalPos = new Vector3(playerStats.position.x, playerStats.position.y, 0f);
     }
 }

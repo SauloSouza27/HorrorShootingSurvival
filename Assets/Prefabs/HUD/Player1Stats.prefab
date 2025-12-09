@@ -753,8 +753,8 @@ MonoBehaviour:
   sliderHealth: {fileID: 2981237442537305601}
   speedRedEffect: 10
   colorEffect: {r: 0.823, g: 0.23949301, b: 0.23949301, a: 1}
-  shakeDuration: 0.3
-  shakeMagnitude: 50
+  shakeDuration: 0.2
+  shakeMagnitude: 25
 --- !u!1 &6376261029234483732
 GameObject:
   m_ObjectHideFlags: 0
