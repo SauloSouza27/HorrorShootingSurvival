@@ -40,7 +40,7 @@ public class WeaponBuy : Interactable
         Weapon ownedWeapon = weaponController.WeaponInSlots(weaponType);
         if (ownedWeapon != null)
         {
-            TryBuyAmmo(stats, ownedWeapon);
+            TryBuyAmmo(stats, ownedWeapon, weaponController);
             return;
         }
 
@@ -64,7 +64,7 @@ public class WeaponBuy : Interactable
         Debug.Log($"Bought new weapon: {weaponData.weaponName}");
     }
 
-    private void TryBuyAmmo(PlayerStats stats, Weapon ownedWeapon)
+    private void TryBuyAmmo(PlayerStats stats, Weapon ownedWeapon, PlayerWeaponController pwc = null)
     {
         if (!stats.CanAfford(ammoBuyCost))
         {
@@ -77,6 +77,8 @@ public class WeaponBuy : Interactable
         // refill ammo fully (you can tweak this logic)
         ownedWeapon.totalReserveAmmo = ownedWeapon.WeaponData.totalReserveAmmo;
         ownedWeapon.bulletsInMagazine = ownedWeapon.magazineCapacity;
+
+        pwc.UpdateHUD();
 
         Debug.Log($"Bought ammo refill for: {ownedWeapon.weaponType}");
     }
