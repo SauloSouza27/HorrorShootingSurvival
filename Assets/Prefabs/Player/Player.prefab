@@ -400,7 +400,7 @@ MonoBehaviour:
   currentHealth: 100
   healthBar: {fileID: 0}
   defeatScreen: {fileID: 0}
-  bleedoutTime: 1000
+  bleedoutTime: 10
   reviveRestoreHealth: 50
   baseRegenDelay: 6
   regenFullTime: 3
