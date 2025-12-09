@@ -3487,6 +3487,7 @@ MonoBehaviour:
   checkInterval: 0.4
   deadStateTimer: 10
   timeToDestroyAfterDissolve: 1.8
+  isDead: 0
 --- !u!114 &2048165912453249814
 MonoBehaviour:
   m_ObjectHideFlags: 0

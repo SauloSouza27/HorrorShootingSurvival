@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,6 +35,7 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
         agent    = gameObject.GetComponent<NavMeshAgent>();
         enemy    = gameObject.GetComponent<EnemyBase>();
     }
+    
 
     public void ExecuteAttack(GameObject target)
     {
@@ -93,11 +95,9 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
 
     private IEnumerator CooldownTimerAnimation()
     {
-        if (enemy.isDead && agent.enabled)
+        if (enemy.isDead)
         {
-            //agent.isStopped = true;
-            agent.enabled = false;
-            yield return null; 
+            yield break;
         }
         
         if (agent != null && agent.enabled)
@@ -107,7 +107,7 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
 
         animator.SetBool("isCooldown", false);
 
-        if (agent != null && agent.enabled)
+        if (agent != null && agent.enabled && !enemy.isDead)
             agent.isStopped = false;
 
         if (enemy != null)
