@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ToggleControls : MonoBehaviour
 {
     private GameObject controls;
+    [SerializeField] private Transform toggleControls;
 
     private void Awake()
     {
@@ -12,6 +14,11 @@ public class ToggleControls : MonoBehaviour
         if(controls != null)
         {
             controls.SetActive(gameObject.GetComponent<Toggle>().isOn);
+        }
+
+        if(SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            toggleControls.gameObject.SetActive(false);
         }
     }
 
