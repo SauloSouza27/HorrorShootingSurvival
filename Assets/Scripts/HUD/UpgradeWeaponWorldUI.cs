@@ -62,8 +62,8 @@ public class UpgradeWeaponWorldUI : MonoBehaviour
     public void SetupUpgradeWeaponCanvas(String weaponNameInput, int tier, int upgradeCost)
     {
         upgradeName.text = weaponNameInput + " +" + (tier + 1);
-        priceDescription.text = "Upgrade $ " + upgradeCost;
-        interactDescription.text = "Press interact to upgrade weapon";
+        priceDescription.text = "$ " + upgradeCost;
+        interactDescription.text = "Upgrade Weapon";
     }
 
     public void SetupMaxedWeaponCanvas()
