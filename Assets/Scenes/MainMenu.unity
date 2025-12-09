@@ -5084,7 +5084,7 @@ MonoBehaviour:
   menuVolume: 1
   gameplayMusic: {fileID: 8300000, guid: 332d06d28a52bd9408f00a8e64929ba9, type: 3}
   gamePlayVolume: 1
-  ambientMusic: {fileID: 0}
+  ambientMusic: {fileID: 8300000, guid: 30a9a11b234433041ac11d3f931b71cf, type: 3}
   ambientMusicVolume: 1
   creditsMusic: {fileID: 8300000, guid: cf1408003ac46e842a1621afa34f94c0, type: 3}
   creditVolume: 0.61
