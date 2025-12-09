@@ -30,9 +30,9 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
 
     private void Awake()
     {
-        animator = GetComponentInParent<Animator>();
-        agent    = GetComponentInParent<NavMeshAgent>();
-        enemy    = GetComponentInParent<EnemyBase>();
+        animator = gameObject.GetComponent<Animator>();
+        agent    = gameObject.GetComponent<NavMeshAgent>();
+        enemy    = gameObject.GetComponent<EnemyBase>();
     }
 
     public void ExecuteAttack(GameObject target)
@@ -93,17 +93,21 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
 
     private IEnumerator CooldownTimerAnimation()
     {
-        if (enemy.isDead) 
-            yield return null;
+        if (enemy.isDead && agent.enabled)
+        {
+            //agent.isStopped = true;
+            agent.enabled = false;
+            yield return null; 
+        }
         
-        if (agent != null)
+        if (agent != null && agent.enabled)
             agent.isStopped = true;
 
         yield return new WaitForSeconds(attackCooldown);
 
         animator.SetBool("isCooldown", false);
 
-        if (agent != null)
+        if (agent != null && agent.enabled)
             agent.isStopped = false;
 
         if (enemy != null)

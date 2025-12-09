@@ -470,7 +470,8 @@ public class EnemyBase : LivingEntity
 
         if (agent != null)
         {
-            agent.isStopped = true;
+            //agent.isStopped = true;
+            agent.enabled = false;
         }
         Debug.Log(agent.name);
         if (ragdoll != null)

@@ -7,6 +7,9 @@ public class PlayerHUDItens : MonoBehaviour
     public Image healthBar { get; set; }
     public Image pointsIcon { get; set; }
 
+    [Header("Efeitos Barra de vida")]
+    [SerializeField] private HealthController healthControler;
+
     private void Awake()
     {
         healthBar = _healthBar;
