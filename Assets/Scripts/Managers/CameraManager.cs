@@ -83,7 +83,7 @@ public class CameraManager : MonoBehaviour
         PlayerHUDItens phi = newHUD.GetComponent<PlayerHUDItens>();
         SetPlayerHUDColor(phi, playerInput);
 
-        // ⬇️ NEW: link this HUD to the player so we can destroy it on respawn
+        // NEW: link this HUD to the player so we can destroy it on respawn
         var hudLink = playerObject.GetComponent<PlayerHUDLink>();
         if (hudLink == null)
             hudLink = playerObject.AddComponent<PlayerHUDLink>();
