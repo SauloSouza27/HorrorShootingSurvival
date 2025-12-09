@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        InputManager = new InputManager();
+        InputManager = gameObject.AddComponent<InputManager>();
 
         SceneManager.sceneLoaded += OnSceneLoaded; // Listen for scene reloads
     }
