@@ -96,7 +96,7 @@ public class EnemyBase : LivingEntity
     //  RUNTIME COMPONENTS / STATE
     // ─────────────────────────────
     private NavMeshAgent agent;
-    private bool isDead = false;
+    public bool isDead = false;
     private Animator animator;
     private Ragdoll ragdoll;
 
@@ -469,8 +469,10 @@ public class EnemyBase : LivingEntity
         animator.enabled = false;
 
         if (agent != null)
+        {
             agent.isStopped = true;
-
+        }
+        Debug.Log(agent.name);
         if (ragdoll != null)
         {
             ragdoll.RagdollActive(true);

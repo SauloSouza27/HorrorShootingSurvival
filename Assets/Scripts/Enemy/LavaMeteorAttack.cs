@@ -93,6 +93,9 @@ public class LavaMeteorAttack : MonoBehaviour, IEnemyAttack
 
     private IEnumerator CooldownTimerAnimation()
     {
+        if (enemy.isDead) 
+            yield return null;
+        
         if (agent != null)
             agent.isStopped = true;
 

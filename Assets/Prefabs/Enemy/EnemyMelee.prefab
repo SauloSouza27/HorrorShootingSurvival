@@ -3107,7 +3107,7 @@ MonoBehaviour:
   maxHealth: 5000
   currentHealth: 100
   isRange: 0
-  avaible_from_wave: 0
+  avaible_from_wave: 10
   avaible_to_wave: 100
   speed: 6
   maxspeed: 14
@@ -3124,6 +3124,7 @@ MonoBehaviour:
   checkInterval: 0.4
   deadStateTimer: 10
   timeToDestroyAfterDissolve: 1.8
+  isDead: 0
 --- !u!114 &9035987799520751587
 MonoBehaviour:
   m_ObjectHideFlags: 0

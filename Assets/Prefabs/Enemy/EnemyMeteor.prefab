@@ -3470,7 +3470,7 @@ MonoBehaviour:
   maxHealth: 15000
   currentHealth: 100
   isRange: 1
-  avaible_from_wave: 2
+  avaible_from_wave: 1
   avaible_to_wave: 100
   speed: 6
   maxspeed: 11
