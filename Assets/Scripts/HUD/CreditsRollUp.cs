@@ -20,15 +20,11 @@ public class CreditsRollUp : MonoBehaviour
 
     private void RollUP()
     {
-        if(controlerRoll != null & controlerRoll.position.y < controlerRoll.rect.height)
+        if(controlerRoll != null)
         {
             controlerRoll.Translate(0, 10 * rollSpeed1 * Time.deltaTime, 0);
 
             assetsCenario.Translate(0, 0.1f * rollSpeed2 * Time.deltaTime, 0);
-        }
-        else
-        {
-            VoltarMenu();
         }
     }
 
