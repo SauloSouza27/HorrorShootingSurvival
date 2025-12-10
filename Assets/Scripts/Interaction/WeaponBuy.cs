@@ -13,6 +13,11 @@ public class WeaponBuy : Interactable
     [SerializeField] private int ammoBuyCost = 500;
 
     public override bool SupportsHighlight => true;
+    
+    [SerializeField] private AudioClip failSFX;
+    [Range(0f, 1f)] [SerializeField] private float failVolume = 1f;
+    [SerializeField] private AudioClip upgradeSFX;
+    [Range(0f, 1f)] [SerializeField] private float upgradeVolume = 1f;
 
     // ===== DEBUG UI =====
     [Header("DEBUG UI")]
@@ -52,6 +57,7 @@ public class WeaponBuy : Interactable
     {
         if (!stats.CanAfford(weaponBuyCost))
         {
+            Play3D(failSFX, failVolume);
             Debug.Log("Not enough points to buy weapon.");
             return;
         }
@@ -61,6 +67,7 @@ public class WeaponBuy : Interactable
         Weapon newWeapon = new Weapon(weaponData);
         weaponController.PickupWeapon(newWeapon);
 
+        Play3D(upgradeSFX, upgradeVolume);
         Debug.Log($"Bought new weapon: {weaponData.weaponName}");
     }
 
@@ -68,6 +75,7 @@ public class WeaponBuy : Interactable
     {
         if (!stats.CanAfford(ammoBuyCost))
         {
+            Play3D(failSFX, failVolume);
             Debug.Log("Not enough points to buy ammo.");
             return;
         }
@@ -79,9 +87,25 @@ public class WeaponBuy : Interactable
         ownedWeapon.bulletsInMagazine = ownedWeapon.magazineCapacity;
 
         pwc.UpdateHUD();
-
+        
+        Play3D(upgradeSFX, upgradeVolume);
         Debug.Log($"Bought ammo refill for: {ownedWeapon.weaponType}");
     }
+    
+    
+    private void Play3D(AudioClip clip, float volume)
+    {
+        if (clip == null || AudioManager.Instance == null) return;
+        
+        AudioManager.Instance.PlaySFX3D(
+            clip,
+            transform.position,
+            volume,
+            spatialBlend: 1f,
+            minDistance: 4f,
+            maxDistance: 40f
+        );
+}
 
     // ================== TRIGGER TRACKING (for debug UI) ==================
     protected override void OnTriggerEnter(Collider other)
