@@ -96,7 +96,7 @@ public class PulseAndDisapear : MonoBehaviour
         }
 
         // Crescimento exponencial (aumenta cada vez mais rápido)
-        scale += growFactor * Time.deltaTime * (scale * scale);
+        scale += growFactor * Time.deltaTime * (scale);
 
         getReadytext.transform.localScale = new Vector3(scale, scale, scale);
 
