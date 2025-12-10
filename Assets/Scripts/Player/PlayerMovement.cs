@@ -193,26 +193,31 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplySpeedAndStaminaFromStats()
     {
-        float mult = stats != null ? stats.RunSpeedMultiplier : 1f;
-        walkSpeed = baseWalkSpeed * mult;
-        aimingWalkSpeed = baseAimingWalkSpeed * mult;
-        runSpeed = baseRunSpeed * mult;
+        float runMult = stats != null ? stats.RunSpeedMultiplier : 1f;
 
-        // stamina bonus from StaminUp
+        // Walk speed is NOT affected by StaminUp
+        walkSpeed       = baseWalkSpeed;
+        aimingWalkSpeed = baseAimingWalkSpeed;
+
+        // Only run speed scales with the perk
+        runSpeed = baseRunSpeed * runMult;
+        
         if (stats != null && stats.HasPerk(PerkType.StaminUp))
         {
-            maxStamina = baseMaxStamina * 2f;
-            staminaRegenRate = baseStaminaRegenRate * 1.5f;
+            // Double sprint duration by doubling the stamina pool
+            maxStamina       = baseMaxStamina * 2f;
+            staminaRegenRate = baseStaminaRegenRate;   // regen stays the same
         }
         else
         {
-            maxStamina = baseMaxStamina;
+            maxStamina       = baseMaxStamina;
             staminaRegenRate = baseStaminaRegenRate;
         }
 
         speed = isRunning ? runSpeed : walkSpeed;
         currentStamina = Mathf.Min(currentStamina, maxStamina);
     }
+
 
     private void OnDestroy()
     {

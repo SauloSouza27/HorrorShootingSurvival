@@ -158,10 +158,10 @@ public class PlayerStats : MonoBehaviour
                 break;
 
             case PerkType.StaminUp:
-                RunSpeedMultiplier = 1.5f; // 50% faster run
+                RunSpeedMultiplier = 1.1f; // 10% faster run
                 newPerkIcon.GetComponent<Image>().sprite = staminUpSprite;
                 break;
-
+            
             case PerkType.QuickRevive:
                 ReviveSpeedMultiplier = 0.5f; // 50% faster revive
                 newPerkIcon.GetComponent<Image>().sprite = quickReviveSprite;

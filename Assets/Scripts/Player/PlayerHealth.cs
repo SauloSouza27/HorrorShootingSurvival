@@ -4,13 +4,16 @@ using System.Collections.Generic;
 
 public class PlayerHealth : HealthController
 {
+    //  CHEATS
+    public static bool InfiniteHealthCheat = false;
+    
     private Player player;
     public GameObject defeatScreen;
 
     public bool isDead { get; private set; }
     public bool isDowned { get; private set; }
 
-    private PlayerStats stats;   // ⬅️ cache stats
+    private PlayerStats stats;  
 
     [Header("Downed/Revive")]
     [SerializeField] private float bleedoutTime = 25f;
@@ -134,6 +137,7 @@ public class PlayerHealth : HealthController
 
     public override void ReduceHealth(int damage)
     {
+        if (InfiniteHealthCheat) return;      
         if (isDead || matchOver) return;
         if (damage <= 0) return;
 
@@ -142,7 +146,7 @@ public class PlayerHealth : HealthController
         lastDamageTime = Time.time;
 
         bool shouldDie = ShouldDie();
-        
+
         if (!shouldDie && !isDowned)
             PlayHitFeedback();
 
@@ -152,6 +156,7 @@ public class PlayerHealth : HealthController
                 EnterDownedState();
         }
     }
+
 
     private void EnterDownedState()
     {
