@@ -431,10 +431,15 @@ public class WaveSystem : MonoBehaviour
                     int idx = UnityEngine.Random.Range(0, avaible_enemys.Count);
                     chosen = avaible_enemys[idx];
                 }
-
+              
+                
+                // ⬇️ this now destroys + respawns dead players instead of "reviving in place"
                 selected_enemys.Add(chosen);
             }
         } 
+    
+        //CheckNewWaveData();
+        HandlePlayerRespawns();
     }
 
        private void HandlePlayerRespawns() 
