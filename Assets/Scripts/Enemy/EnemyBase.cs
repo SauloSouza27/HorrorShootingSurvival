@@ -21,6 +21,8 @@ public class EnemyBase : LivingEntity
     [Header("Type & Wave")]
     [Tooltip("If true, this enemy uses ranged-attack behaviour (cooldown handled by animator bool 'isCooldown').")]
     [SerializeField] private bool isRange = false;
+    
+    public bool IsRanged => isRange;
 
     [Tooltip("First wave this enemy type can spawn (inclusive).")]
     public int avaible_from_wave = 0;
@@ -99,6 +101,8 @@ public class EnemyBase : LivingEntity
     public bool isDead = false;
     private Animator animator;
     private Ragdoll ragdoll;
+    
+    
 
     public override void SetLivingEntity() { }
 

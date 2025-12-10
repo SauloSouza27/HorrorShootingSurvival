@@ -50,6 +50,23 @@ public class WaveSystem : MonoBehaviour
 
     [Tooltip("Current strength multiplier for this wave (used by EnemyBase.multiplier).")]
     [HideInInspector] public float current_strength = 1f;
+    
+    // ─────────────────────────────────────────
+    //  RANGED ENEMY DISTRIBUTION
+    // ─────────────────────────────────────────
+    [Header("Ranged Enemy Distribution")]
+    [Tooltip("Round where ranged enemies start appearing as a percentage of the wave.")]
+    [SerializeField] private int rangedStartWave = 5;
+
+    [Tooltip("Fraction of the wave that is ranged at rangedStartWave (0.1 = 10%).")]
+    [SerializeField, Range(0f, 1f)] private float rangedStartFraction = 0.10f;
+
+    [Tooltip("How much the ranged fraction increases per wave after rangedStartWave (0.01 = +1% per round).")]
+    [SerializeField, Range(0f, 0.5f)] private float rangedIncreasePerWave = 0.01f;
+
+    [Tooltip("Maximum fraction of the wave that can be ranged (0.4 = 40%).")]
+    [SerializeField, Range(0f, 1f)] private float rangedMaxFraction = 0.40f;
+
 
     // ─────────────────────────────────────────
     //  STARTING VALUES (LEGACY / INIT)
@@ -97,10 +114,15 @@ public class WaveSystem : MonoBehaviour
     [Header("Enemy Settings")]
     [Tooltip("All potential enemy types (prefabs) this WaveSystem can use.")]
     public List<EnemyBase> enemy_Container = new List<EnemyBase>();
-
+    
     // internal lists
     private readonly List<EnemyBase> avaible_enemys = new List<EnemyBase>();
     private readonly List<EnemyBase> selected_enemys = new List<EnemyBase>();
+
+    // split by type
+    private readonly List<EnemyBase> availableMeleeEnemies  = new List<EnemyBase>();
+    private readonly List<EnemyBase> availableRangedEnemies = new List<EnemyBase>();
+
 
     // ─────────────────────────────────────────
     //  PLAYER RESPAWN
@@ -312,26 +334,107 @@ public class WaveSystem : MonoBehaviour
         current_summons_dead = 0;
         current_max_summons_once = start_max_summons_once;
 
-        // Generate Available Enemy List
-        avaible_enemys.Clear();
-        for (int i = 0; i < enemy_Container.Count; i++)
+        // Generate Available Enemy Lists (melee + ranged)
+    avaible_enemys.Clear();
+    availableMeleeEnemies.Clear();
+    availableRangedEnemies.Clear();
+
+    for (int i = 0; i < enemy_Container.Count; i++)
+    {
+        EnemyBase prefab = enemy_Container[i];
+
+        if (currentWave <= prefab.avaible_to_wave &&
+            currentWave >= prefab.avaible_from_wave)
         {
-            if (currentWave <= enemy_Container[i].avaible_to_wave &&
-                currentWave >= enemy_Container[i].avaible_from_wave)
-            {
-                avaible_enemys.Add(enemy_Container[i]);
-            }
+            avaible_enemys.Add(prefab);
+
+            if (prefab.IsRanged)
+                availableRangedEnemies.Add(prefab);
+            else
+                availableMeleeEnemies.Add(prefab);
+        }
+    }
+
+    // Generate Selected Enemy List with ranged fraction per wave
+    selected_enemys.Clear();
+
+    if (avaible_enemys.Count == 0)
+    {
+        Debug.LogWarning("WaveSystem: No available enemies this wave!");
+    }
+    else
+    {
+        // compute desired ranged fraction for this wave
+        float rangedFraction = 0f;
+
+        if (currentWave >= rangedStartWave && availableRangedEnemies.Count > 0)
+        {
+            int wavesSinceStart = currentWave - rangedStartWave;
+            rangedFraction = rangedStartFraction + wavesSinceStart * rangedIncreasePerWave;
+            rangedFraction = Mathf.Clamp(rangedFraction, 0f, rangedMaxFraction);
         }
 
-        // Generate Selected Enemy List (which prefab each spawn will use)
-        selected_enemys.Clear();
+        int desiredRangedCount = Mathf.RoundToInt(current_summons * rangedFraction);
+
+        // If we have no ranged prefabs, force 0
+        if (availableRangedEnemies.Count == 0)
+            desiredRangedCount = 0;
+
+        // Optional: guarantee at least 1 ranged when they first appear and wave big enough
+        if (currentWave >= rangedStartWave &&
+            availableRangedEnemies.Count > 0 &&
+            desiredRangedCount == 0 &&
+            current_summons >= 5)
+        {
+            desiredRangedCount = 1;
+        }
+
+        int rangedRemaining = Mathf.Clamp(desiredRangedCount, 0, current_summons);
+        int meleeRemaining  = current_summons - rangedRemaining;
+
         for (int i = 0; i < current_summons; i++)
-        {
-            selected_enemys.Add(Get_Random_Enemy());
-        }
+            {
+                bool spawnRanged;
 
-        CheckNewWaveData();
-        HandlePlayerRespawns();
+                if (rangedRemaining <= 0)
+                {
+                    spawnRanged = false;
+                }
+                else if (meleeRemaining <= 0)
+                {
+                    spawnRanged = true;
+                }
+                else
+                {
+                    int slotsLeft = current_summons - i;
+                    float neededRangedFraction = (float)rangedRemaining / slotsLeft;
+                    spawnRanged = (Random.value < neededRangedFraction);
+                }
+
+                EnemyBase chosen = null;
+
+                if (spawnRanged && availableRangedEnemies.Count > 0)
+                {
+                    int idx = UnityEngine.Random.Range(0, availableRangedEnemies.Count);
+                    chosen = availableRangedEnemies[idx];
+                    rangedRemaining--;
+                }
+                else if (availableMeleeEnemies.Count > 0)
+                {
+                    int idx = UnityEngine.Random.Range(0, availableMeleeEnemies.Count);
+                    chosen = availableMeleeEnemies[idx];
+                    meleeRemaining--;
+                }
+                else
+                {
+                    // Fallback: just pick any available enemy
+                    int idx = UnityEngine.Random.Range(0, avaible_enemys.Count);
+                    chosen = avaible_enemys[idx];
+                }
+
+                selected_enemys.Add(chosen);
+            }
+        } 
     }
 
        private void HandlePlayerRespawns() 
