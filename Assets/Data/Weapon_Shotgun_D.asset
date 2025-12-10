@@ -36,5 +36,5 @@ MonoBehaviour:
   impactForce: 70
   fireSFX: {fileID: 8300000, guid: 47c90ed043037dc47b575bf82fcc8257, type: 3}
   fireSFXVolume: 0.6
-  reloadSFX: {fileID: 8300000, guid: 7631aab43720e944eb4d4aa8ca4272de, type: 3}
+  reloadSFX: {fileID: 8300000, guid: 26f34640fde3e6a47a5155d24825bd09, type: 3}
   reloadSFXVolume: 1

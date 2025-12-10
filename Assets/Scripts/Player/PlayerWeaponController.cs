@@ -261,8 +261,6 @@ public class PlayerWeaponController : MonoBehaviour
             );
         }
         
-        
-
         Vector3 dir = currentWeapon.ApplySpread(BulletDirection());
         rbNewBullet.mass = REFERENCE_BULLET_SPEED / bulletSpeed;
         rbNewBullet.linearVelocity = dir * bulletSpeed;
@@ -280,7 +278,7 @@ public class PlayerWeaponController : MonoBehaviour
     {
         Vector3 direction = (aim.position - GunPoint().position).normalized;
         //direction.y = 0; // Keep direction horizontal in a top-down shooter
-        direction.y = -0.03f;
+        direction.y = 0f;
         return direction;
     }
 

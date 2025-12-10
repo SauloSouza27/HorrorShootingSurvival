@@ -28,7 +28,7 @@ MonoBehaviour:
   magazineCapacity: 8
   totalReserveAmmo: 500
   baseSpread: 0
-  maxSpread: 1
+  maxSpread: 0
   spreadIncreaseRate: 0.15
   reloadSpeed: 1
   equipSpeed: 1
@@ -36,5 +36,5 @@ MonoBehaviour:
   impactForce: 70
   fireSFX: {fileID: 8300000, guid: 147f488da0a01154d841851609613eb4, type: 3}
   fireSFXVolume: 0.7
-  reloadSFX: {fileID: 8300000, guid: 6a6ad1596e9252e49a4fe13971519cbe, type: 3}
+  reloadSFX: {fileID: 8300000, guid: bda4d9ed987cfd34496c9eba1fddb107, type: 3}
   reloadSFXVolume: 1
