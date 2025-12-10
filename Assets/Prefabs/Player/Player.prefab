@@ -213,7 +213,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 207586770534553672}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.059480585, w: 0.9982295}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -227,7 +227,7 @@ Transform:
   - {fileID: 6296065711267593132}
   - {fileID: 805006610451243285}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -6.82}
 --- !u!114 &449856822905615602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,9 +439,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerColors:
   - {r: 0, g: 1.4980391, b: 0.65906227, a: 1}
-  - {r: 1.0592737, g: 0.082623355, b: 0.6246385, a: 1}
-  - {r: 1.4980392, g: 0.2520628, b: 0.06441575, a: 1}
-  - {r: 0.07843135, g: 0.23720472, b: 1.4980392, a: 1}
+  - {r: 0.926, g: 0, b: 0.8217683, a: 1}
+  - {r: 1, g: 0.45828265, b: 0.14199996, a: 1}
+  - {r: 0.052356005, g: 0.7382202, b: 1, a: 1}
   material: {fileID: 0}
   playerIndex: 0
 --- !u!114 &956794712110785006
