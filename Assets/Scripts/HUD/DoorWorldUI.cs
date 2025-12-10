@@ -12,8 +12,7 @@ public class DoorWorldUI : MonoBehaviour
     {
         if(!uiCamera) uiCamera = Camera.main;
         DoorPurchase doorPurchase = transform.GetComponentInParent<DoorPurchase>();
-        doorPrice.text = "Unlock next area - $ " + doorPurchase.GetCost();
-        
+        doorPrice.text = "$ " + doorPurchase.GetCost();        
     }
 
     void Update()
