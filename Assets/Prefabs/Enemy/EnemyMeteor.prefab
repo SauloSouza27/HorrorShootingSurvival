@@ -3475,10 +3475,10 @@ MonoBehaviour:
   speed: 6
   maxspeed: 11
   rotationSpeed: 2000
-  tier1Speed: 6
-  tier2Speed: 8
-  tier3Speed: 10
-  tier4Speed: 12
+  tier1Speed: 2
+  tier2Speed: 2.666667
+  tier3Speed: 3.333333
+  tier4Speed: 3.8
   currentSpeedTier: 0
   attack: 1
   maxattack: 3
@@ -3577,7 +3577,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 1
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!195 &6561103016994153388
