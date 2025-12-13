@@ -97,9 +97,14 @@ public class PlayerStats : MonoBehaviour
 
     public void AddPoints(int amount)
     {
+        if (amount == 0) return;
+
         currentPoints += amount;
         OnPointsChanged?.Invoke(currentPoints);
         updateScoreDisplay();
+
+        if (scoreCount != null)
+            scoreCount.ShowDelta(amount);   // float up
     }
 
     public bool SpendPoints(int cost)
@@ -109,8 +114,26 @@ public class PlayerStats : MonoBehaviour
         currentPoints -= cost;
         OnPointsChanged?.Invoke(currentPoints);
         updateScoreDisplay();
+
+        if (scoreCount != null)
+            scoreCount.ShowDelta(-cost);    // float down
+
         return true;
     }
+
+    public void OverridePoints(int amount)
+    {
+        amount = Mathf.Max(0, amount);
+        int delta = amount - currentPoints;
+
+        currentPoints = amount;
+        OnPointsChanged?.Invoke(currentPoints);
+        updateScoreDisplay();
+
+        if (scoreCount != null && delta != 0)
+            scoreCount.ShowDelta(delta);
+    }
+
 
     //  Perk purchase logic
     public bool PurchasePerk(PerkType perkType, int cost)
@@ -195,11 +218,5 @@ public class PlayerStats : MonoBehaviour
         scoreCount.UpdateScore(currentPoints);
     }
     
-    public void OverridePoints(int amount)
-    {
-        currentPoints = Mathf.Max(0, amount);
-        OnPointsChanged?.Invoke(currentPoints);
-        updateScoreDisplay();
-    }
 
 }
