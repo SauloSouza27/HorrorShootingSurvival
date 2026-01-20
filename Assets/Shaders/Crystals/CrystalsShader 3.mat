@@ -14,7 +14,8 @@ Material:
   m_ValidKeywords:
   - _RECEIVE_SHADOWS_OFF
   - _SURFACE_TYPE_TRANSPARENT
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _EMISSION
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -50,6 +51,7 @@ Material:
     - _CastShadows: 1
     - _Cull: 2
     - _DstBlend: 1
+    - _DstBlendAlpha: 1
     - _FresnelControl: 0.5
     - _Metallic: 1
     - _QueueControl: 0
@@ -57,6 +59,7 @@ Material:
     - _ReceiveShadows: 0
     - _Smoothnnes: 0
     - _SrcBlend: 5
+    - _SrcBlendAlpha: 1
     - _Surface: 1
     - _TopLine: 1
     - _WorkflowMode: 1
@@ -81,4 +84,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 9
+  version: 10
